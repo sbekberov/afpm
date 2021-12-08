@@ -1,6 +1,9 @@
 package com.trello.domain;
 
 public class CheckableItem {
+    private String name;
+    private boolean checked;
+
     public String getName() {
         return name;
     }
@@ -16,8 +19,5 @@ public class CheckableItem {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
-
-    private String name;
-    private boolean checked;
 }
 

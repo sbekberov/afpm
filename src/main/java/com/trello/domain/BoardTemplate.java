@@ -1,6 +1,8 @@
 package com.trello.domain;
 
 public class BoardTemplate {
+    private String name;
+
     public String getName() {
         return name;
     }
@@ -8,7 +10,5 @@ public class BoardTemplate {
     public void setName(String name) {
         this.name = name;
     }
-
-    private String name;
 }
 

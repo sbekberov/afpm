@@ -5,6 +5,9 @@ import java.util.List;
 
 public class Comment {
     private Member member;
+    private String content;
+    private LocalDateTime date;
+    private List<Attachment> attachments;
 
     public Member getMember() {
         return member;
@@ -37,8 +40,4 @@ public class Comment {
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
     }
-
-    private String content;
-    private LocalDateTime date;
-    private List<Attachment> attachments;
 }

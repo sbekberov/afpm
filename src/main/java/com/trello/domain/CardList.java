@@ -4,6 +4,8 @@ import java.util.List;
 
 public class CardList {
     private String name;
+    private List<Card> cards;
+    private boolean isArchived;
 
     public String getName() {
         return name;
@@ -28,8 +30,5 @@ public class CardList {
     public void setArchived(boolean archived) {
         isArchived = archived;
     }
-
-    private List<Card> cards;
-    private boolean isArchived;
 }
 

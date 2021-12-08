@@ -1,6 +1,8 @@
 package com.trello.domain;
 
 public class CardTemplate {
+    private String title;
+
     public String getTitle() {
         return title;
     }
@@ -8,7 +10,5 @@ public class CardTemplate {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    private String title;
 }
 

@@ -2,6 +2,9 @@ package com.trello.domain;
 
 public class User {
     private String firstName;
+    private String lastName;
+    private String email;
+    private String timeZone;
 
     public String getFirstName() {
         return firstName;
@@ -34,8 +37,4 @@ public class User {
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
     }
-
-    private String lastName;
-    private String email;
-    private String timeZone;
 }

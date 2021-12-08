@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 public class Reminder {
     private LocalDateTime start;
+    private LocalDateTime end;
+    private String remindOn;
+    private boolean isActive;
 
     public LocalDateTime getStart() {
         return start;
@@ -36,8 +39,4 @@ public class Reminder {
     public void setActive(boolean active) {
         isActive = active;
     }
-
-    private LocalDateTime end;
-    private String remindOn;
-    private boolean isActive;
 }

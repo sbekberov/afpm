@@ -3,6 +3,12 @@ package com.trello.domain;
 import java.util.List;
 
 public class Workspace {
+    private String name;
+    private List<Board> boards;
+    private List<Member> member;
+    private String description;
+    private WorkspaceVisibility visibility;
+
     public String getName() {
         return name;
     }
@@ -42,11 +48,5 @@ public class Workspace {
     public void setVisibility(WorkspaceVisibility visibility) {
         this.visibility = visibility;
     }
-
-    private String name;
-    private List<Board> boards;
-    private List<Member> member;
-    private String description;
-    private WorkspaceVisibility visibility;
 }
 

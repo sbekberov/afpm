@@ -4,6 +4,8 @@ import java.io.File;
 
 public class Attachment {
     private String link;
+    private String name;
+    private File file;
 
     public String getLink() {
         return link;
@@ -28,7 +30,4 @@ public class Attachment {
     public void setFile(File file) {
         this.file = file;
     }
-
-    private String name;
-    private File file;
 }
