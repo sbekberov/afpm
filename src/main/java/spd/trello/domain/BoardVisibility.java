@@ -1,4 +1,4 @@
-package com.trello.domain;
+package spd.trello.domain;
 
 public enum BoardVisibility {
     PRIVATE, WORKSPACE, PUBLIC
