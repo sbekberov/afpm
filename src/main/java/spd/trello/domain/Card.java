@@ -1,11 +1,16 @@
 package spd.trello.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class Card {
+@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class Card extends Resource{
     private String name;
     private String description;
     private List<Member> assignedMembers;
