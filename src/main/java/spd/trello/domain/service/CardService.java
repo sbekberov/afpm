@@ -13,21 +13,17 @@ public class CardService extends AbstractService<Card>{
     public Card create(){
         Card card = new Card();
         Scanner sc = new Scanner(System.in);
-        System.out.println("Input your name : ");
+        System.out.println("Input your card name : ");
         String name = sc.nextLine();
         card.setName(name);
         storage.add(card);
         return card;
     }
     @Override
-    public void print (Card card) {
-        System.out.println(card);
-    }
-    @Override
     public void update(int index, Card card){
         Card card1 = storage.get(index);
         card1.setName(card.getName());
-        card1.setUpdateDate(LocalDateTime.now());
+        card1.setUpdatedDate(LocalDateTime.now());
     }
 
 }
