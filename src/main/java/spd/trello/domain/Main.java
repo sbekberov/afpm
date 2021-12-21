@@ -1,16 +1,42 @@
 package spd.trello.domain;
 
-import spd.trello.domain.service.CardService;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class Main {
-    public static void main(String[] args) {
-        User testUser = new User();
-        testUser.setFirstName("Selim");
-        testUser.setLastName("Bekberov");
-        testUser.setEmail("s.bekberov@gmail.com");
-        System.out.println(testUser.getFirstName()+" "+testUser.getLastName()+" "+testUser.getEmail());
-        CardService cardService = new CardService();
-        Card card = cardService.create();
-        cardService.print(card);
+    public static void main(String[] args) throws SQLException, IOException {
+        DataSource dataSource = createDateSource();
+
+        Connection connection = dataSource.getConnection();
+        connection.close();
+    }
+
+    private static DataSource createDateSource() throws IOException {
+        Properties properties = loadProperties();
+        HikariConfig cfg = new HikariConfig();
+        cfg.setJdbcUrl(properties.getProperty("jdbc.url"));
+        cfg.setUsername(properties.getProperty("jdbc.username"));
+        cfg.setPassword(properties.getProperty("jdbc.password"));
+
+        int maxConnection = Integer.parseInt(properties.getProperty("jdbc.pool.max"));
+        cfg.setMaximumPoolSize(maxConnection);
+
+        return new HikariDataSource(cfg);
+    }
+
+    private static Properties loadProperties() throws IOException {
+        InputStream in = Main.class.getClassLoader().getResourceAsStream("application.properties");
+        Properties properties = new Properties();
+        properties.load(in);
+
+        return properties;
     }
 }
+
