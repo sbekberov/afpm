@@ -1,4 +1,4 @@
-CREATE TABLE checkableItem
+CREATE TABLE checkable_Item
 (
     id           uuid PRIMARY KEY               NOT NULL,
     name         VARCHAR(200)                   NOT NULL,

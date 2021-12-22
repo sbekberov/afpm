@@ -6,5 +6,5 @@ CREATE TABLE workspace
     created_date TIMESTAMP        NOT NULL ,
     updated_date TIMESTAMP,
     name         VARCHAR(20)      NOT NULL,
-    description  VARCHAR(50)      NOT NULL
+    description  VARCHAR(50)
 );

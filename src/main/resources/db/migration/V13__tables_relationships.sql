@@ -24,3 +24,11 @@ CREATE TABLE card_member
         CONSTRAINT member_id_fk REFERENCES member (id),
     CONSTRAINT card_member_pk PRIMARY KEY (card_id, member_id)
 );
+CREATE TABLE card_label
+(
+    card_id   uuid NOT NULL
+        CONSTRAINT card_label_id_fk REFERENCES card (id),
+    label_id uuid NOT NULL
+        CONSTRAINT card_id_fk REFERENCES label (id),
+    CONSTRAINT card_label_pk PRIMARY KEY (card_id, label_id)
+);

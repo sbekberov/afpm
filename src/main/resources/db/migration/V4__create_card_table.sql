@@ -7,6 +7,6 @@ CREATE TABLE card
     created_date TIMESTAMP                     NOT NULL DEFAULT now(),
     updated_date TIMESTAMP,
     name         VARCHAR(200)                  NOT NULL,
-    description  VARCHAR(200)                  NOT NULL,
+    description  VARCHAR(200),
     archived     BOOLEAN                       NOT NULL DEFAULT FALSE
 );

@@ -26,7 +26,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.1'
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.2.0'
-    implementation group: 'com.zaxxer', name: 'HikariCP', version: '4.0.3'
+    implementation 'org.postgresql:postgresql:42.3.1'
+    implementation 'org.flywaydb:flyway-core:8.2.0'
+    implementation 'com.zaxxer:HikariCP:4.0.3'
 }

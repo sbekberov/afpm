@@ -5,6 +5,5 @@ CREATE TABLE member
     user_id              uuid
         CONSTRAINT member_user_id_fk REFERENCES "user" (id),
     workspace_visibility VARCHAR(10)                    NOT NULL DEFAULT 'PUBLIC',
-    workspace_id         uuid REFERENCES workspace (id) NOT NULL,
-    comment_id           uuid REFERENCES comment (id)   NOT NULL
+    workspace_id         uuid REFERENCES workspace (id) NOT NULL
 );
