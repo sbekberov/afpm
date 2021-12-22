@@ -7,9 +7,15 @@ import spd.trello.domain.Main;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class DB_configuration {
+    public static Connection getConnection() throws IOException, SQLException {
+        return createDateSource().getConnection();
+    }
+
     protected static DataSource createDateSource() throws IOException {
         Properties properties = loadProperties();
         HikariConfig cfg = new HikariConfig();
