@@ -1,6 +1,7 @@
 package spd.trello.service;
 
 import spd.trello.domain.Card;
+import spd.trello.repository.CardRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 
 public class CardService extends AbstractService<Card>{
    static List<Card> storage = new ArrayList<>();
+   private static CardRepository cardRepository = new CardRepository();
     @Override
     public Card create(){
         Card card = new Card();
@@ -16,7 +18,7 @@ public class CardService extends AbstractService<Card>{
         System.out.println("Input your card name : ");
         String name = sc.nextLine();
         card.setName(name);
-        storage.add(card);
+        cardRepository.add(card); // storage.add(card);
         return card;
     }
     @Override
@@ -25,5 +27,7 @@ public class CardService extends AbstractService<Card>{
         card1.setName(card.getName());
         card1.setUpdatedDate(LocalDateTime.now());
     }
+
+
 
 }

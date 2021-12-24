@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DB_configuration {
+public class DbConfiguration {
     public static Connection getConnection() throws IOException, SQLException {
         return createDateSource().getConnection();
     }
