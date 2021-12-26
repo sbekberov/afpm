@@ -1,4 +1,4 @@
-package spd.trello.domain.service;
+package spd.trello.service;
 
 import spd.trello.domain.Board;
 
