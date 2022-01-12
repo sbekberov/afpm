@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ public class Card extends Resource{
     private List<Comment> comments;
     private Reminder reminder;
     private List<Checklist> checklists;
-    private LocalDateTime creationDate;
+    private UUID cardListId;
 
 }
 

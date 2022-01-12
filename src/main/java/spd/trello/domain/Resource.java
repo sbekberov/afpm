@@ -1,8 +1,12 @@
 package spd.trello.domain;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+
 
 @Data
 @ToString(callSuper = true)
@@ -11,6 +15,6 @@ import java.time.LocalDateTime;
 public abstract class Resource extends Domain  {
     String createdBy;
     String updatedBy;
-    LocalDateTime createdDate = LocalDateTime.now();
-    LocalDateTime updatedDate;
+    Date createdDate;
+    Date updatedDate;
 }

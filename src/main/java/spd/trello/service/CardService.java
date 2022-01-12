@@ -1,33 +1,59 @@
 package spd.trello.service;
 
 import spd.trello.domain.Card;
+import spd.trello.domain.Member;
 import spd.trello.repository.CardRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.UUID;
 
-public class CardService extends AbstractService<Card>{
-   static List<Card> storage = new ArrayList<>();
-   private static CardRepository cardRepository = new CardRepository();
-    @Override
-    public Card create(){
+public class CardService extends AbstractService<Card> {
+
+    CardRepository cardRepository = new CardRepository();
+
+    public CardService() throws SQLException, IOException {
+    }
+
+
+    public Card create(String name, UUID cardListId, String description, Member member) throws IllegalAccessException {
         Card card = new Card();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Input your card name : ");
-        String name = sc.nextLine();
         card.setName(name);
-        cardRepository.add(card); // storage.add(card);
+        card.setDescription(description);
+        card.setId(UUID.randomUUID());
+        card.setCreatedBy("test");
+        card.setCreatedDate(Date.valueOf(LocalDate.now()));
+        card.setArchived(Boolean.FALSE);
+        card.setCardListId(cardListId);
+        cardRepository.create(card);
+        return cardRepository.findById(card.getId());
+    }
+
+
+    public void update(Card card) {
+        cardRepository.update(card);
+    }
+
+
+    public void getAll() {
+        cardRepository.getAll();
+    }
+
+
+    public Card findById(UUID id) {
+        Card card = null;
+        try {
+            card = cardRepository.findById(id);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         return card;
     }
-    @Override
-    public void update(int index, Card card){
-        Card card1 = storage.get(index);
-        card1.setName(card.getName());
-        card1.setUpdatedDate(LocalDateTime.now());
+
+
+    public boolean delete(UUID id) {
+        return cardRepository.delete(id);
     }
-
-
-
 }

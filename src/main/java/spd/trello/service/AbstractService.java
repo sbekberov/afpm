@@ -1,11 +1,13 @@
 package spd.trello.service;
 
-import spd.trello.domain.Resource;
+import spd.trello.db.DbConfiguration;
+import spd.trello.domain.Domain;
 
-public abstract class AbstractService <T extends Resource> {
-    public abstract T create();
-    public void print(T t){
-        System.out.println(t);
+import javax.sql.DataSource;
+
+public abstract class AbstractService <T extends Domain> {
+    protected DataSource dataSource;
+    public AbstractService() {
+        this.dataSource = DbConfiguration.getDataSource();
     }
-    public abstract void update(int index, T t);
 }

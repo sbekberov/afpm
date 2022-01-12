@@ -7,13 +7,21 @@ import spd.trello.domain.Main;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class DbConfiguration {
-    public static Connection getConnection() throws IOException, SQLException {
-        return createDateSource().getConnection();
+
+    private static DataSource dataSource;
+
+    public static DataSource getDataSource()  {
+        if (dataSource==null) {
+            try {
+                dataSource=createDateSource();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return dataSource;
     }
 
     protected static DataSource createDateSource() throws IOException {

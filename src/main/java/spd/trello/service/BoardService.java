@@ -1,30 +1,61 @@
 package spd.trello.service;
 
 import spd.trello.domain.Board;
+import spd.trello.domain.Member;
+import spd.trello.repository.BoardRepository;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.UUID;
+
+public class BoardService extends AbstractService<Board>{
+
+    BoardRepository boardRepository = new BoardRepository();
+
+    public BoardService() throws SQLException, IOException {
+    }
 
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-public class BoardService extends AbstractService<Board> {
-    static List<Board> storage = new ArrayList<>();
-    @Override
-    public Board create(){
+    public Board create(Member member, UUID workspaceId, String name, String description) throws IllegalAccessException {
         Board board = new Board();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Input your board name : ");
-        String name = sc.nextLine();
+        board.setId(UUID.randomUUID());
+        board.setCreatedBy(member.getCreatedBy());
+        board.setCreatedDate(Date.valueOf(LocalDate.now()));;
         board.setName(name);
-        storage.add(board);
+        board.getMembers().add(member);
+        if (description != null) {
+            board.setDescription(description);
+        }
+        board.setWorkspaceId(workspaceId);
+        boardRepository.create(board);
+        return boardRepository.findById(board.getId());
+    }
+
+
+    public void update(Board board) throws IllegalAccessException {
+        boardRepository.update(board);
+    }
+
+
+    public void getAll() {
+        boardRepository.getAll();
+    }
+
+
+    public Board findById(UUID id) {
+        Board board = null;
+        try {
+            board = boardRepository.findById(id);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         return board;
     }
-    @Override
-    public void update(int index, Board board){
-        Board board1 = storage.get(index);
-        board1.setName(board.getName());
-        board1.setUpdatedDate(LocalDateTime.now());
-    }
 
+
+    public boolean delete(UUID id) {
+        return boardRepository.delete(id);
+    }
 }
