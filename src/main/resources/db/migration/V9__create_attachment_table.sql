@@ -5,7 +5,7 @@ CREATE TABLE attachment
     name          VARCHAR(200)                    NOT NULL,
     updated_by    varchar(25)                     NOT NULL,
     created_by    varchar(25)                     NOT NULL,
-    created_date  TIMESTAMP                       NOT NULL DEFAULT now(),
-    updated_date  TIMESTAMP,
+    created_date  DATE                       NOT NULL DEFAULT now(),
+    updated_date  DATE,
     attachment_id uuid REFERENCES attachment (id)
 );
