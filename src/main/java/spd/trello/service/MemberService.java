@@ -11,7 +11,17 @@ import java.util.UUID;
 
 public class MemberService extends AbstractService<Member> {
 
-    MemberRepository memberRepository = new MemberRepository();
+   MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
+    public MemberService() {
+        super();
+        memberRepository = new MemberRepository(dataSource);
+    }
+
 
     public Member create(User user, Role memberRole) throws IllegalAccessException {
         Member member = new Member();

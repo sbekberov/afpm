@@ -30,7 +30,7 @@ public class WorkspaceRepository implements CRUDRepository<Workspace> {
     @Override
     public List<Workspace> getAll() {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_STMT)) {
+             PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)) {
             List<Workspace> result = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

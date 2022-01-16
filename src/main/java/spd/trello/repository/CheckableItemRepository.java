@@ -10,8 +10,11 @@ import java.util.UUID;
 
 public class CheckableItemRepository implements CRUDRepository<CheckableItem> {
 
-    private static DataSource dataSource;
+    private final DataSource dataSource;
 
+    public CheckableItemRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
     private static final String CREATE_STMT = "INSERT INTO checkable_item(id, name, checked, checklist_id) VALUES (?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM checkable_item WHERE id=?";

@@ -12,8 +12,11 @@ import java.util.UUID;
 
 public class CardListRepository implements CRUDRepository<CardList> {
 
-    private static DataSource dataSource;
+    private final DataSource dataSource;
 
+    public CardListRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
     private static final String CREATE_STMT = "INSERT INTO card_list(id, board_id, updated_by, created_by, created_date, updated_date, name, archived) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM card_list WHERE id=?";
@@ -40,7 +43,7 @@ public class CardListRepository implements CRUDRepository<CardList> {
     @Override
     public List<CardList> getAll() {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_STMT)) {
+             PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)) {
             List<CardList> result = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

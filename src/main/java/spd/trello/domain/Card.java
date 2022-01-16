@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -13,12 +12,8 @@ import java.util.UUID;
 public class Card extends Resource{
     private String name;
     private String description;
-    private List<Member> assignedMembers;
-    private List<Label> labels;
     private Boolean archived = Boolean.FALSE;
-    private List<Comment> comments;
     private Reminder reminder;
-    private List<Checklist> checklists;
     private UUID cardListId;
 
 }

@@ -13,8 +13,11 @@ import java.util.UUID;
 
 public class UserRepository implements CRUDRepository<User>{
 
-    private static DataSource dataSource;
+    private final DataSource dataSource;
 
+    public UserRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
     private static final String CREATE_STMT = "INSERT INTO users(id, first_name, last_name, email, time_zone) VALUES (?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM users WHERE id=?";
@@ -40,7 +43,7 @@ public class UserRepository implements CRUDRepository<User>{
     @Override
     public List<User> getAll() {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_STMT)) {
+             PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)) {
             List<User> result = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

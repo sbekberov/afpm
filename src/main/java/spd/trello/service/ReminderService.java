@@ -3,18 +3,22 @@ package spd.trello.service;
 import spd.trello.domain.Reminder;
 import spd.trello.repository.ReminderRepository;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ReminderService extends AbstractService<Reminder>{
 
-    ReminderRepository reminderRepository = new ReminderRepository();
+    ReminderRepository reminderRepository;
 
-    public ReminderService() throws SQLException, IOException {
+    public ReminderService(ReminderRepository reminderRepository) {
+        this.reminderRepository = reminderRepository;
+    }
+
+    public ReminderService() {
+        super();
+        reminderRepository = new ReminderRepository(dataSource);
     }
 
 

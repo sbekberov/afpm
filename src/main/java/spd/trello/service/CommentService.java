@@ -4,17 +4,21 @@ import spd.trello.domain.Comment;
 import spd.trello.domain.Member;
 import spd.trello.repository.CommentRepository;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class CommentService extends AbstractService<Comment> {
 
-    CommentRepository commentRepository = new CommentRepository();
+    CommentRepository commentRepository;
 
-    public CommentService() throws SQLException, IOException {
+    public CommentService(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
+
+    public CommentService() {
+        super();
+        commentRepository = new   CommentRepository(dataSource);
     }
 
 
@@ -22,7 +26,7 @@ public class CommentService extends AbstractService<Comment> {
         Comment comment = new Comment();
         comment.setId(UUID.randomUUID());
         comment.setContent(content);
-        comment.setCreatedBy("test");;
+        comment.setCreatedBy("test");
         comment.setCreatedDate(Date.valueOf(LocalDate.now()));
         comment.setCardId(cardId);
         comment.setUsersId(userId);

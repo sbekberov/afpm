@@ -23,7 +23,7 @@ public class WorkspaceService extends AbstractService<Workspace> {
     }
 
 
-    public Workspace create(String name, String description, Member member) throws IllegalAccessException {
+    public Workspace create(Member name, String description, String member) throws IllegalAccessException {
         Workspace workspace = new Workspace();
         workspace.setName("Test");
         workspace.setDescription("test");

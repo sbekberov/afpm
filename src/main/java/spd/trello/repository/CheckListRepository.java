@@ -11,8 +11,10 @@ import java.util.UUID;
 
 public class CheckListRepository implements CRUDRepository<Checklist>{
 
-    private static DataSource dataSource;
-
+    private final DataSource dataSource;
+    public CheckListRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
     private static final String CREATE_STMT = "INSERT INTO checklist(id, name, updated_by, created_by, created_date, updated_date, card_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM checklist WHERE id=?";
@@ -79,7 +81,7 @@ public class CheckListRepository implements CRUDRepository<Checklist>{
             statement.setString(1, "Test");
             statement.setTimestamp(2, Timestamp.valueOf(updateDate));
             statement.setString(3, "Test");
-            statement.setObject(4, UUID.fromString("6fa408e2-e42d-4ad3-9233-87691323acec"));
+            statement.setObject(4, UUID.randomUUID());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

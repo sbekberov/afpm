@@ -11,8 +11,11 @@ import java.util.UUID;
 
 public class MemberRepository implements CRUDRepository<Member> {
 
-    private static DataSource dataSource;
+    private final DataSource dataSource;
 
+    public MemberRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
     private static final String CREATE_STMT = "INSERT INTO member(id, role, user_id, workspace_id) VALUES (?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM member WHERE id=?";
@@ -40,7 +43,7 @@ public class MemberRepository implements CRUDRepository<Member> {
     @Override
     public List<Member> getAll() {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_STMT)) {
+             PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)) {
             List<Member> result = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

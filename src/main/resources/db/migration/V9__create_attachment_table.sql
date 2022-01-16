@@ -7,5 +7,5 @@ CREATE TABLE attachment
     created_by    varchar(25)                     NOT NULL,
     created_date  TIMESTAMP                       NOT NULL DEFAULT now(),
     updated_date  TIMESTAMP,
-    attachment_id uuid REFERENCES attachment (id) NOT NULL
+    attachment_id uuid REFERENCES attachment (id)
 );

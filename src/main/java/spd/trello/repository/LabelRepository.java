@@ -9,8 +9,10 @@ import java.util.UUID;
 
 public class LabelRepository implements CRUDRepository<Label>{
 
-    private static DataSource dataSource;
-
+    private final DataSource dataSource;
+    public LabelRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
     private static final String CREATE_STMT = "INSERT INTO label(id, name) VALUES (?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM label WHERE id=?";
@@ -68,7 +70,7 @@ public class LabelRepository implements CRUDRepository<Label>{
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
             statement.setString(1, "Test");
-            statement.setObject(2, UUID.fromString("6fa408e2-e42d-4ad3-9233-87691323acec"));
+            statement.setObject(2, UUID.randomUUID());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

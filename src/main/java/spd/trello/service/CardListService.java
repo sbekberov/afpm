@@ -4,17 +4,21 @@ import spd.trello.domain.CardList;
 import spd.trello.domain.Member;
 import spd.trello.repository.CardListRepository;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class CardListService extends AbstractService<CardList>{
 
-    CardListRepository cardListRepository = new CardListRepository();
+    CardListRepository cardListRepository;
 
-    public CardListService() throws SQLException, IOException {
+    public CardListService(CardListRepository cardListRepository) {
+        this.cardListRepository = cardListRepository;
+    }
+    public CardListService() {
+        super();
+        cardListRepository = new CardListRepository(dataSource);
     }
 
 
@@ -30,13 +34,15 @@ public class CardListService extends AbstractService<CardList>{
     }
 
 
-    public void update(CardList cardList) throws IllegalAccessException {
+    public CardList update(Member member, CardList cardList) throws IllegalAccessException {
         cardListRepository.update(cardList);
+        return cardListRepository.findById(cardList.getId());
     }
 
 
-    public void getAll() {
+    public List<CardList> getAll() {
         cardListRepository.getAll();
+        return null;
     }
 
 

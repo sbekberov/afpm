@@ -11,9 +11,11 @@ import java.util.UUID;
 
 public class CommentRepository implements CRUDRepository<Comment>{
 
-    private static DataSource dataSource;
+    private final DataSource dataSource;
 
-
+    public CommentRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
     private static final String CREATE_STMT = "INSERT INTO comment(id, text, updated_by, created_by, created_date, updated_date, card_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM comment WHERE id=?";
@@ -83,7 +85,7 @@ public class CommentRepository implements CRUDRepository<Comment>{
             statement.setTimestamp(2, Timestamp.valueOf(updateDate));
             statement.setString(3, "Test");
             statement.setString(4,"Hello world");
-            statement.setObject(5, UUID.fromString("6fa408e2-e42d-4ad3-9233-87691323acec"));
+            statement.setObject(5, UUID.randomUUID());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

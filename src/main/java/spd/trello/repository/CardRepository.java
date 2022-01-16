@@ -11,8 +11,11 @@ import java.util.UUID;
 
 public class CardRepository implements CRUDRepository<Card>{
 
-    private static DataSource dataSource;
+    private final DataSource dataSource;
 
+    public CardRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
 
     private static final String CREATE_STMT = "INSERT INTO card(id, cardlist_id, updated_by, created_by, created_date, updated_date, name, archived, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -84,7 +87,7 @@ public class CardRepository implements CRUDRepository<Card>{
             statement.setString(3, "Test");
             statement.setBoolean(4, Boolean.TRUE);
             statement.setString(5, "Test description");
-            statement.setObject(6, UUID.fromString("6fa408e2-e42d-4ad3-9233-87691323acec"));
+            statement.setObject(6, UUID.randomUUID());
 
             statement.executeUpdate();
         } catch (SQLException e) {

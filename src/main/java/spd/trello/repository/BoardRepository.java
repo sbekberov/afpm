@@ -2,7 +2,6 @@ package spd.trello.repository;
 
 import spd.trello.domain.Board;
 import spd.trello.domain.BoardVisibility;
-import spd.trello.service.MemberBoardService;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -13,16 +12,20 @@ import java.util.UUID;
 public class BoardRepository implements CRUDRepository<Board>{
 
 
-    private static DataSource dataSource;
+    private final DataSource dataSource;
 
-    CardListRepository cardListRepository = new CardListRepository();
-    MemberBoardService MBService = new MemberBoardService(new MemberBoardRepository());
+    public BoardRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
+
+    CardListRepository cardListRepository;
 
     private static final String CREATE_STMT = "INSERT INTO board(id, workspace_id, updated_by, created_by, created_date, updated_date, name, archived, visibility, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM board WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM board WHERE id=?";
     private static final String UPDATE_BY_STMT ="UPDATE board SET updated_by=? ,updated_date=?, name=?, description=?, visibility=? WHERE id=?";
     private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+
 
     @Override
     public Board findById(UUID id) throws IllegalAccessException {
@@ -111,7 +114,7 @@ public class BoardRepository implements CRUDRepository<Board>{
     @Override
     public List<Board> getAll() {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_BY_STMT)) {
+             PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)) {
             List<Board> result = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

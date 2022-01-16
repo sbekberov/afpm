@@ -4,17 +4,21 @@ import spd.trello.domain.Card;
 import spd.trello.domain.Member;
 import spd.trello.repository.CardRepository;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class CardService extends AbstractService<Card> {
 
-    CardRepository cardRepository = new CardRepository();
+    CardRepository cardRepository;
 
-    public CardService() throws SQLException, IOException {
+    public CardService(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
+    }
+
+    public CardService() {
+        super();
+        cardRepository = new CardRepository(dataSource);
     }
 
 

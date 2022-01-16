@@ -13,15 +13,18 @@ import java.util.List;
 import java.util.UUID;
 
 public class MemberBoardRepository {
-    private static DataSource dataSource;
+    private final DataSource dataSource;
+    public MemberBoardRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
-    MemberService memberService = new MemberService();
+    MemberService memberService;
 
 
-    private final String CREATE_STMT = "INSERT INTO board_member (member_id, board_id) VALUES (?, ?);";
-    private final String DELETE_BY_BOARD_ID_STMT = "DELETE FROM board_member WHERE board_id=?;";
-    private final String FIND_BY_IDS_STMT = "SELECT * FROM board_member WHERE (member_id=? AND board_id=?);";
-    private final String FIND_BY_BOARD_ID_STMT = "SELECT * FROM board_member WHERE board_id=?;";
+    private static final String CREATE_STMT = "INSERT INTO board_member (member_id, board_id) VALUES (?, ?);";
+    private static final String DELETE_BY_BOARD_ID_STMT = "DELETE FROM board_member WHERE board_id=?;";
+    private static final String FIND_BY_IDS_STMT = "SELECT * FROM board_member WHERE (member_id=? AND board_id=?);";
+    private static final String FIND_BY_BOARD_ID_STMT = "SELECT * FROM board_member WHERE board_id=?;";
 
     public boolean findById(UUID memberId, UUID boardId) {
         try (Connection connection = dataSource.getConnection();

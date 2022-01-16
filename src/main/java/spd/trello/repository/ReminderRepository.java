@@ -11,7 +11,10 @@ import java.util.UUID;
 
 public class ReminderRepository implements CRUDRepository<Reminder>{
 
-    private static DataSource dataSource;
+    private final DataSource dataSource;
+    public ReminderRepository(DataSource dataSource) {
+        this.dataSource=dataSource;
+    }
 
 
     private static final String CREATE_STMT = "INSERT INTO reminder(id, start, finish, remind_on, active, updated_by, created_by, created_date, updated_date ,card_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

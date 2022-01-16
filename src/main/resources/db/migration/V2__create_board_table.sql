@@ -1,7 +1,7 @@
 CREATE TABLE board
 (
     id           UUID PRIMARY KEY               NOT NULL,
-    workspace_id UUID REFERENCES workspace (id) NOT NULL,
+    workspace_id UUID REFERENCES workspace (id) ,
     updated_by   VARCHAR(25),
     created_by   VARCHAR(25)                    NOT NULL,
     created_date TIMESTAMP                      NOT NULL,

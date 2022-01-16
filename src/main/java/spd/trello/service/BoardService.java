@@ -4,27 +4,32 @@ import spd.trello.domain.Board;
 import spd.trello.domain.Member;
 import spd.trello.repository.BoardRepository;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class BoardService extends AbstractService<Board>{
 
-    BoardRepository boardRepository = new BoardRepository();
+    BoardRepository boardRepository;
 
-    public BoardService() throws SQLException, IOException {
+    public BoardService(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
     }
+
+    public BoardService() {
+        super();
+        boardRepository = new BoardRepository(dataSource);
+    }
+
 
 
     public Board create(Member member, UUID workspaceId, String name, String description) throws IllegalAccessException {
         Board board = new Board();
         board.setId(UUID.randomUUID());
         board.setCreatedBy(member.getCreatedBy());
-        board.setCreatedDate(Date.valueOf(LocalDate.now()));;
+        board.setCreatedDate(Date.valueOf(LocalDate.now()));
         board.setName(name);
-        board.getMembers().add(member);
         if (description != null) {
             board.setDescription(description);
         }
@@ -34,13 +39,15 @@ public class BoardService extends AbstractService<Board>{
     }
 
 
-    public void update(Board board) throws IllegalAccessException {
+    public Board update(Board board) throws IllegalAccessException {
         boardRepository.update(board);
+        return boardRepository.findById(board.getId());
     }
 
 
-    public void getAll() {
+    public List<Board> getAll() {
         boardRepository.getAll();
+        return null;
     }
 
 

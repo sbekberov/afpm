@@ -5,9 +5,17 @@ import spd.trello.repository.CheckableItemRepository;
 
 import java.util.UUID;
 
-public class CheckableService{
+public class CheckableService extends  AbstractService<CheckableItem>{
+    CheckableItemRepository checkAbleItemRepository;
 
-    CheckableItemRepository checkAbleItemRepository = new CheckableItemRepository();
+    public CheckableService(CheckableItemRepository checkAbleItemRepository) {
+        this.checkAbleItemRepository = checkAbleItemRepository;
+    }
+
+    public CheckableService() {
+        super();
+        checkAbleItemRepository = new   CheckableItemRepository(dataSource);
+    }
 
     public CheckableItem create(String name, UUID checklistID) throws IllegalAccessException {
         CheckableItem checkableItem = new CheckableItem();

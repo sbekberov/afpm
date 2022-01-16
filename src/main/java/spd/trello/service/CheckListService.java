@@ -3,17 +3,21 @@ package spd.trello.service;
 import spd.trello.domain.Checklist;
 import spd.trello.repository.CheckListRepository;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class CheckListService extends AbstractService<Checklist>{
 
-    CheckListRepository checkListRepository = new CheckListRepository();
+    CheckListRepository checkListRepository;
 
-    public CheckListService() throws SQLException, IOException {
+    public CheckListService(CheckListRepository checkListRepository) {
+        this.checkListRepository = checkListRepository;
+    }
+
+    public CheckListService() {
+        super();
+        checkListRepository = new   CheckListRepository(dataSource);
     }
 
 

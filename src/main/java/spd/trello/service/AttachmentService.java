@@ -4,9 +4,7 @@ import spd.trello.domain.Attachment;
 import spd.trello.domain.Member;
 import spd.trello.repository.AttachmentRepository;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -14,12 +12,12 @@ public class AttachmentService extends AbstractService<Attachment>{
 
     AttachmentRepository attachmentRepository;
 
-    public AttachmentService(AttachmentRepository attachmentRepository) throws SQLException, IOException {
+    public AttachmentService(AttachmentRepository attachmentRepository){
         super();
         this.attachmentRepository = attachmentRepository;
     }
 
-    public AttachmentService() throws SQLException, IOException {
+    public AttachmentService() {
         super();
         attachmentRepository=new AttachmentRepository(dataSource);
     }

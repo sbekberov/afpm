@@ -5,9 +5,18 @@ import spd.trello.repository.LabelRepository;
 
 import java.util.UUID;
 
-public class LabelService {
+public class LabelService extends AbstractService<Label>{
 
-    LabelRepository labelRepository = new LabelRepository();
+    LabelRepository labelRepository;
+
+    public LabelService(LabelRepository labelRepository) {
+        this.labelRepository = labelRepository;
+    }
+
+    public LabelService() {
+        super();
+        labelRepository = new   LabelRepository(dataSource);
+    }
 
     public Label create(String name) throws IllegalAccessException {
         Label label = new Label();
