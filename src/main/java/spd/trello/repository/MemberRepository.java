@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.UUID.fromString;
+
 public class MemberRepository implements CRUDRepository<Member> {
 
     private final DataSource dataSource;
@@ -17,16 +19,16 @@ public class MemberRepository implements CRUDRepository<Member> {
         this.dataSource=dataSource;
     }
 
-    private static final String CREATE_STMT = "INSERT INTO member(id, role, user_id, workspace_id) VALUES (?, ?, ?, ?)";
+    private static final String CREATE_STMT = "INSERT INTO member (id, role, user_id, created_by, created_date) VALUES (?, ?, ?,?,?)";
     private static final String FIND_BY_STMT = "SELECT * FROM member WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM member WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE member SET  role=? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String GET_ALL_STMT = "SELECT * FROM member";
 
 
 
     @Override
-    public Member findById(UUID id) throws IllegalAccessException {
+    public Member findById(UUID id)  {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
             statement.setObject(1, id);
@@ -35,9 +37,9 @@ public class MemberRepository implements CRUDRepository<Member> {
                 return map(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error MemberRepository findById" , e);
         }
-        throw new IllegalAccessException("Member with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("Member with ID: " + id.toString() + " doesn't exists");
     }
 
     @Override
@@ -53,9 +55,9 @@ public class MemberRepository implements CRUDRepository<Member> {
                 return result;
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("MemberRepository::findAll failed", e);
+            throw new IllegalStateException("Error MemberRepository getAll", e);
         }
-        throw new IllegalStateException("Table members is empty!");
+        throw new IllegalStateException("Table Member is empty!");
     }
 
     @Override
@@ -65,16 +67,17 @@ public class MemberRepository implements CRUDRepository<Member> {
             statement.setObject(1, entity.getId());
             statement.setString(2, String.valueOf(entity.getRole()));
             statement.setObject(3, entity.getUsersId());
-            statement.setObject(4,entity.getWorkspaceId());
+            statement.setString(4, entity.getCreatedBy());
+            statement.setDate(5, entity.getCreatedDate());
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error MemberRepository create",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
-    public Member update(Member entity) throws IllegalAccessException {
+    public Member update(Member entity)  {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_BY_STMT)) {
             Member oldMember = findById(entity.getId());
@@ -87,8 +90,8 @@ public class MemberRepository implements CRUDRepository<Member> {
             }
             statement.setObject(4, entity.getId());
             statement.executeUpdate();
-        } catch (SQLException | IllegalAccessException e) {
-            throw new IllegalStateException("Member with ID: " + entity.getId().toString() + " doesn't updates");
+        } catch (SQLException | IllegalStateException e) {
+            throw new IllegalStateException("Error MemberRepository update", e);
         }
         return findById(entity.getId());
     }
@@ -98,19 +101,23 @@ public class MemberRepository implements CRUDRepository<Member> {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)) {
             statement.setObject(1, id);
-            statement.executeUpdate();
+            return  statement.executeUpdate()==1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error MemberRepository delete", e);
         }
-        return true;
     }
+
 
     private Member map(ResultSet rs) throws SQLException {
         Member member = new Member();
-        member.setId(UUID.fromString(rs.getString("id")));
+        member.setId(fromString(rs.getString("id")));
+        member.setUpdatedBy(rs.getString("updated_by"));
+        member.setCreatedBy(rs.getString("created_by"));
+        member.setCreatedDate(rs.getDate("created_date"));
+        member.setUpdatedDate(rs.getDate("updated_date"));
         member.setRole(Role.valueOf(rs.getString("role")));
-        member.setUsersId(UUID.fromString(String.valueOf(rs.getString("user_id"))));
-        member.setWorkspaceId(UUID.fromString(String.valueOf(rs.getString("workspace_id"))));
+        member.setUsersId(UUID.fromString(rs.getString("user_id")));
+       // member.setWorkspaceId(UUID.fromString(rs.getString("workspace_id")));
         return member;
     }
 }

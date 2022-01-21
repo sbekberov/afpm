@@ -22,10 +22,10 @@ public class CardRepository implements CRUDRepository<Card>{
     private static final String FIND_BY_STMT = "SELECT * FROM card WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM card WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE card SET  updated_by=?, updated_date=?, name=?, archived=?, description=? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String GET_ALL_STMT = "SELECT * FROM card";
 
     @Override
-    public Card findById(UUID id) throws IllegalAccessException {
+    public Card findById(UUID id) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
             statement.setObject(1, id);
@@ -34,9 +34,9 @@ public class CardRepository implements CRUDRepository<Card>{
                 return map(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CardRepository findById" , e);
         }
-        throw new IllegalAccessException("Card with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("Card with ID: " + id.toString() + " doesn't exists");
     }
 
     @Override
@@ -52,9 +52,9 @@ public class CardRepository implements CRUDRepository<Card>{
                 return result;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CardRepository getAll", e);
         }
-        throw new IllegalStateException("Table card  is empty!");
+        throw new IllegalStateException("Table Card  is empty!");
     }
 
     @Override
@@ -71,10 +71,10 @@ public class CardRepository implements CRUDRepository<Card>{
             statement.setBoolean(8, entity.getArchived());
             statement.setString(9, entity.getDescription());
             statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error CardRepository create",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
@@ -82,18 +82,18 @@ public class CardRepository implements CRUDRepository<Card>{
         LocalDateTime updateDate = LocalDateTime.now();
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
-            statement.setString(1, "Test");
+            statement.setString(1, entity.getUpdatedBy());
             statement.setTimestamp(2, Timestamp.valueOf(updateDate));
-            statement.setString(3, "Test");
-            statement.setBoolean(4, Boolean.TRUE);
-            statement.setString(5, "Test description");
-            statement.setObject(6, UUID.randomUUID());
+            statement.setString(3, entity.getName());
+            statement.setBoolean(4, entity.getArchived());
+            statement.setString(5, entity.getDescription());
+            statement.setObject(6, entity.getId());
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CardRepository update" ,e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
@@ -101,11 +101,10 @@ public class CardRepository implements CRUDRepository<Card>{
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)) {
             statement.setObject(1, id);
-            statement.executeUpdate();
+            return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CardRepository delete" , e);
         }
-        return true;
     }
     private Card map(ResultSet rs) throws SQLException {
         Card card = new Card();

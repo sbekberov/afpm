@@ -1,4 +1,4 @@
-package spd.trello.repository;
+/*package spd.trello.repository;
 
 import spd.trello.domain.Label;
 
@@ -21,7 +21,7 @@ public class LabelRepository implements CRUDRepository<Label>{
     private static final String GET_ALL_STMT = "SELECT * FROM workspace";
 
     @Override
-    public Label findById(UUID id) throws IllegalAccessException {
+    public Label findById(UUID id){
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
             statement.setObject(1, id);
@@ -32,7 +32,7 @@ public class LabelRepository implements CRUDRepository<Label>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        throw new IllegalAccessException("CheckableItem with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("CheckableItem with ID: " + id.toString() + " doesn't exists");
     }
 
     @Override
@@ -95,4 +95,4 @@ public class LabelRepository implements CRUDRepository<Label>{
         label.setName(rs.getString("name"));
         return label;
     }
-}
+}*/

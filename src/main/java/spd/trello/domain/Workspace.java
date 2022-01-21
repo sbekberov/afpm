@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 public class Workspace extends Resource {
     private String name;
     private String description;
-    private WorkspaceVisibility visibility = WorkspaceVisibility.PRIVATE;
+    private WorkspaceVisibility visibility = WorkspaceVisibility.PUBLIC;
 
 }
 

@@ -12,6 +12,5 @@ import java.util.UUID;
 public class Member extends Resource{
     private UUID usersId;
     private Role role = Role.GUEST;
-    private UUID workspaceId;
 
 }

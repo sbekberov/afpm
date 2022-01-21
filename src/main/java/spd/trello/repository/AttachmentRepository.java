@@ -21,10 +21,10 @@ public class AttachmentRepository implements CRUDRepository<Attachment>{
     private static final String FIND_BY_STMT = "SELECT * FROM attachment WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM attachment WHERE id=?";
     private static final String UPDATE_BY_STMT ="UPDATE attachment SET  link=?, name=?,updated_by=?, updated_date=? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String GET_ALL_STMT = "SELECT * FROM attachment";
 
     @Override
-    public Attachment findById(UUID id) throws IllegalAccessException {
+    public Attachment findById(UUID id) {
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)){
             statement.setObject(1, id);
@@ -33,9 +33,9 @@ public class AttachmentRepository implements CRUDRepository<Attachment>{
                 return map(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error AttachmentRepository findById" , e);
         }
-        throw new IllegalAccessException("attachment with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("attachment with ID: " + id.toString() + " doesn't exists");
     }
 
 
@@ -52,7 +52,7 @@ public class AttachmentRepository implements CRUDRepository<Attachment>{
                 return result;
             }
         }catch (SQLException e){
-            throw new IllegalStateException("AttachmentRepository", e);
+            throw new IllegalStateException("Error AttachmentRepository getAll", e);
         }
         throw new IllegalStateException("Table Attachment is empty");
     }
@@ -70,10 +70,10 @@ public class AttachmentRepository implements CRUDRepository<Attachment>{
             statement.setObject(7, entity.getCommentId());
             statement.setObject(8, entity.getCardId());
             statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error AttachmentRepository create",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
 
@@ -83,16 +83,16 @@ public class AttachmentRepository implements CRUDRepository<Attachment>{
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
 
-            statement.setString(1, "Test");
-            statement.setString(2, "Test");
-            statement.setString(3, "Test");
-            statement.setTimestamp(4, Timestamp.valueOf(updateDate));
-            statement.setObject(5, UUID.fromString("6fa408e2-e42d-4ad3-9233-87691323acec"));
+            statement.setString(1, entity.getLink());
+            statement.setString(2, entity.getName());
+            statement.setString(3, entity.getUpdatedBy());
+            statement.setDate(4, entity.getUpdatedDate());
+            statement.setObject(5, UUID.randomUUID());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error AttachmentRepository update");
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
@@ -100,11 +100,10 @@ public class AttachmentRepository implements CRUDRepository<Attachment>{
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)){
             statement.setObject(1, id);
-            statement.executeUpdate();
+            return statement.executeUpdate()==1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error AttachmentRepository delete", e);
         }
-        return true;
     }
     private Attachment map(ResultSet rs) throws SQLException {
         Attachment attachment = new Attachment();

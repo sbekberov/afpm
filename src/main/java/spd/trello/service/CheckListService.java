@@ -1,59 +1,54 @@
 package spd.trello.service;
 
 import spd.trello.domain.Checklist;
-import spd.trello.repository.CheckListRepository;
+import spd.trello.domain.Member;
+import spd.trello.repository.CRUDRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class CheckListService extends AbstractService<Checklist>{
 
-    CheckListRepository checkListRepository;
-
-    public CheckListService(CheckListRepository checkListRepository) {
-        this.checkListRepository = checkListRepository;
-    }
-
-    public CheckListService() {
-        super();
-        checkListRepository = new   CheckListRepository(dataSource);
+    public CheckListService(CRUDRepository<Checklist> checklistRepository){
+        super(checklistRepository);
     }
 
 
-    public Checklist create(String name , UUID cardId) throws IllegalAccessException {
+    public Checklist create(Member member, String name , UUID cardId)  {
         Checklist checklist = new Checklist();
         checklist.setId(UUID.randomUUID());
         checklist.setName(name);
-        checklist.setCreatedBy("test");
+        checklist.setCreatedBy(member.getCreatedBy());
         checklist.setCreatedDate(Date.valueOf(LocalDate.now()));
         checklist.setCardId(cardId);
-        checkListRepository.create(checklist);
-        return checkListRepository.findById(checklist.getId());
+        repository.create(checklist);
+        return repository.findById(checklist.getId());
     }
 
 
-    public void update(Checklist checklist) {
-        checkListRepository.update(checklist);
+    public Checklist update(Member member , Checklist entity) {
+        Checklist oldChecklist = repository.findById(entity.getId());
+        entity.setUpdatedBy(member.getCreatedBy());
+        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        if (entity.getName() == null) {
+            entity.setName(oldChecklist.getName());
+        }
+        return repository.update(entity);
     }
 
 
-    public void getAll() {
-        checkListRepository.getAll();
+    public List<Checklist> getAll() {
+        return repository.getAll();
     }
 
     public Checklist findById(UUID id) {
-        Checklist checklist = null;
-        try {
-            checklist = checkListRepository.findById(id);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return checklist;
+        return repository.findById(id);
     }
 
     public boolean delete(UUID id) {
-        return checkListRepository.delete(id);
+        return repository.delete(id);
     }
 
 }

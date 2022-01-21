@@ -23,10 +23,10 @@ public class CardListRepository implements CRUDRepository<CardList> {
     private static final String FIND_ALL_FOR_BOARD_STMT = "SELECT * FROM card_list WHERE board_id=?;";
     private static final String DELETE_BY_STMT = "DELETE FROM card_list WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE card_list SET  updated_by=?, updated_date=?, name=?, archived=? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String GET_ALL_STMT = "SELECT * FROM card_list";
 
     @Override
-    public CardList findById(UUID id) throws IllegalAccessException {
+    public CardList findById(UUID id) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
             statement.setObject(1, id);
@@ -35,9 +35,9 @@ public class CardListRepository implements CRUDRepository<CardList> {
                 return map(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CardListRepository findById" , e);
         }
-        throw new IllegalAccessException("CardList with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("CardList with ID: " + id.toString() + " doesn't exists");
     }
 
     @Override
@@ -53,9 +53,9 @@ public class CardListRepository implements CRUDRepository<CardList> {
                 return result;
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("CardListRepository::findAll failed", e);
+            throw new IllegalStateException("Error CardListRepository getAll", e);
         }
-        throw new IllegalStateException("Table card_lists is empty!");
+        throw new IllegalStateException("Table Card_list is empty!");
     }
 
     @Override
@@ -70,13 +70,13 @@ public class CardListRepository implements CRUDRepository<CardList> {
             statement.setObject(6, entity.getBoardId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new IllegalStateException("CardList doesn't creates");
+            throw new IllegalStateException("Error CardListRepository create",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
-    public CardList update(CardList entity) throws IllegalAccessException {
+    public CardList update(CardList entity)  {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_BY_STMT)) {
             CardList oldCardList = findById(entity.getId());
@@ -92,22 +92,24 @@ public class CardListRepository implements CRUDRepository<CardList> {
             statement.setObject(5, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new IllegalStateException("CardList with ID: " + entity.getId().toString() + " doesn't updates");
+            throw new IllegalStateException("Error CardListRepository update");
         }
         return findById(entity.getId());
     }
+
+
 
     @Override
     public boolean delete(UUID id) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)) {
             statement.setObject(1, id);
-            statement.executeUpdate();
+           return statement.executeUpdate()==1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CardListRepository delete" , e);
         }
-        return true;
     }
+
 
     public List<CardList> findAllForBoard(UUID boardId){
         try (Connection connection = dataSource.getConnection();

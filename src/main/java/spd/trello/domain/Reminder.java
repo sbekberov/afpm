@@ -4,16 +4,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Reminder extends Resource {
-    private LocalDateTime start;
-    private LocalDateTime end;
-    private LocalDateTime remindOn;
+    private Date start;
+    private Date end;
+    private Date remindOn;
     private Boolean active = Boolean.FALSE;
     private UUID cardId;
 }

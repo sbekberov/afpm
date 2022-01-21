@@ -1,64 +1,54 @@
 package spd.trello.service;
 
+import spd.trello.domain.Member;
 import spd.trello.domain.Reminder;
-import spd.trello.repository.ReminderRepository;
+import spd.trello.repository.CRUDRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class ReminderService extends AbstractService<Reminder>{
 
-    ReminderRepository reminderRepository;
-
-    public ReminderService(ReminderRepository reminderRepository) {
-        this.reminderRepository = reminderRepository;
-    }
-
-    public ReminderService() {
-        super();
-        reminderRepository = new ReminderRepository(dataSource);
+    public ReminderService(CRUDRepository<Reminder> reminderRepository){
+        super(reminderRepository);
     }
 
 
-    public Reminder create(UUID cardId) throws IllegalAccessException {
+    public Reminder create(Member member, UUID cardId, Date end, Date remindOn){
         Reminder reminder = new Reminder();
         reminder.setId(UUID.randomUUID());
-        reminder.setStart(LocalDateTime.now());
-        reminder.setEnd(LocalDateTime.of(2025, 4, 4, 12, 1));
-        reminder.setRemindOn(LocalDateTime.of(2023, 4, 4, 12, 1));
-        reminder.setActive(Boolean.TRUE);
-        reminder.setCreatedBy("test");
+        reminder.setStart(Date.valueOf(LocalDate.now()));
+        reminder.setEnd(end);
+        reminder.setRemindOn(remindOn);
+        reminder.setCreatedBy(member.getCreatedBy());
         reminder.setCreatedDate(Date.valueOf(LocalDate.now()));
         reminder.setCardId(cardId);
-        reminderRepository.create(reminder);
-        return reminderRepository.findById(reminder.getId());
+        repository.create(reminder);
+        return repository.findById(reminder.getId());
     }
 
 
-    public void update(Reminder reminder) throws IllegalAccessException {
-        reminderRepository.update(reminder);
+    public Reminder update(Member member ,Reminder reminder){
+        Reminder oldReminder = repository.findById(reminder.getId());
+        reminder.setUpdatedBy(member.getCreatedBy());
+        reminder.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        return repository.update(reminder);
     }
 
 
-    public void getAll() {
-        reminderRepository.getAll();
+    public List<Reminder> getAll() {
+        return repository.getAll();
     }
 
 
     public Reminder findById(UUID id) {
-        Reminder reminder = null;
-        try {
-            reminder = reminderRepository.findById(id);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return reminder;
+        return repository.findById(id);
     }
 
 
     public boolean delete(UUID id) {
-        return reminderRepository.delete(id);
+        return repository.delete(id);
     }
 }

@@ -2,7 +2,7 @@ package spd.trello.service;
 
 
 import spd.trello.domain.User;
-import spd.trello.repository.UserRepository;
+import spd.trello.repository.CRUDRepository;
 
 import java.time.ZoneId;
 import java.util.List;
@@ -10,48 +10,34 @@ import java.util.UUID;
 
 public class UserService extends AbstractService<User>{
 
-    UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(CRUDRepository<User> userRepository){
+        super(userRepository);
     }
 
-    public UserService() {
-        super();
-        userRepository = new UserRepository(dataSource);
-    }
-
-    public User create(String firstName, String lastName, String email) throws IllegalAccessException {
+    public User create(String firstName, String lastName, String email) {
         User user = new User();
         user.setId(UUID.randomUUID());
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         user.setTimeZone(ZoneId.systemDefault().toString());
-        userRepository.create(user);
-        return userRepository.findById(user.getId());
+        repository.create(user);
+        return repository.findById(user.getId());
     }
 
 
-    public void update(User users) throws IllegalAccessException {
-        userRepository.update(users);
+    public User update(User users){
+       return repository.update(users);
     }
     public List<User> getAll() {
-        userRepository.getAll();
-        return null;
+       return repository.getAll();
     }
 
     public User findById(UUID id) {
-        User users = null;
-        try {
-            users = userRepository.findById(id);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return users;
+       return repository.findById(id);
     }
 
     public boolean delete(UUID id) {
-        return userRepository.delete(id);
+        return repository.delete(id);
     }
 }

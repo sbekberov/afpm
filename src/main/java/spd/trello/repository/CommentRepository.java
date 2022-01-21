@@ -22,10 +22,10 @@ public class CommentRepository implements CRUDRepository<Comment>{
     private static final String DELETE_BY_STMT = "DELETE FROM comment WHERE id=?";
     //need add  all fields from DB
     private static final String UPDATE_BY_STMT = "UPDATE comment SET  updated_by=?, updated_date=?, text=? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String GET_ALL_STMT = "SELECT * FROM comment";
 
     @Override
-    public Comment findById(UUID id) throws IllegalAccessException {
+    public Comment findById(UUID id) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
             statement.setObject(1, id);
@@ -34,9 +34,9 @@ public class CommentRepository implements CRUDRepository<Comment>{
                 return map(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CommentRepository findById" , e);
         }
-        throw new IllegalAccessException("CheckableItem with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("Comment with ID: " + id.toString() + " doesn't exists");
     }
 
     @Override
@@ -52,9 +52,9 @@ public class CommentRepository implements CRUDRepository<Comment>{
                 return result;
             }
         }catch (SQLException e){
-            throw new IllegalStateException("AttachmentRepository", e);
+            throw new IllegalStateException("Error CommentRepository getAll", e);
         }
-        throw new IllegalStateException("Table Attachment is empty");
+        throw new IllegalStateException("Table Comment is empty");
     }
 
     @Override
@@ -70,10 +70,10 @@ public class CommentRepository implements CRUDRepository<Comment>{
             statement.setObject(7, entity.getCardId());
             statement.setObject(8, entity.getUsersId());
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error CommentRepository create",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
@@ -81,16 +81,15 @@ public class CommentRepository implements CRUDRepository<Comment>{
         LocalDateTime updateDate = LocalDateTime.now();
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
-            statement.setString(1, "Test");
+            statement.setString(1, entity.getUpdatedBy());
             statement.setTimestamp(2, Timestamp.valueOf(updateDate));
-            statement.setString(3, "Test");
-            statement.setString(4,"Hello world");
-            statement.setObject(5, UUID.randomUUID());
+            statement.setString(3, entity.getContent());
+            statement.setObject(4, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CommentRepository update",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
@@ -98,11 +97,10 @@ public class CommentRepository implements CRUDRepository<Comment>{
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)) {
             statement.setObject(1, id);
-            statement.executeUpdate();
+            return statement.executeUpdate()==1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error СommentRepository delete", e);
         }
-        return true;
     }
     private Comment map(ResultSet rs) throws SQLException {
         Comment comment = new Comment();

@@ -1,4 +1,4 @@
-package spd.trello.repository;
+/*package spd.trello.repository;
 
 import spd.trello.domain.CheckableItem;
 
@@ -23,7 +23,7 @@ public class CheckableItemRepository implements CRUDRepository<CheckableItem> {
     private static final String GET_ALL_STMT = "SELECT * FROM workspace";
 
     @Override
-    public CheckableItem findById(UUID id) throws IllegalAccessException {
+    public CheckableItem findById(UUID id){
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
             statement.setObject(1, id);
@@ -34,7 +34,7 @@ public class CheckableItemRepository implements CRUDRepository<CheckableItem> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        throw new IllegalAccessException("CheckableItem with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("CheckableItem with ID: " + id.toString() + " doesn't exists");
     }
 
     @Override
@@ -109,4 +109,4 @@ public class CheckableItemRepository implements CRUDRepository<CheckableItem> {
         return checkableItem;
     }
 
-}
+}*/

@@ -2,7 +2,8 @@ package spd.trello.service;
 
 import spd.trello.domain.Board;
 import spd.trello.domain.Member;
-import spd.trello.repository.BoardRepository;
+import spd.trello.domain.Role;
+import spd.trello.repository.CRUDRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -11,20 +12,12 @@ import java.util.UUID;
 
 public class BoardService extends AbstractService<Board>{
 
-    BoardRepository boardRepository;
-
-    public BoardService(BoardRepository boardRepository) {
-        this.boardRepository = boardRepository;
-    }
-
-    public BoardService() {
-        super();
-        boardRepository = new BoardRepository(dataSource);
+    public BoardService (CRUDRepository<Board> boardRepository){
+        super(boardRepository);
     }
 
 
-
-    public Board create(Member member, UUID workspaceId, String name, String description) throws IllegalAccessException {
+    public Board create(Member member, UUID workspaceId, String name, String description)  {
         Board board = new Board();
         board.setId(UUID.randomUUID());
         board.setCreatedBy(member.getCreatedBy());
@@ -34,35 +27,33 @@ public class BoardService extends AbstractService<Board>{
             board.setDescription(description);
         }
         board.setWorkspaceId(workspaceId);
-        boardRepository.create(board);
-        return boardRepository.findById(board.getId());
+        repository.create(board);
+        return repository.findById(board.getId());
     }
 
 
-    public Board update(Board board) throws IllegalAccessException {
-        boardRepository.update(board);
-        return boardRepository.findById(board.getId());
+    public Board update(Member member , Board board) {
+        if(member.getRole() == Role.GUEST){
+            throw new IllegalStateException("This user cannot update workspace");
+        }
+        board.setUpdatedBy(member.getCreatedBy());
+        board.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        repository.update(board);
+        return repository.findById(board.getId());
     }
 
 
     public List<Board> getAll() {
-        boardRepository.getAll();
-        return null;
+        return repository.getAll();
     }
 
 
     public Board findById(UUID id) {
-        Board board = null;
-        try {
-            board = boardRepository.findById(id);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return board;
+        return repository.findById(id);
     }
 
 
     public boolean delete(UUID id) {
-        return boardRepository.delete(id);
+        return repository.delete(id);
     }
 }

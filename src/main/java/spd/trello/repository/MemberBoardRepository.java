@@ -33,7 +33,7 @@ public class MemberBoardRepository {
             statement.setObject(2, boardId);
             return statement.executeQuery().next();
         } catch (SQLException e) {
-            throw new IllegalStateException("Member-Board link impossible to find!");
+            throw new IllegalStateException("Error MemberBoardRepository findById" , e);
         }
     }
 
@@ -50,7 +50,7 @@ public class MemberBoardRepository {
                 return result;
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("MemberBoardRepository::findByWorkspaceId failed", e);
+            throw new IllegalStateException(" Error MemberBoardRepository findMembersByBoardId", e);
         }
         throw new IllegalStateException("Board with ID: " + boardId.toString() + " doesn't exists");
     }
@@ -62,7 +62,7 @@ public class MemberBoardRepository {
             statement.setObject(2, boardId);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new IllegalStateException("Member-Board link doesn't creates");
+            throw new IllegalStateException("Error MemberBoardRepository create");
         }
     }
 
@@ -72,7 +72,7 @@ public class MemberBoardRepository {
             statement.setObject(1, boardId);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new IllegalStateException("BoardWorkspaceRepository::delete failed", e);
+            throw new IllegalStateException("Error BoardWorkspaceRepository delete", e);
         }
     }
 }

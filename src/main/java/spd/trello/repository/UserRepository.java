@@ -26,7 +26,7 @@ public class UserRepository implements CRUDRepository<User>{
     private static final String GET_ALL_STMT = "SELECT * FROM workspace";
 
     @Override
-    public User findById(UUID id) throws IllegalAccessException {
+    public User findById(UUID id) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
             statement.setObject(1, id);
@@ -35,12 +35,12 @@ public class UserRepository implements CRUDRepository<User>{
                 return map(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error UserRepository findById" , e);
         }
-        throw new IllegalAccessException("Users with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("Users with ID: " + id.toString() + " doesn't exists");
     }
 
-    @Override
+   @Override
     public List<User> getAll() {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)) {
@@ -53,9 +53,9 @@ public class UserRepository implements CRUDRepository<User>{
                 return result;
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("UserRepository::findAll failed", e);
+            throw new IllegalStateException("Error UserRepository getAll", e);
         }
-        throw new IllegalStateException("Table users is empty!");
+        throw new IllegalStateException("Table User is empty!");
     }
 
     @Override
@@ -68,45 +68,23 @@ public class UserRepository implements CRUDRepository<User>{
             statement.setString(4, entity.getEmail());
             statement.setString(5, entity.getTimeZone());
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error UserRepository create",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
-    public User update(User entity) throws IllegalAccessException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_BY_STMT)) {
-            User oldUser = findById(entity.getId());
-            if (entity.getFirstName() == null) {
-                statement.setString(1, oldUser.getFirstName());
-            } else {
-                statement.setString(1, entity.getFirstName());
-            }
-
-            if (entity.getLastName() == null) {
-                statement.setString(2, oldUser.getLastName());
-            } else {
-                statement.setString(2, entity.getLastName());
-            }
-
-            if (entity.getEmail() == null) {
-                statement.setString(3, oldUser.getEmail());
-            } else {
-                statement.setString(3, entity.getEmail());
-            }
-
-            if (entity.getTimeZone() == null) {
-                statement.setString(4, oldUser.getTimeZone());
-            } else {
-                statement.setString(4, entity.getTimeZone());
-            }
-
-            statement.setObject(5, entity.getId());
+    public User update(User entity) {
+        try(Connection con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
+            statement.setString(1, entity.getFirstName());
+            statement.setString(2, entity.getLastName());
+            statement.setString(3, entity.getEmail());
+            statement.setObject(4, UUID.randomUUID());
             statement.executeUpdate();
-        } catch (SQLException | IllegalAccessException e) {
-            throw new IllegalStateException("User with ID: " + entity.getId().toString() + " doesn't updates");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error UserRepository update", e);
         }
         return findById(entity.getId());
     }
@@ -116,18 +94,17 @@ public class UserRepository implements CRUDRepository<User>{
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)) {
             statement.setObject(1, id);
-            statement.executeUpdate();
+            return statement.executeUpdate()==1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error UserRepository delete");
         }
-        return true;
     }
     private User map(ResultSet rs) throws SQLException {
         User users = new User();
         users.setId(UUID.fromString(rs.getString("id")));
-        users.setFirstName(rs.getString("firstname"));
-        users.setFirstName(rs.getString("lastname"));
-        users.setFirstName(rs.getString("email"));
+        users.setFirstName(rs.getString("first_name"));
+        users.setLastName(rs.getString("last_name"));
+        users.setEmail(rs.getString("email"));
         users.setTimeZone(rs.getString("time_zone"));
         return users;
     }

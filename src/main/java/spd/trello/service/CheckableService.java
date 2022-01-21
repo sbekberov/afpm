@@ -1,53 +1,42 @@
-package spd.trello.service;
+/*package spd.trello.service;
 
 import spd.trello.domain.CheckableItem;
-import spd.trello.repository.CheckableItemRepository;
+import spd.trello.repository.CRUDRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 public class CheckableService extends  AbstractService<CheckableItem>{
-    CheckableItemRepository checkAbleItemRepository;
 
-    public CheckableService(CheckableItemRepository checkAbleItemRepository) {
-        this.checkAbleItemRepository = checkAbleItemRepository;
+    public CheckableService(CRUDRepository<CheckableItem> checkableItemRepository){
+        super(checkableItemRepository);
     }
 
-    public CheckableService() {
-        super();
-        checkAbleItemRepository = new   CheckableItemRepository(dataSource);
-    }
-
-    public CheckableItem create(String name, UUID checklistID) throws IllegalAccessException {
+    public CheckableItem create(String name, UUID checklistID) {
         CheckableItem checkableItem = new CheckableItem();
         checkableItem.setId(UUID.randomUUID());
         checkableItem.setName(name);
         checkableItem.setChecked(Boolean.FALSE);
         checkableItem.setChecklistId(checklistID);
-        checkAbleItemRepository.create(checkableItem);
-        return checkAbleItemRepository.findById(checkableItem.getId());
+        repository.create(checkableItem);
+        return repository.findById(checkableItem.getId());
     }
 
 
 
-    public void update(CheckableItem checkableItem) {
-        checkAbleItemRepository.update(checkableItem);
+    public  update(CheckableItem checkableItem) {
+        repository.update(checkableItem);
     }
 
-    public void getAll() {
-        checkAbleItemRepository.getAll();
+    public List<CheckableItem> getAll() {
+        return repository.getAll();
     }
 
     public CheckableItem findById(UUID id) {
-        CheckableItem checkableItem = null;
-        try {
-            checkableItem = checkAbleItemRepository.findById(id);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return checkableItem;
+        return repository.findById(id);
     }
 
     public boolean delete(UUID id) {
-        return checkAbleItemRepository.delete(id);
+        return repository.delete(id);
     }
-}
+}*/

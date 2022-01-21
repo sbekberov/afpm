@@ -17,6 +17,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 repositories {
     mavenCentral()
@@ -30,7 +31,7 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.3.1'
     implementation 'org.flywaydb:flyway-core:8.4.1'
     implementation 'com.zaxxer:HikariCP:5.0.1'
-    testImplementation("com.h2database:h2:1.4.200")
+    testImplementation('com.h2database:h2:2.1.210')
 }
 jacocoTestReport {
     dependsOn test

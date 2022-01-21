@@ -5,6 +5,7 @@ import spd.trello.domain.BoardVisibility;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,8 +19,6 @@ public class BoardRepository implements CRUDRepository<Board>{
         this.dataSource=dataSource;
     }
 
-    CardListRepository cardListRepository;
-
     private static final String CREATE_STMT = "INSERT INTO board(id, workspace_id, updated_by, created_by, created_date, updated_date, name, archived, visibility, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM board WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM board WHERE id=?";
@@ -28,7 +27,7 @@ public class BoardRepository implements CRUDRepository<Board>{
 
 
     @Override
-    public Board findById(UUID id) throws IllegalAccessException {
+    public Board findById(UUID id) {
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)){
             statement.setObject(1, id);
@@ -37,9 +36,9 @@ public class BoardRepository implements CRUDRepository<Board>{
                 return map(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error BoardRepository findById" , e);
         }
-        throw new IllegalAccessException("workspace with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("Board with ID: " + id.toString() + " doesn't exists");
     }
 
     @Override
@@ -57,43 +56,27 @@ public class BoardRepository implements CRUDRepository<Board>{
             statement.setString(9, String.valueOf(entity.getVisibility()));
             statement.setString(10, entity.getDescription());
             statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error BoardRepository create",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
-    public Board update(Board entity) throws IllegalAccessException {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_BY_STMT)) {
-            Board oldBoard = findById(entity.getId());
+    public Board update(Board entity)  {
+        LocalDateTime updateDate = LocalDateTime.now();
+        try(Connection con = dataSource.getConnection();
+            PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
             statement.setString(1, entity.getUpdatedBy());
-            statement.setObject(2, entity.getUpdatedDate(), Types.TIMESTAMP);
-            if (entity.getName() == null) {
-                statement.setString(3, oldBoard.getName());
-            } else {
-                statement.setString(3, entity.getName());
-            }
-            if (entity.getDescription() == null) {
-                statement.setString(4, oldBoard.getDescription());
-            } else {
-                statement.setString(4, entity.getDescription());
-            }
-            if (entity.getVisibility() == null) {
-                statement.setString(5, oldBoard.getVisibility().toString());
-            } else {
-                statement.setString(5, entity.getVisibility().toString());
-            }
-            if (entity.getArchived() == null) {
-                statement.setBoolean(7, oldBoard.getArchived());
-            } else {
-                statement.setBoolean(7, entity.getArchived());
-            }
-            statement.setObject(8, entity.getId());
+            statement.setTimestamp(2, Timestamp.valueOf(updateDate));
+            statement.setString(3, entity.getName());
+            statement.setString(4,entity.getDescription());
+            statement.setString(5, String.valueOf(entity.getVisibility()));
+            statement.setBoolean(6,entity.getArchived());
+            statement.setObject(7, entity.getId());
             statement.executeUpdate();
-        } catch (SQLException | IllegalAccessException e) {
-            throw new IllegalStateException("Board with ID: " + entity.getId().toString() + " doesn't updates");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error BoardRepository update");
         }
         return findById(entity.getId());
     }
@@ -104,11 +87,10 @@ public class BoardRepository implements CRUDRepository<Board>{
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)){
             statement.setObject(1, id);
-            statement.executeUpdate();
+            return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error BoardRepository delete", e);
         }
-        return true;
     }
 
     @Override
@@ -124,9 +106,9 @@ public class BoardRepository implements CRUDRepository<Board>{
                 return result;
             }
         } catch (SQLException e) {
-            throw new IllegalStateException("BoardRepository::findAll failed", e);
+            throw new IllegalStateException("Error BoardRepository getAll", e);
         }
-        throw new IllegalStateException("Table boards is empty!");
+        throw new IllegalStateException("Table board is empty!");
     }
 
     private Board map(ResultSet rs) throws SQLException {

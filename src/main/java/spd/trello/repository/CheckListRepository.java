@@ -20,10 +20,10 @@ public class CheckListRepository implements CRUDRepository<Checklist>{
     private static final String FIND_BY_STMT = "SELECT * FROM checklist WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM checklist WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE checklist SET  updated_by=?, updated_date=?, name=? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String GET_ALL_STMT = "SELECT * FROM checklist";
 
     @Override
-    public Checklist findById(UUID id) throws IllegalAccessException {
+    public Checklist findById(UUID id) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
             statement.setObject(1, id);
@@ -32,9 +32,9 @@ public class CheckListRepository implements CRUDRepository<Checklist>{
                 return map(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CheckListRepository findById" , e);
         }
-        throw new IllegalAccessException("CheckableItem with ID: " + id.toString() + " doesn't exists");
+        throw new IllegalStateException("Checklist with ID: " + id.toString() + " doesn't exists");
     }
 
     @Override
@@ -50,9 +50,9 @@ public class CheckListRepository implements CRUDRepository<Checklist>{
                 return result;
             }
         }catch (SQLException e){
-            throw new IllegalStateException("AttachmentRepository", e);
+            throw new IllegalStateException("Error CheckListRepository getAll", e);
         }
-        throw new IllegalStateException("Table Attachment is empty");
+        throw new IllegalStateException("Table CheckList is empty");
     }
 
     @Override
@@ -67,10 +67,10 @@ public class CheckListRepository implements CRUDRepository<Checklist>{
             statement.setDate(6, entity.getCreatedDate());
             statement.setObject(7, entity.getCardId());
             statement.executeUpdate();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error CheckListRepository create",e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
@@ -78,15 +78,15 @@ public class CheckListRepository implements CRUDRepository<Checklist>{
         LocalDateTime updateDate = LocalDateTime.now();
         try(Connection con = dataSource.getConnection();
             PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
-            statement.setString(1, "Test");
+            statement.setString(1, entity.getUpdatedBy());
             statement.setTimestamp(2, Timestamp.valueOf(updateDate));
-            statement.setString(3, "Test");
-            statement.setObject(4, UUID.randomUUID());
+            statement.setString(3, entity.getName());
+            statement.setObject(4, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error CheckListRepository update" ,e);
         }
-        return entity;
+        return findById(entity.getId());
     }
 
     @Override
@@ -94,11 +94,10 @@ public class CheckListRepository implements CRUDRepository<Checklist>{
         try (Connection con = dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)) {
             statement.setObject(1, id);
-            statement.executeUpdate();
+            return statement.executeUpdate()==1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Error ChecklistRepository delete", e);
         }
-        return true;
     }
     private Checklist map(ResultSet rs) throws SQLException {
         Checklist checklist = new Checklist();

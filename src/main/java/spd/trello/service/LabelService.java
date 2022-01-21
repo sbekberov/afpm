@@ -1,51 +1,39 @@
-package spd.trello.service;
+/*package spd.trello.service;
 
 import spd.trello.domain.Label;
-import spd.trello.repository.LabelRepository;
+import spd.trello.repository.CRUDRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 public class LabelService extends AbstractService<Label>{
 
-    LabelRepository labelRepository;
-
-    public LabelService(LabelRepository labelRepository) {
-        this.labelRepository = labelRepository;
+    public LabelService(CRUDRepository<Label> labelRepository){
+        super(labelRepository);
     }
 
-    public LabelService() {
-        super();
-        labelRepository = new   LabelRepository(dataSource);
-    }
-
-    public Label create(String name) throws IllegalAccessException {
+    public Label create(String name){
         Label label = new Label();
         label.setId(UUID.randomUUID());
         label.setName(name);
-        labelRepository.create(label);
-        return labelRepository.findById(label.getId());
+        repository.create(label);
+        return repository.findById(label.getId());
     }
 
 
-    public void update(Label label) {
-        labelRepository.update(label);
+    public Label update(Label label) {
+        return repository.update(label);
     }
 
-    public void getAll() {
-        labelRepository.getAll();
+    public List<Label> getAll() {
+        return repository.getAll();
     }
 
     public Label findById(UUID id) {
-        Label label = null;
-        try {
-            label = labelRepository.findById(id);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return label;
+        return repository.findById(id);
     }
 
     public boolean delete(UUID id) {
-        return labelRepository.delete(id);
+        return repository.delete(id);
     }
-}
+}*/
