@@ -32,3 +32,12 @@ CREATE TABLE card_label
         CONSTRAINT card_id_fk REFERENCES label (id),
     CONSTRAINT card_label_pk PRIMARY KEY (card_id, label_id)
 );
+
+CREATE TABLE IF NOT EXISTS member_workspace
+(
+    member_id    UUID NOT NULL,
+    workspace_id UUID NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES member (id),
+    FOREIGN KEY (workspace_id) REFERENCES workspace (id),
+    UNIQUE (member_id, workspace_id)
+);

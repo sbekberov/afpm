@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
-import java.io.File;
+import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
@@ -12,5 +12,6 @@ import java.io.File;
 public class Attachment extends Resource {
     private String link;
     private String name;
-    private File file;
+    private UUID commentId;
+    private UUID cardId;
 }

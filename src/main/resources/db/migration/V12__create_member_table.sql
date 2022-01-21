@@ -4,6 +4,8 @@ CREATE TABLE member
     role                 VARCHAR(10)                    NOT NULL DEFAULT 'GUEST',
     user_id              uuid
         CONSTRAINT member_user_id_fk REFERENCES "user" (id),
-    workspace_visibility VARCHAR(10)                    NOT NULL DEFAULT 'PUBLIC',
-    workspace_id         uuid REFERENCES workspace (id) NOT NULL
+    updated_by   varchar(25),
+    created_by   varchar(25)  ,
+    created_date DATE          ,
+    updated_date DATE
 );

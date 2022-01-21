@@ -5,12 +5,12 @@ import org.flywaydb.core.Flyway;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-public class Flyway_configuration {
+public class FlywayConfiguration {
     private static Flyway createFlyway(DataSource dataSource){
         return Flyway.configure().dataSource(dataSource).load();
     }
     public static void configure() throws IOException {
-        Flyway flyway = createFlyway(DB_configuration.createDateSource());
+        Flyway flyway = createFlyway(DbConfiguration.createDateSource());
         flyway.migrate();
     }
 }

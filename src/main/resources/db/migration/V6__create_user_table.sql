@@ -4,5 +4,5 @@ CREATE TABLE "user"
     first_name VARCHAR(200)     NOT NULL,
     last_name  VARCHAR(200)     NOT NULL,
     email     VARCHAR(255)     NOT NULL,
-    time_zone TIMESTAMP        NOT NULL
+    time_zone VARCHAR(100)        NOT NULL
 );
