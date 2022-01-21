@@ -1,7 +1,7 @@
 CREATE TABLE card
 (
     id           uuid PRIMARY KEY              NOT NULL,
-    cardList_id  uuid REFERENCES card_list (id) ,
+    cardlist_id  uuid REFERENCES card_list (id) ,
     updated_by   varchar(25)                   NOT NULL,
     created_by   varchar(25)                   NOT NULL,
     created_date DATE                     NOT NULL DEFAULT now(),

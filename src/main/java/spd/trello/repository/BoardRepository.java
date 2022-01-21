@@ -22,8 +22,8 @@ public class BoardRepository implements CRUDRepository<Board>{
     private static final String CREATE_STMT = "INSERT INTO board(id, workspace_id, updated_by, created_by, created_date, updated_date, name, archived, visibility, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM board WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM board WHERE id=?";
-    private static final String UPDATE_BY_STMT ="UPDATE board SET updated_by=? ,updated_date=?, name=?, description=?, visibility=? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String UPDATE_BY_STMT ="UPDATE board SET updated_by=? ,updated_date=?, name=?, description=?, visibility=?,archived=? WHERE id=?";
+    private static final String GET_ALL_STMT = "SELECT * FROM board";
 
 
     @Override
@@ -114,7 +114,7 @@ public class BoardRepository implements CRUDRepository<Board>{
     private Board map(ResultSet rs) throws SQLException {
         Board board = new Board();
         board.setId(UUID.fromString(rs.getString("id")));
-        board.setId(UUID.fromString(rs.getString("workspace_id")));
+        board.setWorkspaceId(UUID.fromString(rs.getString("workspace_id")));
         board.setCreatedDate((rs.getDate("created_date")));
         board.setUpdatedDate((rs.getDate("updated_date")));
         board.setName(rs.getString("name"));

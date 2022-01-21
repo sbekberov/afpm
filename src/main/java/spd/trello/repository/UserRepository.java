@@ -23,7 +23,7 @@ public class UserRepository implements CRUDRepository<User>{
     private static final String FIND_BY_STMT = "SELECT * FROM users WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM users WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String GET_ALL_STMT = "SELECT * FROM users";
 
     @Override
     public User findById(UUID id) {

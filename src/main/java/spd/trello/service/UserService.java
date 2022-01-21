@@ -29,6 +29,7 @@ public class UserService extends AbstractService<User>{
     public User update(User users){
        return repository.update(users);
     }
+
     public List<User> getAll() {
        return repository.getAll();
     }

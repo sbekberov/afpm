@@ -18,7 +18,7 @@ public class CardListRepository implements CRUDRepository<CardList> {
         this.dataSource=dataSource;
     }
 
-    private static final String CREATE_STMT = "INSERT INTO card_list(id, board_id, updated_by, created_by, created_date, updated_date, name, archived) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String CREATE_STMT = "INSERT INTO card_list(id, board_id, created_by, created_date,  name, archived) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM card_list WHERE id=?";
     private static final String FIND_ALL_FOR_BOARD_STMT = "SELECT * FROM card_list WHERE board_id=?;";
     private static final String DELETE_BY_STMT = "DELETE FROM card_list WHERE id=?";
@@ -63,11 +63,11 @@ public class CardListRepository implements CRUDRepository<CardList> {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_STMT)) {
             statement.setObject(1, entity.getId());
-            statement.setString(2, entity.getCreatedBy());
-            statement.setDate(2, entity.getCreatedDate());
-            statement.setString(4, entity.getName());
-            statement.setBoolean(5, entity.getArchived());
-            statement.setObject(6, entity.getBoardId());
+            statement.setObject(2, entity.getBoardId());
+            statement.setString(3, entity.getCreatedBy());
+            statement.setDate(4, entity.getCreatedDate());
+            statement.setString(5, entity.getName());
+            statement.setBoolean(6, entity.getArchived());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new IllegalStateException("Error CardListRepository create",e);

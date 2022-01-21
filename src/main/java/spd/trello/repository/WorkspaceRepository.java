@@ -2,6 +2,7 @@ package spd.trello.repository;
 
 
 import spd.trello.domain.Workspace;
+import spd.trello.domain.WorkspaceVisibility;
 
 import javax.sql.DataSource;
 import java.sql.*;
