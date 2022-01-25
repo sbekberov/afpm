@@ -24,7 +24,7 @@ public class DbConfiguration {
         return dataSource;
     }
 
-    protected static DataSource createDateSource() throws IOException {
+    public static DataSource createDateSource() throws IOException {
         Properties properties = loadProperties();
         HikariConfig cfg = new HikariConfig();
         cfg.setJdbcUrl(properties.getProperty("db.url"));
