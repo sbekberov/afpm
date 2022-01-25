@@ -32,6 +32,9 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:8.4.1'
     implementation 'com.zaxxer:HikariCP:5.0.1'
     testImplementation('com.h2database:h2:2.1.210')
+    implementation 'org.springframework:spring-core:5.3.14'
+    implementation 'org.springframework:spring-context:5.3.14'
+    implementation 'org.springframework:spring-webmvc:5.3.14'
 }
 jacocoTestReport {
     dependsOn test
