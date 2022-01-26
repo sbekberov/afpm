@@ -1,20 +1,16 @@
 package spd.trello.repository;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.stereotype.Component;
 import spd.trello.domain.Checklist;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class CheckListRepository implements CRUDRepository<Checklist>{
-
-    private final DataSource dataSource;
-    public CheckListRepository(DataSource dataSource) {
-        this.dataSource=dataSource;
-    }
+@Component
+public class CheckListRepository extends CRUDRepository<Checklist> {
 
     private static final String CREATE_STMT = "INSERT INTO checklist(id, name, updated_by, created_by, created_date, updated_date, card_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM checklist WHERE id=?";
@@ -24,90 +20,47 @@ public class CheckListRepository implements CRUDRepository<Checklist>{
 
     @Override
     public Checklist findById(UUID id) {
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
-            statement.setObject(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return map(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error CheckListRepository findById" , e);
-        }
-        throw new IllegalStateException("Checklist with ID: " + id.toString() + " doesn't exists");
+        return jdbcTemplate.query(FIND_BY_STMT, new BeanPropertyRowMapper<>(Checklist.class), id)
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public List<Checklist> getAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)){
-            List<Checklist> result = new ArrayList<>();
-            ResultSet resultSet= statement.executeQuery();
-            while (resultSet.next()){
-                result.add(map(resultSet));
-            }
-            if(!result.isEmpty()){
-                return result;
-            }
-        }catch (SQLException e){
-            throw new IllegalStateException("Error CheckListRepository getAll", e);
-        }
-        throw new IllegalStateException("Table CheckList is empty");
+        return jdbcTemplate.query(GET_ALL_STMT, new BeanPropertyRowMapper<>(Checklist.class));
     }
 
     @Override
     public Checklist create(Checklist entity) {
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(CREATE_STMT)) {
-            statement.setObject(1, entity.getId());
-            statement.setString(2, entity.getName());
-            statement.setString(3, entity.getUpdatedBy());
-            statement.setString(4, entity.getCreatedBy());
-            statement.setDate(5, entity.getCreatedDate());
-            statement.setDate(6, entity.getCreatedDate());
-            statement.setObject(7, entity.getCardId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error CheckListRepository create",e);
-        }
+        jdbcTemplate.update(CREATE_STMT,
+                entity.getId(),
+                entity.getName(),
+                entity.getUpdatedBy(),
+                entity.getCreatedBy(),
+                entity.getCreatedDate(),
+                entity.getCreatedDate(),
+                entity.getCardId());
+
         return findById(entity.getId());
     }
 
     @Override
     public Checklist update(Checklist entity) {
-        LocalDateTime updateDate = LocalDateTime.now();
-        try(Connection con = dataSource.getConnection();
-            PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
-            statement.setString(1, entity.getUpdatedBy());
-            statement.setTimestamp(2, Timestamp.valueOf(updateDate));
-            statement.setString(3, entity.getName());
-            statement.setObject(4, entity.getId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error CheckListRepository update" ,e);
-        }
+       // entity.setUpdatedBy(member.getCreatedBy());
+        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        jdbcTemplate.update(UPDATE_BY_STMT,
+                entity.getUpdatedBy(),
+                entity.getUpdatedDate(),
+                entity.getName(),
+                entity.getId());
         return findById(entity.getId());
     }
 
     @Override
-    public boolean delete(UUID id) {
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)) {
-            statement.setObject(1, id);
-            return statement.executeUpdate()==1;
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error ChecklistRepository delete", e);
-        }
+    public void delete(UUID id) {
+        jdbcTemplate.update(DELETE_BY_STMT, id);
     }
-    private Checklist map(ResultSet rs) throws SQLException {
-        Checklist checklist = new Checklist();
-        checklist.setId(UUID.fromString(rs.getString("id")));
-        checklist.setName(rs.getString("name"));
-        checklist.setUpdatedBy(rs.getString("updated_by"));
-        checklist.setCreatedBy(rs.getString("created_by"));
-        checklist.setCreatedDate(rs.getDate("created_date"));
-        checklist.setUpdatedDate((rs.getDate("updated_date")));
-        checklist.setCardId(UUID.fromString(rs.getString("card_id")));
-        return checklist;
-    }
+
+
 }

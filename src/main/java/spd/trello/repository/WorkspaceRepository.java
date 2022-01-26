@@ -1,17 +1,19 @@
 package spd.trello.repository;
 
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.stereotype.Component;
 import spd.trello.domain.Workspace;
-import spd.trello.domain.WorkspaceVisibility;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class WorkspaceRepository implements CRUDRepository<Workspace> {
+@Component
+public class WorkspaceRepository extends CRUDRepository<Workspace> {
 
     private final DataSource dataSource;
 
@@ -28,66 +30,43 @@ public class WorkspaceRepository implements CRUDRepository<Workspace> {
 
     @Override
     public List<Workspace> getAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)) {
-            List<Workspace> result = new ArrayList<>();
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                result.add(map(resultSet));
-            }
-            if (!result.isEmpty()) {
-                return result;
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error WorkspaceRepository getAll", e);
-        }
-        throw new IllegalStateException("Table Workspace is empty!");
+        return jdbcTemplate.query(FIND_BY_STMT, new BeanPropertyRowMapper<>(Workspace.class));
     }
 
     @Override
     public Workspace findById(UUID id) {
-        try(Connection con = dataSource.getConnection();
-            PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)){
-            statement.setObject(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
-                return map(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error WorkspaceRepository findById" , e);
-        }
-        throw new IllegalStateException("Workspace with ID: " + id.toString() + " doesn't exists");
+        return jdbcTemplate.query(GET_ALL_STMT, new BeanPropertyRowMapper<>(Workspace.class), id)
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
 
     @Override
-    public Workspace create (Workspace entity) {
-        try(Connection con = dataSource.getConnection();
-            PreparedStatement statement = con.prepareStatement(CREATE_STMT)){
-            statement.setObject(1, entity.getId());
-            statement.setString(2, entity.getCreatedBy());
-            statement.setDate(3, entity.getCreatedDate());
-            statement.setString(4, entity.getName());
-            statement.setString(5, entity.getDescription());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error WorkspaceRepository create",e);
-        }
+    public Workspace create(Workspace entity) {
+        jdbcTemplate.update(CREATE_STMT,
+                entity.getId(),
+                entity.getCreatedBy(),
+                entity.getCreatedDate(),
+                entity.getName(),
+                entity.getDescription());
+
         return findById(entity.getId());
     }
 
     @Override
     public Workspace update(Workspace entity) {
+        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+       // entity.setUpdatedBy(member.getCreatedBy());
         LocalDateTime updateDate = LocalDateTime.now();
-        try(Connection con = dataSource.getConnection();
-            PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)){
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement statement = con.prepareStatement(UPDATE_BY_STMT)) {
             statement.setString(1, entity.getUpdatedBy());
             statement.setTimestamp(2, Timestamp.valueOf(updateDate));
             statement.setString(3, entity.getName());
-            statement.setString(4,entity.getDescription());
+            statement.setString(4, entity.getDescription());
             statement.setString(5, entity.getVisibility().toString());
-            statement.setObject(6,entity.getId());
-//            updated_by=? ,updated_date=?, name=?, description=?,workspace_visibility = ? WHERE id=?";
+            statement.setObject(6, entity.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new IllegalStateException("Error WorkspaceRepository update", e);
@@ -97,27 +76,9 @@ public class WorkspaceRepository implements CRUDRepository<Workspace> {
 
 
     @Override
-    public boolean delete(UUID id) {
-        try(Connection con = dataSource.getConnection();
-            PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)){
-            statement.setObject(1, id);
-            return statement.executeUpdate() == 1;
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error WorkspaceRepository delete", e);
-        }
+    public void delete(UUID id) {
+        jdbcTemplate.update(DELETE_BY_STMT, id);
     }
 
-    public Workspace map(ResultSet rs) throws SQLException {
-        Workspace workspace = new Workspace();
-        workspace.setId(UUID.fromString(rs.getString("id")));
-        workspace.setCreatedDate(rs.getDate("created_date"));
-        workspace.setUpdatedDate(rs.getDate("updated_date"));
-        workspace.setName(rs.getString("name"));
-        workspace.setUpdatedBy(rs.getString("updated_by"));
-        workspace.setCreatedBy(rs.getString("created_by"));
-        workspace.setDescription(rs.getString("description"));
-        workspace.setVisibility(WorkspaceVisibility.valueOf(rs.getString("workspace_visibility")));
-        return workspace;
-    }
 
 }

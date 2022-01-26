@@ -1,5 +1,6 @@
 package spd.trello.repository;
 
+import org.springframework.stereotype.Component;
 import spd.trello.domain.Member;
 import spd.trello.service.MemberService;
 
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+@Component
 public class MemberBoardRepository {
     private final DataSource dataSource;
     public MemberBoardRepository(DataSource dataSource) {

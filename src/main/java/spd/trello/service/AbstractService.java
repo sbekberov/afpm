@@ -1,11 +1,13 @@
 package spd.trello.service;
 
+import org.springframework.stereotype.Service;
 import spd.trello.domain.Domain;
 import spd.trello.repository.CRUDRepository;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public abstract class AbstractService<T extends Domain> {
 
     protected CRUDRepository<T> repository;
@@ -23,12 +25,12 @@ public abstract class AbstractService<T extends Domain> {
         return repository.findById(entity.getId());
     }
 
-    public T update(UUID id, T entity) {
+    public T update(T entity) {
         return repository.update(entity);
     }
 
-    public boolean delete(UUID id) {
-        return repository.delete(id);
+    public void delete(UUID id) {
+        repository.delete(id);
     }
 
     public List<T> getAll() {
