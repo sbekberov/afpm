@@ -15,16 +15,12 @@ public class DbConfiguration {
 
     public static DataSource getDataSource()  {
         if (dataSource==null) {
-            try {
-                dataSource=createDateSource();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            dataSource=createDateSource();
         }
         return dataSource;
     }
 
-    public static DataSource createDateSource() throws IOException {
+    public static DataSource createDateSource()  {
         Properties properties = loadProperties();
         HikariConfig cfg = new HikariConfig();
         cfg.setJdbcUrl(properties.getProperty("db.url"));
@@ -37,10 +33,14 @@ public class DbConfiguration {
         return new HikariDataSource(cfg);
     }
 
-    private static Properties loadProperties() throws IOException {
+    private static Properties loadProperties(){
         InputStream in = Main.class.getClassLoader().getResourceAsStream("application.properties");
         Properties properties = new Properties();
-        properties.load(in);
+        try {
+            properties.load(in);
+        } catch (IOException e) {
+            throw new IllegalStateException("Error Load Properties");
+        }
 
         return properties;
     }
