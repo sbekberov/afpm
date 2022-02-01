@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import spd.trello.domain.Domain;
+import spd.trello.domain.Resource;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.service.AbstractService;
 import spd.trello.service.MemberService;
@@ -12,7 +12,7 @@ import spd.trello.service.MemberService;
 import java.util.List;
 import java.util.UUID;
 
-public class AbstractController<E extends Domain, S extends AbstractService<E>> {
+public class AbstractController<E extends Resource, S extends AbstractService<E>> {
     S service;
 
     @Autowired
