@@ -7,10 +7,13 @@ import spd.trello.domain.Resource;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.service.AbstractService;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class AbstractController<E extends Resource, S extends AbstractService<E>> {
+public class AbstractController<E extends Resource, S extends AbstractService<E>>
+        implements CommonController<E> {
     S service;
 
 
@@ -26,12 +29,15 @@ public class AbstractController<E extends Resource, S extends AbstractService<E>
 
 
     @PutMapping("/{id}")
+    @Override
     public ResponseEntity<E> update(@PathVariable UUID id, @RequestBody E resource) {
         E entity = service.findById(id);
         if (entity == null) throw new ResourceNotFoundException();
-        resource.setId(id);
-        resource.setCreatedDate(entity.getCreatedDate());
-        E result = service.update(resource);
+        resource.setCreatedBy("s.bekberov@gmail.com");
+        resource.setUpdatedBy("bekberov.selim@gmail.com");
+        resource.setCreatedDate(Date.valueOf(LocalDate.now()));
+        resource.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        E result = service.update(id, resource);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
