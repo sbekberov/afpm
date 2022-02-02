@@ -23,17 +23,16 @@ public class WorkspaceRepository extends CRUDRepository<Workspace> {
 
     @Override
     public List<Workspace> getAll() {
-        return jdbcTemplate.query(FIND_BY_STMT, new BeanPropertyRowMapper<>(Workspace.class));
+        return jdbcTemplate.query(GET_ALL_STMT, new BeanPropertyRowMapper<>(Workspace.class));
     }
 
     @Override
     public Workspace findById(UUID id) {
-        return jdbcTemplate.query(GET_ALL_STMT, new BeanPropertyRowMapper<>(Workspace.class), id)
+        return jdbcTemplate.query(FIND_BY_STMT, new BeanPropertyRowMapper<>(Workspace.class), id)
                 .stream()
                 .findFirst()
                 .orElse(null);
     }
-
 
     @Override
     public Workspace create(Workspace entity) {
@@ -50,7 +49,6 @@ public class WorkspaceRepository extends CRUDRepository<Workspace> {
     @Override
     public Workspace update(Workspace entity) {
         entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
-        //entity.setUpdatedBy(member.getCreatedBy());
         jdbcTemplate.update(UPDATE_BY_STMT,
                 entity.getUpdatedBy(),
                 entity.getUpdatedDate(),

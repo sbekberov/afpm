@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 @Data
@@ -15,6 +16,6 @@ import java.sql.Date;
 public abstract class Resource extends Domain  {
     String createdBy;
     String updatedBy;
-    Date createdDate;
+    Date createdDate=Date.valueOf(LocalDate.now());
     Date updatedDate;
 }

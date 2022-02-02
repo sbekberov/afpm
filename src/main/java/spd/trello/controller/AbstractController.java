@@ -24,6 +24,7 @@ public class AbstractController< E extends Resource, S extends AbstractService<E
     @PostMapping
     @Override
     public ResponseEntity<E> create(@RequestBody E resource) {
+        resource.setCreatedBy("s.bekberov@gmail.com");
         E result = service.create(resource);
         return new ResponseEntity(result, HttpStatus.CREATED);
     }
@@ -34,9 +35,7 @@ public class AbstractController< E extends Resource, S extends AbstractService<E
     public ResponseEntity<E> update(@PathVariable UUID id, @RequestBody E resource) {
         E entity = service.findById(id);
         if (entity == null) throw new ResourceNotFoundException();
-        resource.setCreatedBy("s.bekberov@gmail.com");
         resource.setUpdatedBy("bekberov.selim@gmail.com");
-        resource.setCreatedDate(Date.valueOf(LocalDate.now()));
         resource.setUpdatedDate(Date.valueOf(LocalDate.now()));
         E result = service.update(id, resource);
         return new ResponseEntity(result, HttpStatus.OK);
