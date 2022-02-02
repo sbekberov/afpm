@@ -1,13 +1,11 @@
 package spd.trello.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spd.trello.domain.Resource;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.service.AbstractService;
-import spd.trello.service.MemberService;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,8 +13,6 @@ import java.util.UUID;
 public class AbstractController<E extends Resource, S extends AbstractService<E>> {
     S service;
 
-    @Autowired
-    MemberService memberService;
 
     public AbstractController(S service) {
         this.service = service;
@@ -29,7 +25,7 @@ public class AbstractController<E extends Resource, S extends AbstractService<E>
     }
 
 
-    @PutMapping("/{memberId}/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<E> update(@PathVariable UUID id, @RequestBody E resource) {
         E entity = service.findById(id);
         if (entity == null) throw new ResourceNotFoundException();
@@ -38,7 +34,6 @@ public class AbstractController<E extends Resource, S extends AbstractService<E>
         E result = service.update(resource);
         return new ResponseEntity(result, HttpStatus.OK);
     }
-
 
 
     @DeleteMapping("/{id}")
