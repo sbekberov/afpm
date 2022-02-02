@@ -16,7 +16,7 @@ public class MemberRepository extends CRUDRepository<Member> {
     private static final String CREATE_STMT = "INSERT INTO member (id, role, user_id, created_by, created_date) VALUES (?, ?, ?,?,?)";
     private static final String FIND_BY_STMT = "SELECT * FROM member WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM member WHERE id=?";
-    private static final String UPDATE_BY_STMT = "UPDATE member SET  role=? WHERE id=?";
+    private static final String UPDATE_BY_STMT = "UPDATE member SET  role=? , updated_by=? WHERE id=?";
     private static final String GET_ALL_STMT = "SELECT * FROM member";
 
 
@@ -50,11 +50,9 @@ public class MemberRepository extends CRUDRepository<Member> {
         //entity.setUpdatedBy(user.getEmail());
         entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
         jdbcTemplate.update(UPDATE_BY_STMT,
-                entity.getUpdatedBy(),
-                entity.getUpdatedDate(),
                 entity.getRole().toString(),
+                entity.getUpdatedBy(),
                 entity.getId());
-
         return findById(entity.getId());
     }
 

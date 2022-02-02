@@ -25,7 +25,7 @@ public abstract class AbstractService<T extends Domain> {
         return repository.findById(entity.getId());
     }
 
-    public T update(UUID uuid,T entity) {
+    public T update(T entity) {
         return repository.update(entity);
     }
 

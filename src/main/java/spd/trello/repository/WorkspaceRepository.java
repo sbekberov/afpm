@@ -14,11 +14,11 @@ import java.util.UUID;
 public class WorkspaceRepository extends CRUDRepository<Workspace> {
 
 
-    private static final String CREATE_STMT = "INSERT INTO workspace(id, created_by, created_date, name, description) VALUES (?, ?, ?, ?,?)";
-    private static final String FIND_BY_STMT = "SELECT * FROM workspace WHERE id=?";
-    private static final String DELETE_BY_STMT = "DELETE FROM workspace WHERE id=?";
-    private static final String UPDATE_BY_STMT = "UPDATE workspace SET updated_by=? ,updated_date=?, name=?, description=?,workspace_visibility = ? WHERE id=?";
-    private static final String GET_ALL_STMT = "SELECT * FROM workspace";
+    private static final String CREATE_STMT = "INSERT INTO workspaces (id, created_by, created_date, name, description) VALUES (?, ?, ?, ?,?)";
+    private static final String FIND_BY_STMT = "SELECT * FROM workspaces WHERE id=?";
+    private static final String DELETE_BY_STMT = "DELETE FROM workspaces WHERE id=?";
+    private static final String UPDATE_BY_STMT = "UPDATE workspaces SET updated_by=? ,updated_date=?, name=?, description=?,visibility = ? WHERE id=?";
+    private static final String GET_ALL_STMT = "SELECT * FROM workspaces";
 
 
     @Override
