@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class AbstractController<E extends Resource, S extends AbstractService<E>>
+public class AbstractController< E extends Resource, S extends AbstractService<E>>
         implements CommonController<E> {
     S service;
 
@@ -22,6 +22,7 @@ public class AbstractController<E extends Resource, S extends AbstractService<E>
     }
 
     @PostMapping
+    @Override
     public ResponseEntity<E> create(@RequestBody E resource) {
         E result = service.create(resource);
         return new ResponseEntity(result, HttpStatus.CREATED);
@@ -43,19 +44,23 @@ public class AbstractController<E extends Resource, S extends AbstractService<E>
 
 
     @DeleteMapping("/{id}")
+    @Override
     public HttpStatus delete(@PathVariable UUID id) {
         service.delete(id);
         return HttpStatus.OK;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<E> readById(@PathVariable UUID id) {
+    @Override
+    public ResponseEntity<E> findById(@PathVariable UUID id) {
         E result = service.findById(id);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
+
     @GetMapping
-    public List<E> readAll() {
+    @Override
+    public List<E> getAll() {
         return service.getAll();
     }
 }
