@@ -12,7 +12,7 @@ public class AttachmentRepository extends CRUDRepository<Attachment> {
 
 
 
-    private static final String CREATE_STMT = "INSERT INTO attachment(id, link, name, updated_by, created_by, created_date, updated_date, comment_id, card_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String CREATE_STMT = "INSERT INTO attachment(id, link, name, created_by, created_date, comment_id, card_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM attachment WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM attachment WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE attachment SET  link=?, name=?,updated_by=?, updated_date=? WHERE id=?";
@@ -39,11 +39,11 @@ public class AttachmentRepository extends CRUDRepository<Attachment> {
                 entity.getId(),
                 entity.getLink(),
                 entity.getName(),
-                entity.getUpdatedBy(),
                 entity.getCreatedBy(),
                 entity.getCreatedDate(),
                 entity.getCommentId(),
                 entity.getCardId());
+
         return findById(entity.getId());
     }
 
@@ -56,7 +56,7 @@ public class AttachmentRepository extends CRUDRepository<Attachment> {
                 entity.getName(),
                 entity.getUpdatedBy(),
                 entity.getUpdatedDate(),
-                UUID.randomUUID());
+                entity.getId());
         return findById(entity.getId());
     }
 

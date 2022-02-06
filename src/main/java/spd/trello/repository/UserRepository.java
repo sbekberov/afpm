@@ -46,7 +46,7 @@ public class UserRepository extends CRUDRepository<User> {
                 entity.getFirstName(),
                 entity.getLastName(),
                 entity.getEmail(),
-                UUID.randomUUID());
+                entity.getId());
         return findById(entity.getId());
     }
 

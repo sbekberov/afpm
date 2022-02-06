@@ -4,8 +4,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Component;
 import spd.trello.domain.Comment;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +11,7 @@ import java.util.UUID;
 public class CommentRepository extends CRUDRepository<Comment> {
 
 
-    private static final String CREATE_STMT = "INSERT INTO comment(id, text, updated_by, created_by, created_date, updated_date, card_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String CREATE_STMT = "INSERT INTO comment(id, text, created_by, created_date,  card_id, user_id) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM comment WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM comment WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE comment SET  updated_by=?, updated_date=?, text=? WHERE id=?";
@@ -36,11 +34,9 @@ public class CommentRepository extends CRUDRepository<Comment> {
     public Comment create(Comment entity) {
         jdbcTemplate.update(CREATE_STMT,
                 entity.getId(),
-                entity.getContent(),
-                entity.getUpdatedBy(),
+                entity.getText(),
                 entity.getCreatedBy(),
                 entity.getCreatedDate(),
-                entity.getUpdatedDate(),
                 entity.getCardId(),
                 entity.getUsersId());
 
@@ -50,13 +46,10 @@ public class CommentRepository extends CRUDRepository<Comment> {
 
     @Override
     public Comment update(Comment entity) {
-        //entity.setUpdatedBy(member.getCreatedBy());
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
         jdbcTemplate.update(UPDATE_BY_STMT,
-
                 entity.getUpdatedBy(),
                 entity.getUpdatedDate(),
-                entity.getContent(),
+                entity.getText(),
                 entity.getId());
         return findById(entity.getId());
     }

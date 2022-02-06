@@ -15,7 +15,6 @@ public class CardListRepository extends CRUDRepository<CardList> {
 
     private static final String CREATE_STMT = "INSERT INTO card_list(id, board_id, created_by, created_date,  name, archived) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM card_list WHERE id=?";
-    //  private static final String FIND_ALL_FOR_BOARD_STMT = "SELECT * FROM card_list WHERE board_id=?;";
     private static final String DELETE_BY_STMT = "DELETE FROM card_list WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE card_list SET  updated_by=?, updated_date=?, name=?, archived=? WHERE id=?";
     private static final String GET_ALL_STMT = "SELECT * FROM card_list";
@@ -48,11 +47,9 @@ public class CardListRepository extends CRUDRepository<CardList> {
 
     @Override
     public CardList update(CardList entity) {
-        // entity.setUpdatedBy(member.getCreatedBy());
         entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
         jdbcTemplate.update(UPDATE_BY_STMT,
-
-                entity.getUpdatedBy(),
+                 entity.getUpdatedBy(),
                 entity.getUpdatedDate(),
                 entity.getName(),
                 entity.getArchived(),

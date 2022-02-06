@@ -15,7 +15,7 @@ public class CardRepository extends CRUDRepository<Card> {
 
 
 
-    private static final String CREATE_STMT = "INSERT INTO card(id, cardlist_id, updated_by, created_by, created_date, updated_date, name, archived, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String CREATE_STMT = "INSERT INTO card(id, cardlist_id, created_by, created_date,  name, archived, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM card WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM card WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE card SET  updated_by=?, updated_date=?, name=?, archived=?, description=? WHERE id=?";
@@ -39,10 +39,8 @@ public class CardRepository extends CRUDRepository<Card> {
         jdbcTemplate.update(CREATE_STMT,
                 entity.getId(),
                 entity.getCardListId(),
-                entity.getUpdatedBy(),
                 entity.getCreatedBy(),
                 entity.getCreatedDate(),
-                entity.getUpdatedDate(),
                 entity.getName(),
                 entity.getArchived(),
                 entity.getDescription());

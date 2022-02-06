@@ -13,7 +13,7 @@ import java.util.UUID;
 public class ReminderRepository extends CRUDRepository<Reminder> {
 
 
-    private static final String CREATE_STMT = "INSERT INTO reminder(id, start, finish, remind_on, active, updated_by, created_by, created_date, updated_date ,card_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String CREATE_STMT = "INSERT INTO reminder(id, start, finish, remind_on, active,  created_by, created_date,card_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM reminder WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM reminder WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE reminder SET start=?, finish=?, remind_on=?, active=?,updated_date=?,updated_by=? WHERE id=?";
@@ -38,13 +38,11 @@ public class ReminderRepository extends CRUDRepository<Reminder> {
         jdbcTemplate.update(CREATE_STMT,
                 entity.getId(),
                 entity.getStart(),
-                entity.getEnd(),
+                entity.getFinish(),
                 entity.getRemindOn(),
                 entity.getActive(),
-                entity.getUpdatedBy(),
                 entity.getCreatedBy(),
                 entity.getCreatedDate(),
-                entity.getUpdatedDate(),
                 entity.getCardId());
 
         return findById(entity.getId());
@@ -56,7 +54,7 @@ public class ReminderRepository extends CRUDRepository<Reminder> {
         entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
         jdbcTemplate.update(UPDATE_BY_STMT,
                 entity.getStart(),
-                entity.getEnd(),
+                entity.getFinish(),
                 entity.getRemindOn(),
                 entity.getActive(),
                 entity.getUpdatedDate(),

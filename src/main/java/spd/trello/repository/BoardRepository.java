@@ -13,7 +13,7 @@ import java.util.UUID;
 public class BoardRepository extends CRUDRepository<Board> {
 
 
-    private static final String CREATE_STMT = "INSERT INTO board(id, workspace_id, updated_by, created_by, created_date, updated_date, name, archived, visibility, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String CREATE_STMT = "INSERT INTO board(id, workspace_id,  created_by, created_date,  name, archived, visibility, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_BY_STMT = "SELECT * FROM board WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM board WHERE id=?";
     private static final String UPDATE_BY_STMT = "UPDATE board SET updated_by=? ,updated_date=?, name=?, description=?, visibility=?,archived=? WHERE id=?";
@@ -33,14 +33,13 @@ public class BoardRepository extends CRUDRepository<Board> {
         jdbcTemplate.update(CREATE_STMT,
                 entity.getId(),
                 entity.getWorkspaceId(),
-                entity.getUpdatedBy(),
                 entity.getCreatedBy(),
                 entity.getCreatedDate(),
-                entity.getUpdatedDate(),
                 entity.getName(),
                 entity.getArchived(),
                 entity.getVisibility().toString(),
                 entity.getDescription());
+
         return findById(entity.getId());
     }
 
@@ -48,7 +47,8 @@ public class BoardRepository extends CRUDRepository<Board> {
     @Override
     public Board update(Board entity) {
         entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
-        jdbcTemplate.update(UPDATE_BY_STMT, entity.getUpdatedBy(),
+        jdbcTemplate.update(UPDATE_BY_STMT,
+                entity.getUpdatedBy(),
                 entity.getUpdatedDate(),
                 entity.getName(),
                 entity.getDescription(),
