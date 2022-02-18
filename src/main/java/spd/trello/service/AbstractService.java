@@ -1,39 +1,47 @@
 package spd.trello.service;
 
-import org.springframework.stereotype.Service;
-import spd.trello.domain.Domain;
-import spd.trello.repository.CRUDRepository;
+
+import spd.trello.domain.common.Resource;
+import spd.trello.exception.ResourceNotFoundException;
+import spd.trello.repository.AbstractRepository;
 
 import java.util.List;
 import java.util.UUID;
 
-@Service
-public abstract class AbstractService<T extends Domain> {
+public abstract class AbstractService<E extends Resource, R extends AbstractRepository<E>>
+        implements CommonService<E>{
+    R repository;
 
-    protected CRUDRepository<T> repository;
-
-    public AbstractService(CRUDRepository<T> repository) {
+    public AbstractService(R repository){
         this.repository = repository;
     }
 
-    public T findById(UUID id) {
-        return repository.findById(id);
+    @Override
+    public E create(E entity) {
+        return repository.save(entity);
     }
 
-    public T create(T entity) {
-        repository.create(entity);
-        return repository.findById(entity.getId());
+    @Override
+    public E update(E entity) {
+        return repository.save(entity);
     }
 
-    public T update(T entity) {
-        return repository.update(entity);
-    }
-
+    @Override
     public void delete(UUID id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
-    public List<T> getAll() {
-        return repository.getAll();
+    @Override
+    public E findById(UUID id) {
+        return repository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @Override
+    public List<E> getAll() {
+        return repository.findAll();
     }
 }
+
+
+
+
