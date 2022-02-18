@@ -1,15 +1,23 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import spd.trello.domain.common.Domain;
 
-@Data
-@RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Label extends Domain{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.UUID;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "label")
+public class Label extends Domain {
+    @Column(name = "name")
     private String name;
-    private Color color;
+    @Column(name = "card_id")
+    private UUID cardId;
+   // private Color color;
 
 }
 

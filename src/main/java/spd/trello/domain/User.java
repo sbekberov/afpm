@@ -1,16 +1,22 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import spd.trello.domain.common.Resource;
 
-@Data
-@RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class User extends Domain{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "users")
+public class User extends Resource {
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "email")
     private String email;
-    private String timeZone;
 
 }

@@ -1,17 +1,26 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 
+import lombok.Getter;
+import lombok.Setter;
+import spd.trello.domain.common.Resource;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.UUID;
 
-@Data
-@RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@Entity
+@Table(name = "attachment")
 public class Attachment extends Resource {
+    @Column(name = "link")
     private String link;
+    @Column(name = "name")
     private String name;
+    @Column(name = "comment_id")
     private UUID commentId;
+    @Column(name = "card_id")
     private UUID cardId;
 }
