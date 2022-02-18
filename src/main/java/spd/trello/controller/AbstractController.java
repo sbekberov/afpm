@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spd.trello.domain.common.Domain;
 import spd.trello.exception.ResourceNotFoundException;
-import spd.trello.service.AbstractService;
 import spd.trello.service.CommonService;
 
 import java.util.List;
