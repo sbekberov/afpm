@@ -42,7 +42,13 @@ public class Card extends Resource {
     @JsonIgnoreProperties("card")
     private List<CheckList> checkLists = new ArrayList<>();
 
-
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @CollectionTable(
+            name = "card"
+    )
+    @Column(name = "attachment_id")
+    private Set<UUID> attachmentIds = new HashSet<>();
 
 
 
