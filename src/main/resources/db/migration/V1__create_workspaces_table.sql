@@ -1,4 +1,4 @@
-CREATE TABLE workspace
+CREATE TABLE workspaces
 (
     id                   UUID PRIMARY KEY NOT NULL,
     updated_by           VARCHAR(25),
@@ -7,5 +7,5 @@ CREATE TABLE workspace
     updated_date         DATE,
     name                 VARCHAR(20)      NOT NULL,
     description          VARCHAR(50),
-    workspace_visibility VARCHAR(10)      NOT NULL DEFAULT 'PUBLIC'
+    visibility VARCHAR(10)      NOT NULL DEFAULT 'PUBLIC'
 );

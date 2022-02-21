@@ -6,6 +6,6 @@ CREATE TABLE checklist
     created_by   VARCHAR(25)      NOT NULL,
     created_date DATE        NOT NULL,
     updated_date DATE,
-    card_id      uuid             NOT NULL
+    card_id      uuid
         CONSTRAINT check_list_card_id_fk REFERENCES card (id)
 );

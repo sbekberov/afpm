@@ -12,7 +12,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class Reminder extends Resource {
     private Date start;
-    private Date end;
+    private Date finish;
     private Date remindOn;
     private Boolean active = Boolean.FALSE;
     private UUID cardId;

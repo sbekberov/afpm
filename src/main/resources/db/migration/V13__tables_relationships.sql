@@ -1,7 +1,7 @@
 CREATE TABLE workspace_member
 (
     workspace_id uuid NOT NULL
-        CONSTRAINT workspace_member_id_fk REFERENCES workspace (id),
+        CONSTRAINT workspace_member_id_fk REFERENCES workspaces (id),
     member_id    uuid NOT NULL
         CONSTRAINT member_workspace_id_fk REFERENCES member (id),
     CONSTRAINT workspace_member_pk PRIMARY KEY (workspace_id, member_id)
@@ -38,6 +38,6 @@ CREATE TABLE IF NOT EXISTS member_workspace
     member_id    UUID NOT NULL,
     workspace_id UUID NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member (id),
-    FOREIGN KEY (workspace_id) REFERENCES workspace (id),
+    FOREIGN KEY (workspace_id) REFERENCES workspaces (id),
     UNIQUE (member_id, workspace_id)
 );

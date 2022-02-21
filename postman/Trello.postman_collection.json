@@ -1,0 +1,1237 @@
+{
+	"info": {
+		"_postman_id": "747e2f14-43ad-4e28-81b5-01c41155c55f",
+		"name": "Trello",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Workspace",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/workspaces/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"workspaces",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/workspaces/eccb48f4-47b8-4bd4-8852-a15f2af20692",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"workspaces",
+								"eccb48f4-47b8-4bd4-8852-a15f2af20692"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/workspaces/c1135d46-6040-4574-be5d-ef9578719bed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"workspaces",
+								"c1135d46-6040-4574-be5d-ef9578719bed"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"createdBy\": \"s.bekberov@gmail.com\",\r\n        \"updatedBy\": null,\r\n        \"createdDate\": \"2022-02-02\",\r\n        \"updatedDate\": null,\r\n        \"name\": \"Name\",\r\n        \"description\": \"dest\",\r\n        \"visibility\": \"PRIVATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/workspaces/eccb48f4-47b8-4bd4-8852-a15f2af20692",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"workspaces",
+								"eccb48f4-47b8-4bd4-8852-a15f2af20692"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Bekberov\",\r\n    \"description\" : \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/workspaces/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"workspaces",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Members",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/members/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"members",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/members/797345d0-fffc-4667-bb01-4a55c77fd4a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"members",
+								"797345d0-fffc-4667-bb01-4a55c77fd4a4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/members/797345d0-fffc-4667-bb01-4a55c77fd4a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"members",
+								"797345d0-fffc-4667-bb01-4a55c77fd4a4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"updatedBy\": null,\r\n    \"createdDate\": \"2022-02-02\",\r\n    \"updatedDate\": null,\r\n    \"usersId\": null,\r\n    \"role\": \"GUEST\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/members/797345d0-fffc-4667-bb01-4a55c77fd4a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"members",
+								"797345d0-fffc-4667-bb01-4a55c77fd4a4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\": \"GUEST\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/members/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"members",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Boards",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/boards/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"boards",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/boards/8262481a-3e89-44fa-8879-7f3104ae7228",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"boards",
+								"8262481a-3e89-44fa-8879-7f3104ae7228"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/boards/411f0618-5393-401f-815e-2ebb40b211bc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"boards",
+								"411f0618-5393-401f-815e-2ebb40b211bc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"updatedBy\": \"aaaaa@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"updatedDate\": \"2022-02-05\",\r\n    \"name\": \"board2update\",\r\n    \"description\": \"test\",\r\n    \"archived\": false,\r\n    \"workspaceId\": null,\r\n    \"visibility\": \"PRIVATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/boards/8262481a-3e89-44fa-8879-7f3104ae7228",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"boards",
+								"8262481a-3e89-44fa-8879-7f3104ae7228"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"name\": \"board2\",\r\n    \"visibility\": \"PUBLIC\",\r\n      \"description\": \"test\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/boards/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"boards",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attachment",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/attachments/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"attachments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/attachments/4be608a3-710b-4336-a1db-65212c01c6cd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"attachments",
+								"4be608a3-710b-4336-a1db-65212c01c6cd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/attachments/02518952-437b-4dc5-a5c7-bd9c8266b485",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"attachments",
+								"02518952-437b-4dc5-a5c7-bd9c8266b485"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n    \"createdBy\": \"sss@gmail.com\",\r\n    \"updatedBy\": \"sss@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"updatedDate\": \"2022-02-05\",\r\n    \"link\": \"www.kkk35asadsssssssssssssdfa42k.bbb\",\r\n    \"name\": \"a23sad54tt\",\r\n    \"commentId\": null,\r\n    \"cardId\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/attachments/4be608a3-710b-4336-a1db-65212c01c6cd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"attachments",
+								"4be608a3-710b-4336-a1db-65212c01c6cd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"link\": \"www.kkkk.bbb\",\r\n    \"createdBy\" : \"sss@gmail.com\",\r\n    \"name\": \"att\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/attachments/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"attachments",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cards",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/cards/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cards",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/cards/46862c93-3b77-4df5-b42b-b1d518024c91",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cards",
+								"46862c93-3b77-4df5-b42b-b1d518024c91"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/cards/46862c93-3b77-4df5-b42b-b1d518024c91",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cards",
+								"46862c93-3b77-4df5-b42b-b1d518024c91"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"78278227-6142-4b2b-91b7-59db02b118a6\",\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"updatedBy\": \"s.bekberov@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"updatedDate\": null,\r\n    \"name\": \"cccccccccccdsaaaaaaaaaaaaaaaac\",\r\n    \"description\": \"ttttttttttt\",\r\n    \"archived\": true,\r\n    \"reminder\": null,\r\n    \"cardListId\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/cards/46862c93-3b77-4df5-b42b-b1d518024c91",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cards",
+								"46862c93-3b77-4df5-b42b-b1d518024c91"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"name\": \"card2222\",\r\n      \"description\": \"testttttttttt\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/cards/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cards",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/comments/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"comments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/comments/5760210f-c4bf-404c-ba07-02066141cb34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"comments",
+								"5760210f-c4bf-404c-ba07-02066141cb34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/comments/3c599118-e5a1-43cb-9120-cbe6f8cb7f9b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"comments",
+								"3c599118-e5a1-43cb-9120-cbe6f8cb7f9b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"updatedBy\": \"s.bekberov@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"updatedDate\": \"2022-02-05\",\r\n    \"text\": \"Test Comm4edsaaaaaaatn 3\",\r\n    \"date\": \"2022-02-05\",\r\n    \"cardId\": null,\r\n    \"usersId\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/comments/5760210f-c4bf-404c-ba07-02066141cb34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"comments",
+								"5760210f-c4bf-404c-ba07-02066141cb34"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"text\": \"Test Commetn 3\"\r\n}\r\n      ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/comments/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"comments",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CardLists",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/cardLists/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cardLists",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/cardLists/fb816681-9e42-44a6-a7f3-08b1ac47028c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cardLists",
+								"fb816681-9e42-44a6-a7f3-08b1ac47028c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/cardLists/b3568342-9600-41a7-8be1-6bdef558e1a1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cardLists",
+								"b3568342-9600-41a7-8be1-6bdef558e1a1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"78278227-6142-4b2b-91b7-59db02b118a6\",\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"updatedBy\": \"s.bekberov@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"updatedDate\": null,\r\n    \"name\": \"cccccccccccc\",\r\n    \"description\": \"ttttttttttt\",\r\n    \"archived\": true,\r\n    \"reminder\": null,\r\n    \"cardListId\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/cards/bb8a4389-4763-4dc4-87a2-21919e202568",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cards",
+								"bb8a4389-4763-4dc4-87a2-21919e202568"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"name\": \"cardListtttt\"\r\n}\r\n    ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/cardLists/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cardLists",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CheckLists",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/checkLists",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"checkLists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/checkLists/f1c70c36-e07a-4163-8291-db798b7307a9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"checkLists",
+								"f1c70c36-e07a-4163-8291-db798b7307a9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/checkLists/1f397247-7f61-45ce-939d-e209b482a930 ",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"checkLists",
+								"1f397247-7f61-45ce-939d-e209b482a930 "
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"9cff742a-80bb-42d9-9322-5e8714438be5\",\r\n    \"createdBy\": \"s.bekberovdsaaaaaaaaaaaaaaaaaaa@gmail.com\",\r\n    \"updatedBy\": null,\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"updatedDate\": null,\r\n    \"name\": \"CheckList5555\",\r\n    \"cardId\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/checkLists/f1c70c36-e07a-4163-8291-db798b7307a9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"checkLists",
+								"f1c70c36-e07a-4163-8291-db798b7307a9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"createdBy\": \"s.bekberov@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"name\": \"CheckList3\"\r\n}\r\n    ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/checkLists",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"checkLists"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reminders",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/reminders/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"reminders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/reminders/f8fb1f97-34a5-4a39-b7d8-8101e122b807",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"reminders",
+								"f8fb1f97-34a5-4a39-b7d8-8101e122b807"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/cardLists/b3568342-9600-41a7-8be1-6bdef558e1a1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cardLists",
+								"b3568342-9600-41a7-8be1-6bdef558e1a1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"createdBy\": \"selim@gmail.com\",\r\n    \"updatedBy\": \"selisaddsadsam@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\",\r\n    \"updatedDate\": \"2022-02-05\",\r\n    \"start\": \"2022-02-05\",\r\n    \"finish\": \"2022-12-15\",\r\n    \"remindOn\": \"2022-08-26\",\r\n    \"active\": false,\r\n    \"cardId\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/reminders/f8fb1f97-34a5-4a39-b7d8-8101e122b807",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"reminders",
+								"f8fb1f97-34a5-4a39-b7d8-8101e122b807"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\" : \"2022-02-05\",\r\n    \"finish\" : \"2022-12-15\",\r\n    \"remindOn\" : \"2022-08-26\",\r\n    \"createdBy\": \"selim@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\"\r\n}\r\n    ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/reminders/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"reminders",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/reminders/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"reminders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/reminders/f8fb1f97-34a5-4a39-b7d8-8101e122b807",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"reminders",
+								"f8fb1f97-34a5-4a39-b7d8-8101e122b807"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/cardLists/b3568342-9600-41a7-8be1-6bdef558e1a1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"cardLists",
+								"b3568342-9600-41a7-8be1-6bdef558e1a1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"selissssdsaasdfffffffm\",\r\n    \"lastName\": \"bekberov\",\r\n    \"email\": \"selim@gmail.com\",\r\n    \"timeZone\": \"Europe/Kiyv\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/users/79984af5-3521-49f7-8a73-f50c2c554b15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"users",
+								"79984af5-3521-49f7-8a73-f50c2c554b15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start\" : \"2022-02-05\",\r\n    \"finish\" : \"2022-12-15\",\r\n    \"remindOn\" : \"2022-08-26\",\r\n    \"createdBy\": \"selim@gmail.com\",\r\n    \"createdDate\": \"2022-02-05\"\r\n}\r\n    ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/reminders/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"reminders",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

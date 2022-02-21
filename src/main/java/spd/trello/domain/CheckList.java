@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Checklist extends Resource {
+public class CheckList extends Resource {
     private String name;
     private UUID cardId;
 }

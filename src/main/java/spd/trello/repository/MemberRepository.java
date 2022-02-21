@@ -1,123 +1,65 @@
 package spd.trello.repository;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.stereotype.Component;
 import spd.trello.domain.Member;
-import spd.trello.domain.Role;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.UUID.fromString;
+@Component
+public class MemberRepository extends CRUDRepository<Member> {
 
-public class MemberRepository implements CRUDRepository<Member> {
-
-    private final DataSource dataSource;
-
-    public MemberRepository(DataSource dataSource) {
-        this.dataSource=dataSource;
-    }
 
     private static final String CREATE_STMT = "INSERT INTO member (id, role, user_id, created_by, created_date) VALUES (?, ?, ?,?,?)";
     private static final String FIND_BY_STMT = "SELECT * FROM member WHERE id=?";
     private static final String DELETE_BY_STMT = "DELETE FROM member WHERE id=?";
-    private static final String UPDATE_BY_STMT = "UPDATE member SET  role=? WHERE id=?";
+    private static final String UPDATE_BY_STMT = "UPDATE member SET  role=? , updated_by=? WHERE id=?";
     private static final String GET_ALL_STMT = "SELECT * FROM member";
 
 
-
     @Override
-    public Member findById(UUID id)  {
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(FIND_BY_STMT)) {
-            statement.setObject(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return map(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error MemberRepository findById" , e);
-        }
-        throw new IllegalStateException("Member with ID: " + id.toString() + " doesn't exists");
+    public Member findById(UUID id) {
+        return jdbcTemplate.query(FIND_BY_STMT, new BeanPropertyRowMapper<>(Member.class), id)
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public List<Member> getAll() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_ALL_STMT)) {
-            List<Member> result = new ArrayList<>();
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                result.add(map(resultSet));
-            }
-            if (!result.isEmpty()) {
-                return result;
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error MemberRepository getAll", e);
-        }
-        throw new IllegalStateException("Table Member is empty!");
+        return jdbcTemplate.query(GET_ALL_STMT, new BeanPropertyRowMapper<>(Member.class));
     }
 
     @Override
     public Member create(Member entity) {
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(CREATE_STMT)) {
-            statement.setObject(1, entity.getId());
-            statement.setString(2, String.valueOf(entity.getRole()));
-            statement.setObject(3, entity.getUsersId());
-            statement.setString(4, entity.getCreatedBy());
-            statement.setDate(5, entity.getCreatedDate());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error MemberRepository create",e);
-        }
+        jdbcTemplate.update(CREATE_STMT,
+                entity.getId(),
+                entity.getRole().toString(),
+                entity.getUsersId(),
+                entity.getCreatedBy(),
+                entity.getCreatedDate());
+
         return findById(entity.getId());
     }
 
     @Override
-    public Member update(Member entity)  {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_BY_STMT)) {
-            Member oldMember = findById(entity.getId());
-            statement.setString(1, entity.getUpdatedBy());
-            statement.setDate(2, entity.getUpdatedDate());
-            if (entity.getRole() == null) {
-                statement.setString(3, oldMember.getRole().toString());
-            } else {
-                statement.setString(3, entity.getRole().toString());
-            }
-            statement.setObject(4, entity.getId());
-            statement.executeUpdate();
-        } catch (SQLException | IllegalStateException e) {
-            throw new IllegalStateException("Error MemberRepository update", e);
-        }
+    public Member update(Member entity) {
+        //entity.setUpdatedBy(user.getEmail());
+        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        jdbcTemplate.update(UPDATE_BY_STMT,
+                entity.getRole().toString(),
+                entity.getUpdatedBy(),
+                entity.getId());
         return findById(entity.getId());
     }
 
     @Override
-    public boolean delete(UUID id) {
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(DELETE_BY_STMT)) {
-            statement.setObject(1, id);
-            return  statement.executeUpdate()==1;
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error MemberRepository delete", e);
-        }
+    public void delete(UUID id) {
+        jdbcTemplate.update(DELETE_BY_STMT, id);
     }
 
 
-    private Member map(ResultSet rs) throws SQLException {
-        Member member = new Member();
-        member.setId(fromString(rs.getString("id")));
-        member.setUpdatedBy(rs.getString("updated_by"));
-        member.setCreatedBy(rs.getString("created_by"));
-        member.setCreatedDate(rs.getDate("created_date"));
-        member.setUpdatedDate(rs.getDate("updated_date"));
-        member.setRole(Role.valueOf(rs.getString("role")));
-        member.setUsersId(UUID.fromString(rs.getString("user_id")));
-       // member.setWorkspaceId(UUID.fromString(rs.getString("workspace_id")));
-        return member;
-    }
 }
