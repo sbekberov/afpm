@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "comment")
+@Table
 public class Comment extends Resource {
     @Column(name = "text")
     private String text;
@@ -25,7 +25,7 @@ public class Comment extends Resource {
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
-            name = "comments"
+            name = "comment"
     )
     @Column(name = "attachment_id")
     private Set<UUID> attachmentIds = new HashSet<>();

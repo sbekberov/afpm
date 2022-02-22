@@ -7,5 +7,8 @@ CREATE TABLE attachment
     created_by    varchar(25)                     NOT NULL,
     created_date  DATE                       NOT NULL DEFAULT now(),
     updated_date  DATE,
-    attachment_id uuid REFERENCES attachment (id)
+    comment_id   UUID,
+    card_id      UUID,
+    FOREIGN KEY (card_id) REFERENCES card (id),
+    FOREIGN KEY (comment_id) REFERENCES comment (id)
 );

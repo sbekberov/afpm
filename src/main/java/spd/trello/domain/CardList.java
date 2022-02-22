@@ -1,25 +1,28 @@
 package spd.trello.domain;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import spd.trello.domain.common.Resource;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "card_list")
+@Table
 public class CardList extends Resource {
     @Column(name = "name")
     private String name;
     @Column(name = "archived")
     private Boolean archived = Boolean.FALSE;
     @Column(name = "board_id")
-    private UUID BoardId;
+    private UUID boardId;
     @Column(name = "description")
     private String description;
+
 }
 

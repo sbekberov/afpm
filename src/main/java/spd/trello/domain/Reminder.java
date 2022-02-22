@@ -1,12 +1,11 @@
 package spd.trello.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import spd.trello.domain.common.Domain;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Date;
 
 
@@ -23,4 +22,7 @@ public class Reminder extends Domain {
     private Date remindOn;
     @Column(name = "active")
     private Boolean active = Boolean.FALSE;
+    @OneToOne (mappedBy = "reminder", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Card card;
 }

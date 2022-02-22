@@ -22,35 +22,44 @@ public class Card extends Resource {
     private Boolean archived = Boolean.FALSE;
     @Column(name = "card_list_id")
     private UUID cardListId;
-    @Column(name = "cardTeamplate_id")
-    private UUID CardTeamplateId;
+    @Column(name = "cardTemplate_id")
+    private UUID cardTemplateId;
 
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "reminder_id")
     private Reminder reminder;
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
-            name = "card_member",
+            name = "attachment",
             joinColumns=@JoinColumn(name= "card_id")
     )
-    @Column(name = "member_id")
-    private Set<UUID> membersIds = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("card")
-    private List<CheckList> checkLists = new ArrayList<>();
+    @Column(name = "id")
+    private Set<UUID> attachmentIds = new HashSet<>();
 
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
-            name = "card"
+            name = "checklist",
+            joinColumns=@JoinColumn(name= "card_id")
     )
-    @Column(name = "attachment_id")
-    private Set<UUID> attachmentIds = new HashSet<>();
+    @Column(name = "id")
+    private Set<UUID> checklists = new HashSet<>();
 
-
-
+    @ManyToMany
+    @JoinTable(name = "card_label",
+            joinColumns = @JoinColumn(name = "card_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
+    private List<Label> labels = new ArrayList<>();
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @CollectionTable(
+            name = "comment",
+            joinColumns=@JoinColumn(name= "card_id")
+    )
+    @Column(name = "id")
+    private Set<UUID> comments = new HashSet<>();
 }
 

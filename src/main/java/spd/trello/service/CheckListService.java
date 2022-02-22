@@ -11,4 +11,9 @@ public class CheckListService extends AbstractService<CheckList, CheckListReposi
     public CheckListService(CheckListRepository repository) {
         super(repository);
     }
+    @Override
+    public CheckList create(CheckList entity) {
+        entity.getItems().forEach(checklistItem -> checklistItem.setCheckList(entity));
+        return super.create(entity);
+    }
 }

@@ -1,7 +1,12 @@
 CREATE TABLE card
 (
     id           uuid PRIMARY KEY              NOT NULL,
-    cardlist_id  uuid REFERENCES card_list (id) ,
+    card_list_id  uuid NOT NULL ,
+    FOREIGN KEY (card_list_id) REFERENCES card_list (id),
+    reminder_id  UUID,
+    FOREIGN KEY (reminder_id) REFERENCES reminder (id),
+    cardTemplate_id  UUID,
+    FOREIGN KEY (cardTemplate_id) REFERENCES card_template (id),
     updated_by   varchar(25)                   NOT NULL,
     created_by   varchar(25)                   NOT NULL,
     created_date DATE                     NOT NULL DEFAULT now(),

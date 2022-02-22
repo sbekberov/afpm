@@ -32,5 +32,8 @@ public class Workspace extends Resource {
     )
     @Column(name = "member_id")
     private Set<UUID> membersIds = new HashSet<>();
+
+
+
 }
 

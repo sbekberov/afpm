@@ -1,1 +1,0 @@
-ALTER TABLE attachment ALTER COLUMN id SET NOT NULL;

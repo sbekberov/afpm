@@ -3,9 +3,7 @@ package spd.trello.domain;
 import lombok.*;
 import spd.trello.domain.common.Resource;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter

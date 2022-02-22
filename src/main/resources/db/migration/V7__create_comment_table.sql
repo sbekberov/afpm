@@ -6,6 +6,6 @@ CREATE TABLE comment
     created_by   varchar(25)  NOT NULL,
     created_date DATE    NOT NULL DEFAULT now(),
     updated_date DATE,
-    card_id      uuid
-        CONSTRAINT comment_card_id_fk REFERENCES card (id)
+    card_id      uuid NOT NULL ,
+    FOREIGN KEY (card_id) REFERENCES card (id)
 );
