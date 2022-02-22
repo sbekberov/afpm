@@ -2,7 +2,9 @@ package spd.trello.service;
 
 
 import spd.trello.domain.common.Resource;
+import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
+import spd.trello.exception.BadRequestException;
 import spd.trello.repository.AbstractRepository;
 
 import java.util.List;
@@ -23,12 +25,21 @@ public abstract class AbstractService<E extends Resource, R extends AbstractRepo
 
     @Override
     public E update(E entity) {
-        return repository.save(entity);
+        try {
+            return repository.save(entity);
+        }catch (RuntimeException e){
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     @Override
     public void delete(UUID id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        }
+        catch (RuntimeException e){
+            throw new BadRequestException( e.getMessage());
+        }
     }
 
     @Override
