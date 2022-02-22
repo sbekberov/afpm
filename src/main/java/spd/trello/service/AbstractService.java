@@ -20,7 +20,11 @@ public abstract class AbstractService<E extends Resource, R extends AbstractRepo
 
     @Override
     public E create(E entity) {
-        return repository.save(entity);
+        try {
+            return repository.save(entity);
+        }catch (RuntimeException e){
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     @Override
