@@ -25,8 +25,10 @@ public class Comment extends Resource {
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(
-            name = "comment"
+            name = "attachment",
+            joinColumns=@JoinColumn(name= "comment_id")
     )
-    @Column(name = "attachment_id")
+    @Column(name = "id")
     private Set<UUID> attachmentIds = new HashSet<>();
+
 }

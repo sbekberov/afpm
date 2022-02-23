@@ -1,12 +1,11 @@
 package spd.trello.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import spd.trello.domain.common.Domain;
 import spd.trello.domain.common.Resource;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +19,7 @@ public class Color extends Domain {
     private Integer green = 0;
     @Column(name = "blue")
     private Integer blue = 0;
-    @Column(name = "label_id")
-    private UUID labelId;
+    @OneToOne (mappedBy = "color", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Label labelId;
 }

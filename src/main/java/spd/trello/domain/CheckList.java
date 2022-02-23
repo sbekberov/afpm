@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table
+@Table (name = "checklist")
 public class CheckList extends Resource {
     @Column(name = "name")
     private String name;

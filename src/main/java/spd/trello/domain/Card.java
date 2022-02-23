@@ -48,11 +48,20 @@ public class Card extends Resource {
     @Column(name = "id")
     private Set<UUID> checklists = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "card_label",
-            joinColumns = @JoinColumn(name = "card_id"),
-            inverseJoinColumns = @JoinColumn(name = "label_id"))
-    private List<Label> labels = new ArrayList<>();
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @CollectionTable(
+            name = "label",
+            joinColumns=@JoinColumn(name= "card_id")
+    )
+    @Column(name = "id")
+    private Set<UUID> labels = new HashSet<>();
+
+    //    @ManyToMany
+//    @JoinTable(name = "card_label",
+//            joinColumns = @JoinColumn(name = "card_id"),
+//            inverseJoinColumns = @JoinColumn(name = "label_id"))
+//    private List<Label> labels = new ArrayList<>();
     @ElementCollection
     @LazyCollection(LazyCollectionOption.FALSE)
     @CollectionTable(

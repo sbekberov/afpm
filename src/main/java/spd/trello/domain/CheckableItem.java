@@ -1,5 +1,6 @@
 package spd.trello.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import spd.trello.domain.common.Domain;
 
@@ -17,6 +18,7 @@ public class CheckableItem extends Domain {
     private Boolean checked = Boolean.FALSE;
     @ManyToOne
     @JoinColumn(name = "checklist_id")
+    @JsonIgnore
     private CheckList checkList;
 }
 
