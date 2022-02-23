@@ -22,13 +22,4 @@ public class Comment extends Resource {
     @Column(name = "member_id")
     private UUID memberId;
 
-    @ElementCollection
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @CollectionTable(
-            name = "attachment",
-            joinColumns=@JoinColumn(name= "comment_id")
-    )
-    @Column(name = "id")
-    private Set<UUID> attachmentIds = new HashSet<>();
-
 }

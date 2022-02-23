@@ -1,12 +1,3 @@
-CREATE TABLE workspace_member
-(
-    workspace_id uuid NOT NULL
-        CONSTRAINT workspace_member_id_fk REFERENCES workspaces (id),
-    member_id    uuid NOT NULL
-        CONSTRAINT member_workspace_id_fk REFERENCES member (id),
-    CONSTRAINT workspace_member_pk PRIMARY KEY (workspace_id, member_id)
-);
-
 CREATE TABLE board_member
 (
     board_id  uuid NOT NULL

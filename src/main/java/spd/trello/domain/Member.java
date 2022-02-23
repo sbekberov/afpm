@@ -14,13 +14,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "member")
 public class Member extends Resource {
-
-
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role = Role.GUEST;
     @Column(name = "user_id")
     private UUID userId;
-
-
 }

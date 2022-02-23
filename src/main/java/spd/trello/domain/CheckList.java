@@ -1,8 +1,6 @@
 package spd.trello.domain;
 
-
 import lombok.*;
-import spd.trello.domain.common.Domain;
 import spd.trello.domain.common.Resource;
 
 
