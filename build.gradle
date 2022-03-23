@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
+
 }
 
 group = 'spd.trello'
@@ -19,7 +20,12 @@ repositories {
     mavenCentral()
 }
 
+bootJar {
+    exclude('application.yaml')
+}
+
 jar {
+    exclude('application.yaml')
     manifest {
         attributes 'Main-Class': 'spd.trello.Application'
     }
@@ -53,3 +59,4 @@ test {
 jacocoTestReport {
     dependsOn test
 }
+
