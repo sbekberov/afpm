@@ -22,7 +22,7 @@ public abstract class AbstractIntegrationTest<E extends Resource> implements Com
     @Autowired
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+    private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
     public Object getValue(MvcResult mvcResult, String jsonPath) throws UnsupportedEncodingException {
         return JsonPath.read(mvcResult.getResponse().getContentAsString(), jsonPath);
@@ -60,10 +60,11 @@ public abstract class AbstractIntegrationTest<E extends Resource> implements Com
 
     @DisplayName("Update")
     public MvcResult update(String URL_TEMPLATE, UUID id, E entity) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.put(URL_TEMPLATE + "/{id}", id)
+        return mockMvc.perform(MockMvcRequestBuilders.put(URL_TEMPLATE + "/{id}", id , entity)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(entity)))
                 .andReturn();
     }
+
 }

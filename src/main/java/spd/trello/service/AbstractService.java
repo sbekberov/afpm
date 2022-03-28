@@ -7,6 +7,8 @@ import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.exception.BadRequestException;
 import spd.trello.repository.AbstractRepository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +31,7 @@ public abstract class AbstractService<E extends Resource, R extends AbstractRepo
 
     @Override
     public E update(E entity) {
+        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
         try {
             return repository.save(entity);
         }catch (RuntimeException e){
