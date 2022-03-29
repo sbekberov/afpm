@@ -26,7 +26,12 @@ public class Helper {
     private BoardRepository boardRepository;
     @Autowired
     private CardListRepository cardListRepository;
-
+    @Autowired
+    private CardRepository cardRepository;
+    @Autowired
+    private BoardTemplateRepository boardTemplateRepository;
+    @Autowired
+    private CardTemplateRepository cardTemplateRepository;
 
     public User getNewUser(String email) {
         User user = new User();
@@ -100,6 +105,56 @@ public class Helper {
         });
     }
 
+    public Card getNewCard(String email) {
+        CardList cardList = getNewCardList(email);
+
+        Reminder reminder = new Reminder();
+        reminder.setRemindOn(Date.valueOf(LocalDate.now()));
+        reminder.setStart(Date.valueOf(LocalDate.now()));
+        reminder.setFinish(Date.valueOf(LocalDate.now()));
+
+        Card card = new Card();
+        card.setCreatedBy(cardList.getCreatedBy());
+        card.setCreatedDate(Date.valueOf(LocalDate.now()));
+        card.setCardListId(cardList.getId());
+        card.setName("name");
+        card.setReminder(reminder);
+        card.setArchived(false);
+        return cardRepository.save(card);
+    }
+
+    public List<Card> getCardsArray(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {
+        return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+    }
+
+    public BoardTemplate getNewBoardTemplate(String name , String description) {
+        BoardTemplate boardTemplate = new BoardTemplate();
+        boardTemplate.setName("name");
+        boardTemplate.setDescription("description");
+        boardTemplate.setCreatedDate(Date.valueOf(LocalDate.now()));
+        boardTemplate.setCreatedBy("ssss");
+        return boardTemplateRepository.save(boardTemplate);
+    }
+
+    public List<BoardTemplate> getBoardTemplatesArray(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {
+        return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+    }
+
+    public CardTemplate getNewCardTemplate(String name , String description) {
+        CardTemplate cardTemplate = new CardTemplate();
+        cardTemplate.setName("name");
+        cardTemplate.setDescription("description");
+        cardTemplate.setCreatedDate(Date.valueOf(LocalDate.now()));
+        cardTemplate.setCreatedBy("ssss");
+        return cardTemplateRepository.save(cardTemplate);
+    }
+
+    public List<CardTemplate> getCardTemplatesArray(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {
+        return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+    }
 
     public Set<UUID> getIdsFromJson(String json) throws JsonProcessingException {
         return new ObjectMapper().readValue(json, new TypeReference<>() {
