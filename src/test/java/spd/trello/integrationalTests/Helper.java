@@ -32,6 +32,12 @@ public class Helper {
     private BoardTemplateRepository boardTemplateRepository;
     @Autowired
     private CardTemplateRepository cardTemplateRepository;
+    @Autowired
+    private AttachmentRepository attachmentRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private CheckListRepository checkListRepository;
 
     public User getNewUser(String email) {
         User user = new User();
@@ -152,6 +158,52 @@ public class Helper {
     }
 
     public List<CardTemplate> getCardTemplatesArray(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {
+        return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+    }
+
+    public Attachment getNewAttachment(String email) {
+        Card card = getNewCard(email);
+        Attachment attachment = new Attachment();
+        attachment.setCardId(card.getId());
+        attachment.setCreatedBy(card.getCreatedBy());
+        attachment.setCreatedDate(card.getCreatedDate());
+        attachment.setName("name");
+        attachment.setLink("link");
+        return attachmentRepository.save(attachment);
+    }
+
+    public List<Attachment> getAttachmentsArray(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {
+        return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+    }
+
+    public Comment getNewComment(String email) {
+        Card card = getNewCard(email);
+        Comment comment = new Comment();
+        comment.setCardId(card.getId());
+        comment.setCreatedBy(card.getCreatedBy());
+        comment.setCreatedDate(card.getCreatedDate());
+        comment.setText("text");
+        return commentRepository.save(comment);
+    }
+
+    public List<Comment> getCommentsArray(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {
+        return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+    }
+
+    public CheckList getNewСheckList(String email) {
+        Card card = getNewCard(email);
+        CheckList checkList = new CheckList();
+        checkList.setName("name");
+        checkList.setCardId(card.getId());
+        checkList.setCreatedBy(card.getCreatedBy());
+        checkList.setCreatedDate(card.getCreatedDate());
+        return checkListRepository.save(checkList);
+    }
+
+    public List<CheckList> getCheckListArray(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {
         return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
         });
     }
