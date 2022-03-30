@@ -171,7 +171,7 @@ public class WorkspaceIntegrationTest extends AbstractIntegrationTest<Workspace>
         MvcResult secondMvcResult = super.update(URL_TEMPLATE, secondWorkspace.getId(), secondWorkspace);
 
         assertAll(
-                () -> assertEquals(HttpStatus.BAD_REQUEST.value(), firstMvcResult.getResponse().getStatus()),
+                () -> assertEquals(HttpStatus.NOT_FOUND.value(), firstMvcResult.getResponse().getStatus()),
                 () -> assertEquals(HttpStatus.BAD_REQUEST.value(), secondMvcResult.getResponse().getStatus())
         );
     }

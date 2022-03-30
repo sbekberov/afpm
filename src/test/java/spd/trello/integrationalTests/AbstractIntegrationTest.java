@@ -9,7 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import spd.trello.domain.common.Resource;
+import spd.trello.domain.common.Domain;
+
 
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
@@ -17,7 +18,7 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @AutoConfigureMockMvc
-public abstract class AbstractIntegrationTest<E extends Resource> implements CommonIntegrationTest<E> {
+public abstract class AbstractIntegrationTest<E extends Domain> implements CommonIntegrationTest<E> {
 
     @Autowired
     private MockMvc mockMvc;

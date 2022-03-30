@@ -38,6 +38,8 @@ public class Helper {
     private CommentRepository commentRepository;
     @Autowired
     private CheckListRepository checkListRepository;
+    @Autowired
+    private CheckableItemRepository checkableItemRepository;
 
     public User getNewUser(String email) {
         User user = new User();
@@ -207,6 +209,23 @@ public class Helper {
         return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
         });
     }
+
+    public CheckableItem getNewCheckableItem(String email) {
+        CheckList checklist = getNewСheckList(email);
+        CheckableItem checkableItem = new CheckableItem();
+        checkableItem.setChecklistId(checklist.getId());
+        checkableItem.setName("name");
+        return checkableItemRepository.save(checkableItem);
+    }
+
+    public List<CheckableItem> getCheckableItemsArray(MvcResult mvcResult)
+            throws UnsupportedEncodingException, JsonProcessingException {
+        return new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+    }
+
+
+
 
     public Set<UUID> getIdsFromJson(String json) throws JsonProcessingException {
         return new ObjectMapper().readValue(json, new TypeReference<>() {

@@ -181,7 +181,7 @@ public class BoardIntegrationTest extends AbstractIntegrationTest<Board> {
         MvcResult secondMvcResult = super.update(URL_TEMPLATE, secondBoard.getId(), secondBoard);
 
         assertAll(
-                () -> assertEquals(HttpStatus.BAD_REQUEST.value(), firstMvcResult.getResponse().getStatus()),
+                () -> assertEquals(HttpStatus.NOT_FOUND.value(), firstMvcResult.getResponse().getStatus()),
                 () -> assertEquals(HttpStatus.BAD_REQUEST.value(), secondMvcResult.getResponse().getStatus())
         );
     }
