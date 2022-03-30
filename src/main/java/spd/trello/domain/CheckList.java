@@ -18,7 +18,7 @@ public class CheckList extends Resource {
     @Column(name = "name")
     private String name;
     @Column(name = "card_id")
-    private UUID card_id;
+    private UUID cardId;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CheckableItem> items = new ArrayList<>();
 }

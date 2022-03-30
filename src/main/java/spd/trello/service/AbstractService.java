@@ -1,6 +1,7 @@
 package spd.trello.service;
 
 
+import spd.trello.domain.common.Domain;
 import spd.trello.domain.common.Resource;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class AbstractService<E extends Resource, R extends AbstractRepository<E>>
+public abstract class AbstractService<E extends Domain, R extends AbstractRepository<E>>
         implements CommonService<E>{
     R repository;
 
@@ -31,7 +32,6 @@ public abstract class AbstractService<E extends Resource, R extends AbstractRepo
 
     @Override
     public E update(E entity) {
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
         try {
             return repository.save(entity);
         }catch (RuntimeException e){

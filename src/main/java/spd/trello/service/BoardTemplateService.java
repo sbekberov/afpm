@@ -2,9 +2,7 @@ package spd.trello.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spd.trello.domain.Board;
 import spd.trello.domain.BoardTemplate;
-import spd.trello.repository.BoardRepository;
 import spd.trello.repository.BoardTemplateRepository;
 
 @Service
