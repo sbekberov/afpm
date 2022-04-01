@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 public class AttachmentDTO {
     private UUID id;
-    private String createdBy;
+    private String createdBy = "bekberov@gmail.com";
     private Date createdDate;
     private String name;
     private byte[] multiPartBytes;
