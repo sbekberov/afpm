@@ -21,4 +21,6 @@ public class Attachment extends Resource {
     private String name;
     @Column(name = "card_id")
     private UUID cardId;
+    @Column(name = "multi_part_bytes")
+    private byte[] multiPartBytes;
 }
