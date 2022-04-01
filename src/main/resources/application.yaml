@@ -31,5 +31,7 @@ server:
     include-message: always
     include-exception: true
 
+#app:
+#  storage-type:DB
 
 
