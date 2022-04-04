@@ -58,6 +58,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             multiPartBytes = multipartFile.getBytes();
             attachment.setMultiPartBytes(multiPartBytes);
             attachment.setCreatedBy(attachmentDTO.getCreatedBy());
+            attachment.setCreatedDate(Date.valueOf(LocalDate.now()));
             attachment.setName(attachmentDTO.getName());
             attachment.setCardId(attachmentDTO.getCardId());
             repository.save(attachment);
@@ -65,7 +66,10 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             e.printStackTrace();
             return AttachmentDTO.builder()
                     .id(attachment.getId())
+                    .cardId(attachment.getCardId())
                     .name(attachment.getName())
+                    .createdBy(attachment.getCreatedBy())
+                    .createdDate(attachment.getCreatedDate())
                     .failed(true)
                     .build();
         }
@@ -73,6 +77,8 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
                 .id(attachment.getId())
                 .cardId(attachment.getCardId())
                 .name(attachment.getName())
+                .createdBy(attachment.getCreatedBy())
+                .createdDate(attachment.getCreatedDate())
                 .failed(false)
                 .build();
     }
