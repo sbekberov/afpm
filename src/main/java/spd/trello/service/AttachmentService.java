@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
-import spd.trello.domain.dto.AttachmentDTO;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.AttachmentRepository;
@@ -12,6 +11,7 @@ import spd.trello.repository.AttachmentRepository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Service
@@ -52,36 +52,23 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             throw new BadRequestException(e.getMessage());
         }
     }
-    public AttachmentDTO save(MultipartFile multipartFile, AttachmentDTO attachmentDTO) {
-        byte[] multiPartBytes;
+
+    public Attachment save(MultipartFile multipartFile, String name, UUID cardId,String createdBy) {
         Attachment attachment = new Attachment();
+
         try {
-            multiPartBytes = multipartFile.getBytes();
-            attachment.setMultiPartBytes(multiPartBytes);
-            attachment.setCreatedBy(attachmentDTO.getCreatedBy());
+            attachment.setMultiPartBytes(multipartFile.getBytes());
+            attachment.setName(name);
+            attachment.setCardId(cardId);
+            attachment.setCreatedBy(createdBy);
             attachment.setCreatedDate(LocalDateTime.now());
-            attachment.setName(attachmentDTO.getName());
-            attachment.setCardId(attachmentDTO.getCardId());
-            repository.save(attachment);
+
+
         } catch (Exception e) {
             e.printStackTrace();
-            return AttachmentDTO.builder()
-                    .id(attachment.getId())
-                    .cardId(attachment.getCardId())
-                    .name(attachment.getName())
-                    .createdBy(attachment.getCreatedBy())
-                    .createdDate(attachment.getCreatedDate())
-                    .failed(true)
-                    .build();
+            return attachment;
         }
-        return AttachmentDTO.builder()
-                .id(attachment.getId())
-                .cardId(attachment.getCardId())
-                .name(attachment.getName())
-                .createdBy(attachment.getCreatedBy())
-                .createdDate(attachment.getCreatedDate())
-                .failed(false)
-                .build();
+        return repository.save(attachment);
     }
 }
 
