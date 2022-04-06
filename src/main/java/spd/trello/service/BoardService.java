@@ -9,6 +9,7 @@ import spd.trello.repository.BoardRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -21,7 +22,7 @@ public class BoardService extends AbstractService<Board, BoardRepository> {
     @Override
     public Board update(Board entity) {
         Board oldBoard = findById(entity.getId());
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        entity.setUpdatedDate(LocalDateTime.now());
         entity.setCreatedBy(oldBoard.getCreatedBy());
         entity.setCreatedDate(oldBoard.getCreatedDate());
         entity.setWorkspaceId(oldBoard.getWorkspaceId());

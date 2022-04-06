@@ -11,6 +11,7 @@ import spd.trello.repository.AttachmentRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -23,7 +24,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
     @Override
     public Attachment update(Attachment entity) {
         Attachment oldAttachment = findById(entity.getId());
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        entity.setUpdatedDate(LocalDateTime.now());
         entity.setCreatedBy(oldAttachment.getCreatedBy());
         entity.setCreatedDate(oldAttachment.getCreatedDate());
 
@@ -58,7 +59,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             multiPartBytes = multipartFile.getBytes();
             attachment.setMultiPartBytes(multiPartBytes);
             attachment.setCreatedBy(attachmentDTO.getCreatedBy());
-            attachment.setCreatedDate(Date.valueOf(LocalDate.now()));
+            attachment.setCreatedDate(LocalDateTime.now());
             attachment.setName(attachmentDTO.getName());
             attachment.setCardId(attachmentDTO.getCardId());
             repository.save(attachment);
