@@ -36,7 +36,7 @@ public class ReminderScheduler {
             Reminder reminder = reminders.pollFirst();
             Objects.requireNonNull(reminder).setActive(true);
             repository.save(reminder);
-            System.out.println("Hallo! Wake Up! " + Objects.requireNonNull(reminder).getId());
+            System.out.println("Time to finish!" + Objects.requireNonNull(reminder).getId());
         }
     }
 

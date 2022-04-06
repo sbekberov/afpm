@@ -48,8 +48,17 @@ public class CardService extends AbstractService<Card, CardRepository> {
         if (entity.getDescription() == null && oldCard.getDescription() != null) {
             entity.setDescription(oldCard.getDescription());
         }
+
+        if(oldCard.getReminder().getActive() && !entity.getReminder().getActive()){
+            reminderScheduler.deleteReminder(oldCard.getReminder());
+        }
         try {
-            return repository.save(entity);
+            Card card = repository.save(entity);
+            if (card.getReminder().getActive() && !oldCard.getReminder().equals(card.getReminder()))
+            {
+                reminderScheduler.addReminder(card.getReminder());
+            }
+            return entity;
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
         }
