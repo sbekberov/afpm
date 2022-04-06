@@ -14,7 +14,7 @@ import java.util.UUID;
 public class AttachmentDTO {
     private UUID id;
     private String createdBy = "bekberov@gmail.com";
-    private Date createdDate;
+    private LocalDateTime createdDate;
     private String name;
     private byte[] multiPartBytes;
     private UUID cardId;
