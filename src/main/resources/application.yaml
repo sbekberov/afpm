@@ -32,7 +32,7 @@ server:
     include-exception: true
 
 app:
-  saveToFile: false
+  saveToFile: true
   saveFolder: /home/bekberov/IdeaProjects/java/attachment-file
 
 

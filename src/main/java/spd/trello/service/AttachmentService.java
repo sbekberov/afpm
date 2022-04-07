@@ -9,7 +9,10 @@ import spd.trello.exception.BadRequestException;
 import spd.trello.exception.FileCanNotBeUpload;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.AttachmentRepository;
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.Resource;
 
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -102,11 +105,22 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         return repository.findById(id).get();
     }
 
+    public Resource load(UUID id) {
+        String name = repository.getLinkById(id);
+        try {
+            Path file = Paths.get(path)
+                    .resolve(name);
+            Resource resource = new UrlResource(file.toUri());
 
-
-
-
-
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read the file!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
 
 
 }

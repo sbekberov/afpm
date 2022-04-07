@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
 import spd.trello.exception.BadRequestException;
 import spd.trello.service.AttachmentService;
+import org.springframework.core.io.Resource;
 
 import java.util.UUID;
 
@@ -34,10 +35,12 @@ public class AttachmentController extends AbstractController<Attachment, Attachm
                                              @RequestParam(required = false) UUID cardId,
                                              @RequestParam String createdBy) {
         if (saveToFile) {
-            Attachment attachment = attachmentService.saveToFile(multipartFile, name, cardId, createdBy);
-            return new ResponseEntity<>(attachment, HttpStatus.OK);
-
-
+            try {
+                Attachment attachment = attachmentService.saveToFile(multipartFile, name, cardId, createdBy);
+                return new ResponseEntity<>(attachment, HttpStatus.OK);
+            } catch (RuntimeException exception) {
+                throw new BadRequestException(exception.getMessage());
+            }
         } else {
             try {
                 Attachment attachment = attachmentService.saveToDb(multipartFile, name, cardId, createdBy);
@@ -49,11 +52,30 @@ public class AttachmentController extends AbstractController<Attachment, Attachm
 
     }
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> getFile(@PathVariable UUID id) {
+    public ResponseEntity<byte[]> getFileFromDb(@PathVariable UUID id) {
         Attachment attachment = attachmentService.getFile(id);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getName() + "\"")
                 .body(attachment.getMultiPartBytes());
+
     }
+    @ResponseBody
+    public ResponseEntity<Resource> getFileFromFile(@PathVariable UUID id) {
+        Resource file = attachmentService.load(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
+    }
+    @GetMapping("/download/{id}")
+   public void chooseDownloading(@PathVariable UUID id){
+        if(saveToFile){
+            getFileFromFile(id);
+        }else {
+            getFileFromDb(id);
+        }
+   }
 }
+
+
+
+
