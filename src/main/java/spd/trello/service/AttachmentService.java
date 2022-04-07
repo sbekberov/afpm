@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 
 @Service
@@ -70,6 +71,11 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         }
         return repository.save(attachment);
     }
+
+    public Attachment getFile(UUID id) {
+        return repository.findById(id).get();
+    }
+
 }
 
 
