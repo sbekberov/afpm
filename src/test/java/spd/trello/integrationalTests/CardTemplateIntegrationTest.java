@@ -6,13 +6,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
-import spd.trello.domain.BoardTemplate;
 import spd.trello.domain.CardTemplate;
 
 
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +28,7 @@ public class CardTemplateIntegrationTest extends AbstractIntegrationTest<CardTem
         CardTemplate cardTemplate = new CardTemplate();
         cardTemplate.setName("CardTemplate");
         cardTemplate.setDescription("test desk");
-        cardTemplate.setCreatedDate(Date.valueOf(LocalDate.now()));
+        cardTemplate.setCreatedDate(LocalDateTime.now());
         cardTemplate.setCreatedBy("ssss");
         MvcResult firstMvcResult = super.create(URL_TEMPLATE, cardTemplate);
 
@@ -107,7 +105,7 @@ public class CardTemplateIntegrationTest extends AbstractIntegrationTest<CardTem
         CardTemplate cardTemplate = helper.getNewCardTemplate("FFFF" , "GGGGG");
         cardTemplate.setName("New name");
         cardTemplate.setDescription("new desct");
-        cardTemplate.setCreatedDate(Date.valueOf(LocalDate.now()));
+        cardTemplate.setCreatedDate(LocalDateTime.now());
         cardTemplate.setCreatedBy("ssss");
         cardTemplate.setUpdatedBy("sssss");
         MvcResult mvcResult = super.update(URL_TEMPLATE, cardTemplate.getId(), cardTemplate);

@@ -11,7 +11,8 @@ import spd.trello.domain.Member;
 import spd.trello.domain.Workspace;
 import spd.trello.domain.enums.BoardVisibility;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class BoardIntegrationTest extends AbstractIntegrationTest<Board> {
                 () -> assertEquals(HttpStatus.CREATED.value(), firstMvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(firstMvcResult, "$.id")),
                 () -> assertEquals(board.getCreatedBy(), getValue(firstMvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(firstMvcResult, "$.createdDate")),
+                () -> assertEquals(LocalDateTime.now(), getValue(firstMvcResult, "$.createdDate")),
                 () -> assertNull(getValue(firstMvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(firstMvcResult, "$.updatedDate")),
                 () -> assertEquals(board.getName(), getValue(firstMvcResult, "$.name")),
@@ -93,7 +94,7 @@ public class BoardIntegrationTest extends AbstractIntegrationTest<Board> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(board.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(board.getName(), getValue(mvcResult, "$.name")),
@@ -154,9 +155,9 @@ public class BoardIntegrationTest extends AbstractIntegrationTest<Board> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(board.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(board.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(board.getName(), getValue(mvcResult, "$.name")),
                 () -> assertEquals(board.getDescription(), getValue(mvcResult, "$.description")),
                 () -> assertEquals(board.getVisibility().toString(), getValue(mvcResult, "$.visibility")),

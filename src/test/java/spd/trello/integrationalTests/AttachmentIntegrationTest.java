@@ -10,7 +10,7 @@ import spd.trello.domain.Attachment;
 import spd.trello.domain.Card;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +37,7 @@ public class AttachmentIntegrationTest extends AbstractIntegrationTest<Attachmen
                 () -> assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(attachment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(attachment.getName(), getValue(mvcResult, "$.name")),
@@ -78,7 +78,7 @@ public class AttachmentIntegrationTest extends AbstractIntegrationTest<Attachmen
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(attachment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(attachment.getName(), getValue(mvcResult, "$.name")),
@@ -129,9 +129,9 @@ public class AttachmentIntegrationTest extends AbstractIntegrationTest<Attachmen
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(attachment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(attachment.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(attachment.getName(), getValue(mvcResult, "$.name")),
                 () -> assertEquals(attachment.getLink(), getValue(mvcResult, "$.link")),
                 () -> assertEquals(attachment.getCardId().toString(), getValue(mvcResult, "$.cardId"))

@@ -33,6 +33,6 @@ server:
 
 app:
   saveToFile: true
-  saveFolder: /home/bekberov/IdeaProjects/java/attachment-file
+  saveFolder: /home/bekberov/IdeaProjects/java/attachment-file/
 
 

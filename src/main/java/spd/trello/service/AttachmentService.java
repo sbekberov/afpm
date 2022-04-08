@@ -28,7 +28,10 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         super(repository);
     }
 
-    public Attachment createAttachment(String name, String createdBy, String path, UUID cardId) {
+    @Value("${app.saveFolder}")
+    private String path;
+
+    public Attachment createAttachment(String name, UUID cardId, String createdBy) {
         Attachment attachment = new Attachment();
         attachment.setName(name);
         attachment.setCreatedBy(createdBy);
@@ -70,20 +73,15 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         }
     }
 
-    @Value("${app.saveFolder}")
-    private String path;
-
-    public Attachment saveToDb(MultipartFile multipartFile, String name, UUID cardId, String createdBy) {
+    public Attachment saveToDb(MultipartFile multipartFile, UUID cardId, String createdBy) {
         Attachment attachment = new Attachment();
 
         try {
             attachment.setMultiPartBytes(multipartFile.getBytes());
-            attachment.setName(name);
+            attachment.setName(multipartFile.getOriginalFilename());
             attachment.setCardId(cardId);
             attachment.setCreatedBy(createdBy);
             attachment.setCreatedDate(LocalDateTime.now());
-
-
         } catch (Exception e) {
             e.printStackTrace();
             return attachment;
@@ -91,37 +89,29 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         return repository.save(attachment);
     }
 
-    public Attachment saveToFile(MultipartFile file, String email, UUID cardId, String name) {
+    public Attachment saveToFile(MultipartFile file, UUID cardId, String createdBy) {
         try {
             Path root = Paths.get(path);
             Files.copy(file.getInputStream(), root.resolve(Objects.requireNonNull(file.getOriginalFilename())));
-            return createAttachment(file.getName(), email,  name ,cardId);
+            return createAttachment(file.getOriginalFilename(), cardId, createdBy);
         } catch (Exception e) {
             throw new FileCanNotBeUpload();
         }
     }
 
-    public Attachment getFile(UUID id) {
-        return repository.findById(id).get();
-    }
 
-    public Resource load(UUID id) {
-        String name = repository.getLinkById(id);
-        try {
-            Path file = Paths.get(path)
-                    .resolve(name);
-            Resource resource = new UrlResource(file.toUri());
-
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new RuntimeException("Could not read the file!");
+    public Attachment load(UUID id) {
+        Attachment attachment = repository.findById(id).orElse(null);
+        if (!(attachment.getLink() == null)) {
+            try {
+                attachment.setMultiPartBytes(Files.readAllBytes(Paths.get(attachment.getLink() + attachment.getName())));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
-
 
 }
 

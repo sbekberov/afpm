@@ -12,6 +12,7 @@ import spd.trello.repository.*;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
@@ -46,7 +47,7 @@ public class Helper {
         user.setEmail(email);
         user.setFirstName("Selim");
         user.setLastName("Bekberov");
-        user.setCreatedDate(Date.valueOf(LocalDate.now()));
+        user.setCreatedDate(LocalDateTime.now());
         user.setCreatedBy(email);
         return userRepository.save(user);
     }
@@ -54,7 +55,7 @@ public class Helper {
     public Member getNewMember(String email) {
         User user = getNewUser(email);
         Member member = new Member();
-        user.setCreatedDate(Date.valueOf(LocalDate.now()));
+        user.setCreatedDate(LocalDateTime.now());
         member.setCreatedBy(user.getEmail());
         member.setUserId(user.getId());
         return memberRepository.save(member);
@@ -69,7 +70,7 @@ public class Helper {
         Member member = getNewMember(email);
         Workspace workspace = new Workspace();
         workspace.setCreatedBy(member.getCreatedBy());
-        workspace.setCreatedDate(Date.valueOf(LocalDate.now()));
+        workspace.setCreatedDate(LocalDateTime.now());
         workspace.setName("Workspace");
         Set<UUID> membersId = new HashSet<>();
         membersId.add(member.getId());
@@ -86,7 +87,7 @@ public class Helper {
         Workspace workspace = getNewWorkspace(email);
         Board board = new Board();
         board.setCreatedBy(workspace.getCreatedBy());
-        board.setCreatedDate(Date.valueOf(LocalDate.now()));
+        board.setCreatedDate(LocalDateTime.now());
         board.setName("Board");
         board.setWorkspaceId(workspace.getId());
         board.setMembersIds(workspace.getMembersIds());
@@ -103,7 +104,7 @@ public class Helper {
         CardList cardList = new CardList();
         cardList.setBoardId(board.getId());
         cardList.setCreatedBy(board.getCreatedBy());
-        cardList.setCreatedDate(Date.valueOf(LocalDate.now()));
+        cardList.setCreatedDate(LocalDateTime.now());
         cardList.setName("CardList");
         return cardListRepository.save(cardList);
     }
@@ -117,13 +118,13 @@ public class Helper {
         CardList cardList = getNewCardList(email);
 
         Reminder reminder = new Reminder();
-        reminder.setRemindOn(Date.valueOf(LocalDate.now()));
-        reminder.setStart(Date.valueOf(LocalDate.now()));
-        reminder.setFinish(Date.valueOf(LocalDate.now()));
+        reminder.setRemindOn(LocalDateTime.now());
+        reminder.setStart(LocalDateTime.now());
+        reminder.setFinish(LocalDateTime.now());
 
         Card card = new Card();
         card.setCreatedBy(cardList.getCreatedBy());
-        card.setCreatedDate(Date.valueOf(LocalDate.now()));
+        card.setCreatedDate(LocalDateTime.now());
         card.setCardListId(cardList.getId());
         card.setName("name");
         card.setReminder(reminder);
@@ -140,7 +141,7 @@ public class Helper {
         BoardTemplate boardTemplate = new BoardTemplate();
         boardTemplate.setName("name");
         boardTemplate.setDescription("description");
-        boardTemplate.setCreatedDate(Date.valueOf(LocalDate.now()));
+        boardTemplate.setCreatedDate(LocalDateTime.now());
         boardTemplate.setCreatedBy("ssss");
         return boardTemplateRepository.save(boardTemplate);
     }
@@ -154,7 +155,7 @@ public class Helper {
         CardTemplate cardTemplate = new CardTemplate();
         cardTemplate.setName("name");
         cardTemplate.setDescription("description");
-        cardTemplate.setCreatedDate(Date.valueOf(LocalDate.now()));
+        cardTemplate.setCreatedDate(LocalDateTime.now());
         cardTemplate.setCreatedBy("ssss");
         return cardTemplateRepository.save(cardTemplate);
     }
