@@ -30,7 +30,7 @@ public class CardListService extends AbstractService<CardList, CardListRepositor
             throw new ResourceNotFoundException();
         }
 
-        entity.setUpdatedDate(LocalDateTime.now());
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldCardList.getCreatedBy());
         entity.setCreatedDate(oldCardList.getCreatedDate());
         entity.setBoardId(oldCardList.getBoardId());

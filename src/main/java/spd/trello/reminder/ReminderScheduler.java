@@ -31,8 +31,8 @@ public class ReminderScheduler {
     @Scheduled(cron = "0 0/1 * * * ?")
     public void runReminder() {
         while (reminders.size() != 0 &&
-                (reminders.first().getRemindOn().isEqual(LocalDateTime.now()) ||
-                        reminders.first().getRemindOn().isBefore(LocalDateTime.now()))) {
+                (reminders.first().getRemindOn().isEqual(LocalDateTime.now().withNano(0)) ||
+                        reminders.first().getRemindOn().isBefore(LocalDateTime.now().withNano(0)))) {
             Reminder reminder = reminders.pollFirst();
             Objects.requireNonNull(reminder).setActive(true);
             repository.save(reminder);

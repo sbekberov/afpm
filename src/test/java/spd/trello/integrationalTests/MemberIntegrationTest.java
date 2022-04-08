@@ -39,9 +39,23 @@ public class MemberIntegrationTest extends AbstractIntegrationTest<Member> {
         secondMember.setCreatedBy(user.getEmail());
         MvcResult secondMvcResult = super.create(URL_TEMPLATE, secondMember);
 
-        assertAll(() -> assertEquals(HttpStatus.CREATED.value(), firstMvcResult.getResponse().getStatus()), () -> assertNotNull(getValue(firstMvcResult, "$.id")), () -> assertEquals(firstMember.getCreatedBy(), getValue(firstMvcResult, "$.createdBy")), () -> assertNull(getValue(firstMvcResult, "$.updatedBy")), () -> assertEquals(LocalDateTime.now(), getValue(firstMvcResult, "$.createdDate")), () -> assertNull(getValue(firstMvcResult, "$.updatedDate")), () -> assertEquals(user.getId().toString(), getValue(firstMvcResult, "$.userId")), () -> assertEquals(firstMember.getRole().toString(), getValue(firstMvcResult, "$.role")),
-
-                () -> assertEquals(HttpStatus.CREATED.value(), secondMvcResult.getResponse().getStatus()), () -> assertNotNull(getValue(secondMvcResult, "$.id")), () -> assertEquals(secondMember.getCreatedBy(), getValue(secondMvcResult, "$.createdBy")), () -> assertNull(getValue(secondMvcResult, "$.updatedBy")), () -> assertEquals(LocalDateTime.now(), getValue(secondMvcResult, "$.createdDate")), () -> assertNull(getValue(secondMvcResult, "$.updatedDate")), () -> assertEquals(user.getId().toString(), getValue(secondMvcResult, "$.userId")), () -> assertEquals(Role.GUEST.toString(), getValue(secondMvcResult, "$.role")));
+        assertAll(
+                () -> assertEquals(HttpStatus.CREATED.value(), firstMvcResult.getResponse().getStatus()),
+                () -> assertNotNull(getValue(firstMvcResult, "$.id")),
+                () -> assertEquals(firstMember.getCreatedBy(), getValue(firstMvcResult, "$.createdBy")),
+                () -> assertNull(getValue(firstMvcResult, "$.updatedBy")),
+                () -> assertEquals(firstMember.getCreatedDate().withNano(0).toString(), getValue(firstMvcResult, "$.createdDate")),
+                () -> assertNull(getValue(firstMvcResult, "$.updatedDate")),
+                () -> assertEquals(user.getId().toString(), getValue(firstMvcResult, "$.userId")),
+                () -> assertEquals(firstMember.getRole().toString(), getValue(firstMvcResult, "$.role")),
+                () -> assertEquals(HttpStatus.CREATED.value(), secondMvcResult.getResponse().getStatus()),
+                () -> assertNotNull(getValue(secondMvcResult, "$.id")),
+                () -> assertEquals(secondMember.getCreatedBy(), getValue(secondMvcResult, "$.createdBy")),
+                () -> assertNull(getValue(secondMvcResult, "$.updatedBy")),
+                () -> assertEquals(secondMember.getCreatedDate().withNano(0).toString(), getValue(secondMvcResult, "$.createdDate")),
+                () -> assertNull(getValue(secondMvcResult, "$.updatedDate")),
+                () -> assertEquals(user.getId().toString(), getValue(secondMvcResult, "$.userId")),
+                () -> assertEquals(Role.GUEST.toString(), getValue(secondMvcResult, "$.role")));
     }
 
     @Test
@@ -67,7 +81,15 @@ public class MemberIntegrationTest extends AbstractIntegrationTest<Member> {
         Member member = helper.getNewMember("s.bekberov@gmail.com");
         MvcResult mvcResult = super.getById(URL_TEMPLATE, member.getId());
 
-        assertAll(() -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()), () -> assertNotNull(getValue(mvcResult, "$.id")), () -> assertEquals(member.getCreatedBy(), getValue(mvcResult, "$.createdBy")), () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")), () -> assertNull(getValue(mvcResult, "$.updatedBy")), () -> assertNull(getValue(mvcResult, "$.updatedDate")), () -> assertEquals(member.getUserId().toString(), getValue(mvcResult, "$.userId")), () -> assertEquals(member.getRole().toString(), getValue(mvcResult, "$.role")));
+        assertAll(
+                () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
+                () -> assertNotNull(getValue(mvcResult, "$.id")),
+                () -> assertEquals(member.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
+                () -> assertEquals(member.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
+                () -> assertNull(getValue(mvcResult, "$.updatedBy")),
+                () -> assertNull(getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(member.getUserId().toString(), getValue(mvcResult, "$.userId")),
+                () -> assertEquals(member.getRole().toString(), getValue(mvcResult, "$.role")));
     }
 
     @Test
@@ -101,7 +123,15 @@ public class MemberIntegrationTest extends AbstractIntegrationTest<Member> {
         member.setRole(Role.ADMIN);
         MvcResult mvcResult = super.update(URL_TEMPLATE, member.getId(), member);
 
-        assertAll(() -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()), () -> assertNotNull(getValue(mvcResult, "$.id")), () -> assertEquals(member.getCreatedBy(), getValue(mvcResult, "$.createdBy")), () -> assertEquals(member.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")), () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")), () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")), () -> assertEquals(member.getUserId().toString(), getValue(mvcResult, "$.userId")), () -> assertEquals(member.getRole().toString(), getValue(mvcResult, "$.role")));
+        assertAll(
+                () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
+                () -> assertNotNull(getValue(mvcResult, "$.id")),
+                () -> assertEquals(member.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
+                () -> assertEquals(member.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
+                () -> assertEquals(member.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(member.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(member.getUserId().toString(), getValue(mvcResult, "$.userId")),
+                () -> assertEquals(member.getRole().toString(), getValue(mvcResult, "$.role")));
     }
 
     @Test

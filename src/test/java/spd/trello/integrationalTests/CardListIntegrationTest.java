@@ -38,7 +38,7 @@ public class CardListIntegrationTest extends AbstractIntegrationTest<CardList> {
                 () -> assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(cardList.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(cardList.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(cardList.getName(), getValue(mvcResult, "$.name")),
@@ -80,7 +80,7 @@ public class CardListIntegrationTest extends AbstractIntegrationTest<CardList> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(cardList.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(cardList.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(cardList.getName(), getValue(mvcResult, "$.name")),
@@ -122,6 +122,7 @@ public class CardListIntegrationTest extends AbstractIntegrationTest<CardList> {
     public void update() throws Exception {
         CardList cardList = helper.getNewCardList("s.bekberov@gmail.com");
         cardList.setUpdatedBy(cardList.getCreatedBy());
+        cardList.setUpdatedDate(LocalDateTime.now().withNano(0));
         cardList.setName("new Name");
         cardList.setArchived(true);
         MvcResult mvcResult = super.update(URL_TEMPLATE, cardList.getId(), cardList);
@@ -130,9 +131,9 @@ public class CardListIntegrationTest extends AbstractIntegrationTest<CardList> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(cardList.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(cardList.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(cardList.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(cardList.getUpdatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(cardList.getName(), getValue(mvcResult, "$.name")),
                 () -> assertTrue((Boolean) getValue(mvcResult, "$.archived")),
                 () -> assertEquals(cardList.getBoardId().toString(), getValue(mvcResult, "$.boardId"))

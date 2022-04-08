@@ -27,7 +27,7 @@ public abstract class Resource extends Domain  {
     @Column(name = "created_date")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    LocalDateTime createdDate = LocalDateTime.now();
+    LocalDateTime createdDate = LocalDateTime.now().withNano(0);
     @Column(name = "updated_date")
     @LastModifiedDate
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

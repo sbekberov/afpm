@@ -46,7 +46,7 @@ public class BoardIntegrationTest extends AbstractIntegrationTest<Board> {
                 () -> assertEquals(HttpStatus.CREATED.value(), firstMvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(firstMvcResult, "$.id")),
                 () -> assertEquals(board.getCreatedBy(), getValue(firstMvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(firstMvcResult, "$.createdDate")),
+                () -> assertEquals(board.getCreatedDate().withNano(0).toString(), getValue(firstMvcResult, "$.createdDate")),
                 () -> assertNull(getValue(firstMvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(firstMvcResult, "$.updatedDate")),
                 () -> assertEquals(board.getName(), getValue(firstMvcResult, "$.name")),
@@ -94,7 +94,7 @@ public class BoardIntegrationTest extends AbstractIntegrationTest<Board> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(board.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(LocalDateTime.now().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(board.getName(), getValue(mvcResult, "$.name")),
@@ -141,6 +141,7 @@ public class BoardIntegrationTest extends AbstractIntegrationTest<Board> {
         Board board = helper.getNewBoard("s.bekberov@gmail.com");
         Member secondMember = helper.getNewMember("bekberov@gmail.com");
         board.setUpdatedBy(board.getCreatedBy());
+        board.setUpdatedDate(LocalDateTime.now().withNano(0));
         board.setName("Updated Board");
         board.setDescription("Updated description");
         board.setVisibility(BoardVisibility.PUBLIC);
@@ -155,9 +156,9 @@ public class BoardIntegrationTest extends AbstractIntegrationTest<Board> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(board.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(board.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(board.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(board.getUpdatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(board.getName(), getValue(mvcResult, "$.name")),
                 () -> assertEquals(board.getDescription(), getValue(mvcResult, "$.description")),
                 () -> assertEquals(board.getVisibility().toString(), getValue(mvcResult, "$.visibility")),

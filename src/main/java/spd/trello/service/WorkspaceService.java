@@ -24,7 +24,7 @@ public class WorkspaceService extends AbstractService<Workspace, WorkspaceReposi
     @Override
     public Workspace update(Workspace entity) {
         Workspace oldWorkspace = findById(entity.getId());
-        entity.setUpdatedDate(LocalDateTime.now());
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldWorkspace.getCreatedBy());
         entity.setCreatedDate(oldWorkspace.getCreatedDate());
 

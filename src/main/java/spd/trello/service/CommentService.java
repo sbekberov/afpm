@@ -23,7 +23,7 @@ public class CommentService extends AbstractService<Comment, CommentRepository>{
     public Comment update(Comment entity) {
         Comment oldCard = findById(entity.getId());
         entity.setCreatedDate(oldCard.getCreatedDate());
-        entity.setUpdatedDate(LocalDateTime.now());
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCardId(oldCard.getCardId());
 
         if (entity.getUpdatedBy() == null) {

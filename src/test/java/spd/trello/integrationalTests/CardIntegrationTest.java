@@ -39,7 +39,7 @@ public class CardIntegrationTest extends AbstractIntegrationTest<Card> {
                 () -> assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(card.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(card.getCreatedDate().toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(card.getName(), getValue(mvcResult, "$.name")),
@@ -81,7 +81,7 @@ public class CardIntegrationTest extends AbstractIntegrationTest<Card> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(card.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(card.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(card.getName(), getValue(mvcResult, "$.name")),
@@ -123,24 +123,20 @@ public class CardIntegrationTest extends AbstractIntegrationTest<Card> {
     @Test
     public void update() throws Exception {
         Card card = helper.getNewCard("update@CIT");
-        Member secondMember = helper.getNewMember("2update@CIT");
         card.setUpdatedBy(card.getCreatedBy());
+        card.setUpdatedDate(LocalDateTime.now().withNano(0));
         card.setName("new Name");
         card.setArchived(true);
         card.setDescription("new description");
-
-
-
         MvcResult mvcResult = super.update(URL_TEMPLATE, card.getId(), card);
-
 
         assertAll(
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(card.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(card.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(card.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(card.getUpdatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(card.getName(), getValue(mvcResult, "$.name")),
                 () -> assertTrue((Boolean) getValue(mvcResult, "$.archived")),
                 () -> assertEquals(card.getCardListId().toString(), getValue(mvcResult, "$.cardListId")),

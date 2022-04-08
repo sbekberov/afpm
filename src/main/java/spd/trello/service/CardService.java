@@ -20,7 +20,7 @@ public class CardService extends AbstractService<Card, CardRepository> {
 
     @Override
     public Card create(Card entity) {
-        entity.setCreatedDate(LocalDateTime.now());
+        entity.setCreatedDate(LocalDateTime.now().withNano(0));
 
         try {
             Card card = repository.save(entity);
@@ -37,7 +37,7 @@ public class CardService extends AbstractService<Card, CardRepository> {
     public Card update(Card entity) {
         Card oldCard = findById(entity.getId());
         entity.setCardListId(oldCard.getCardListId());
-        entity.setUpdatedDate(LocalDateTime.now());
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldCard.getCreatedBy());
         entity.setCreatedDate(oldCard.getCreatedDate());
 

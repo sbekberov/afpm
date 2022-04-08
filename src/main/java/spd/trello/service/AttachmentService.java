@@ -35,7 +35,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         Attachment attachment = new Attachment();
         attachment.setName(name);
         attachment.setCreatedBy(createdBy);
-        attachment.setCreatedDate(LocalDateTime.now());
+        attachment.setCreatedDate(LocalDateTime.now().withNano(0));
         attachment.setLink(path);
         attachment.setCardId(cardId);
         return repository.save(attachment);
@@ -44,7 +44,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
     @Override
     public Attachment update(Attachment entity) {
         Attachment oldAttachment = findById(entity.getId());
-        entity.setUpdatedDate(LocalDateTime.now());
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldAttachment.getCreatedBy());
         entity.setCreatedDate(oldAttachment.getCreatedDate());
 
@@ -81,7 +81,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             attachment.setName(multipartFile.getOriginalFilename());
             attachment.setCardId(cardId);
             attachment.setCreatedBy(createdBy);
-            attachment.setCreatedDate(LocalDateTime.now());
+            attachment.setCreatedDate(LocalDateTime.now().withNano(0));
         } catch (Exception e) {
             e.printStackTrace();
             return attachment;

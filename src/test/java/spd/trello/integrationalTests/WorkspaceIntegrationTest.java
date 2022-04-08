@@ -11,7 +11,6 @@ import spd.trello.domain.Workspace;
 import spd.trello.domain.enums.WorkspaceVisibility;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +43,7 @@ public class WorkspaceIntegrationTest extends AbstractIntegrationTest<Workspace>
                 () -> assertEquals(HttpStatus.CREATED.value(), firstMvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(firstMvcResult, "$.id")),
                 () -> assertEquals(workspace.getCreatedBy(), getValue(firstMvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(firstMvcResult, "$.createdDate")),
+                () -> assertEquals(workspace.getCreatedDate().toString(), getValue(firstMvcResult, "$.createdDate")),
                 () -> assertNull(getValue(firstMvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(firstMvcResult, "$.updatedDate")),
                 () -> assertEquals(workspace.getName(), getValue(firstMvcResult, "$.name")),
@@ -90,7 +89,7 @@ public class WorkspaceIntegrationTest extends AbstractIntegrationTest<Workspace>
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(workspace.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(workspace.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(workspace.getName(), getValue(mvcResult, "$.name")),
@@ -138,6 +137,7 @@ public class WorkspaceIntegrationTest extends AbstractIntegrationTest<Workspace>
         workspace.setName("Updated Workspace");
         workspace.setDescription("Updated description");
         workspace.setVisibility(WorkspaceVisibility.PUBLIC);
+        workspace.setUpdatedDate(LocalDateTime.now().withNano(0));
         Set<UUID> membersIds = workspace.getMembersIds();
         membersIds.add(secondMember.getId());
         workspace.setMembersIds(membersIds);
@@ -147,9 +147,9 @@ public class WorkspaceIntegrationTest extends AbstractIntegrationTest<Workspace>
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(workspace.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(workspace.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(workspace.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(workspace.getUpdatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(workspace.getName(), getValue(mvcResult, "$.name")),
                 () -> assertEquals(workspace.getDescription(), getValue(mvcResult, "$.description")),
                 () -> assertEquals(WorkspaceVisibility.PUBLIC.toString(), getValue(mvcResult, "$.visibility")),

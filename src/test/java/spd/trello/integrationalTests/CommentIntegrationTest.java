@@ -37,7 +37,7 @@ public class CommentIntegrationTest extends AbstractIntegrationTest<Comment> {
                 () -> assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(comment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(comment.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(comment.getText(), getValue(mvcResult, "$.text")),
@@ -77,7 +77,7 @@ public class CommentIntegrationTest extends AbstractIntegrationTest<Comment> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(comment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(comment.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(comment.getText(), getValue(mvcResult, "$.text")),
@@ -118,6 +118,7 @@ public class CommentIntegrationTest extends AbstractIntegrationTest<Comment> {
     public void update() throws Exception {
         Comment comment = helper.getNewComment("s.bekberov@gmail.com");
         comment.setUpdatedBy(comment.getCreatedBy());
+        comment.setUpdatedDate(LocalDateTime.now().withNano(0));
         comment.setText("new text");
 
         MvcResult mvcResult = super.update(URL_TEMPLATE, comment.getId(), comment);
@@ -126,9 +127,9 @@ public class CommentIntegrationTest extends AbstractIntegrationTest<Comment> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(comment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(comment.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(comment.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(comment.getUpdatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(comment.getText(), getValue(mvcResult, "$.text")),
                 () -> assertEquals(comment.getCardId().toString(), getValue(mvcResult, "$.cardId"))
         );

@@ -37,7 +37,7 @@ public class AttachmentIntegrationTest extends AbstractIntegrationTest<Attachmen
                 () -> assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(attachment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(attachment.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(attachment.getName(), getValue(mvcResult, "$.name")),
@@ -78,7 +78,7 @@ public class AttachmentIntegrationTest extends AbstractIntegrationTest<Attachmen
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(attachment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(attachment.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(attachment.getName(), getValue(mvcResult, "$.name")),
@@ -120,6 +120,7 @@ public class AttachmentIntegrationTest extends AbstractIntegrationTest<Attachmen
     public void update() throws Exception {
         Attachment attachment = helper.getNewAttachment("s.bekberov@gmail.com");
         attachment.setUpdatedBy(attachment.getCreatedBy());
+        attachment.setUpdatedDate(LocalDateTime.now().withNano(0));
         attachment.setName("new named");
         attachment.setLink("new link");
 
@@ -129,9 +130,9 @@ public class AttachmentIntegrationTest extends AbstractIntegrationTest<Attachmen
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(attachment.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(attachment.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(attachment.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(LocalDateTime.now(), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(attachment.getUpdatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(attachment.getName(), getValue(mvcResult, "$.name")),
                 () -> assertEquals(attachment.getLink(), getValue(mvcResult, "$.link")),
                 () -> assertEquals(attachment.getCardId().toString(), getValue(mvcResult, "$.cardId"))

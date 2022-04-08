@@ -22,7 +22,7 @@ public class MemberService extends AbstractService<Member, MemberRepository> {
     @Override
     public Member update(Member entity) {
         Member oldMember = findById(entity.getId());
-        entity.setUpdatedDate(LocalDateTime.now());
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldMember.getCreatedBy());
         entity.setCreatedDate(oldMember.getCreatedDate());
         entity.setUserId(oldMember.getUserId());

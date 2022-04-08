@@ -55,7 +55,7 @@ public class Helper {
     public Member getNewMember(String email) {
         User user = getNewUser(email);
         Member member = new Member();
-        user.setCreatedDate(LocalDateTime.now());
+        user.setCreatedDate(LocalDateTime.now().withNano(0));
         member.setCreatedBy(user.getEmail());
         member.setUserId(user.getId());
         return memberRepository.save(member);
@@ -70,7 +70,6 @@ public class Helper {
         Member member = getNewMember(email);
         Workspace workspace = new Workspace();
         workspace.setCreatedBy(member.getCreatedBy());
-        workspace.setCreatedDate(LocalDateTime.now());
         workspace.setName("Workspace");
         Set<UUID> membersId = new HashSet<>();
         membersId.add(member.getId());
@@ -87,7 +86,7 @@ public class Helper {
         Workspace workspace = getNewWorkspace(email);
         Board board = new Board();
         board.setCreatedBy(workspace.getCreatedBy());
-        board.setCreatedDate(LocalDateTime.now());
+        board.setCreatedDate(LocalDateTime.now().withNano(0));
         board.setName("Board");
         board.setWorkspaceId(workspace.getId());
         board.setMembersIds(workspace.getMembersIds());
@@ -104,7 +103,7 @@ public class Helper {
         CardList cardList = new CardList();
         cardList.setBoardId(board.getId());
         cardList.setCreatedBy(board.getCreatedBy());
-        cardList.setCreatedDate(LocalDateTime.now());
+        cardList.setCreatedDate(LocalDateTime.now().withNano(0));
         cardList.setName("CardList");
         return cardListRepository.save(cardList);
     }
@@ -124,7 +123,6 @@ public class Helper {
 
         Card card = new Card();
         card.setCreatedBy(cardList.getCreatedBy());
-        card.setCreatedDate(LocalDateTime.now());
         card.setCardListId(cardList.getId());
         card.setName("name");
         card.setReminder(reminder);
@@ -141,7 +139,7 @@ public class Helper {
         BoardTemplate boardTemplate = new BoardTemplate();
         boardTemplate.setName("name");
         boardTemplate.setDescription("description");
-        boardTemplate.setCreatedDate(LocalDateTime.now());
+        boardTemplate.setCreatedDate(LocalDateTime.now().withNano(0));
         boardTemplate.setCreatedBy("ssss");
         return boardTemplateRepository.save(boardTemplate);
     }
@@ -155,7 +153,7 @@ public class Helper {
         CardTemplate cardTemplate = new CardTemplate();
         cardTemplate.setName("name");
         cardTemplate.setDescription("description");
-        cardTemplate.setCreatedDate(LocalDateTime.now());
+        cardTemplate.setCreatedDate(LocalDateTime.now().withNano(0));
         cardTemplate.setCreatedBy("ssss");
         return cardTemplateRepository.save(cardTemplate);
     }

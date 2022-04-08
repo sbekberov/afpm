@@ -22,7 +22,7 @@ public class BoardService extends AbstractService<Board, BoardRepository> {
     @Override
     public Board update(Board entity) {
         Board oldBoard = findById(entity.getId());
-        entity.setUpdatedDate(LocalDateTime.now());
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldBoard.getCreatedBy());
         entity.setCreatedDate(oldBoard.getCreatedDate());
         entity.setWorkspaceId(oldBoard.getWorkspaceId());
