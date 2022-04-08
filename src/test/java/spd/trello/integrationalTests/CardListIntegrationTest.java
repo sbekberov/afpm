@@ -7,12 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.domain.*;
-import spd.trello.domain.enums.BoardVisibility;
 
-import java.time.LocalDate;
-import java.util.HashSet;
+
+
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +38,7 @@ public class CardListIntegrationTest extends AbstractIntegrationTest<CardList> {
                 () -> assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(cardList.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(cardList.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(cardList.getName(), getValue(mvcResult, "$.name")),
@@ -81,7 +80,7 @@ public class CardListIntegrationTest extends AbstractIntegrationTest<CardList> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(cardList.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(cardList.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(cardList.getName(), getValue(mvcResult, "$.name")),
@@ -123,6 +122,7 @@ public class CardListIntegrationTest extends AbstractIntegrationTest<CardList> {
     public void update() throws Exception {
         CardList cardList = helper.getNewCardList("s.bekberov@gmail.com");
         cardList.setUpdatedBy(cardList.getCreatedBy());
+        cardList.setUpdatedDate(LocalDateTime.now().withNano(0));
         cardList.setName("new Name");
         cardList.setArchived(true);
         MvcResult mvcResult = super.update(URL_TEMPLATE, cardList.getId(), cardList);
@@ -131,9 +131,9 @@ public class CardListIntegrationTest extends AbstractIntegrationTest<CardList> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(cardList.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(cardList.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(cardList.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(cardList.getUpdatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(cardList.getName(), getValue(mvcResult, "$.name")),
                 () -> assertTrue((Boolean) getValue(mvcResult, "$.archived")),
                 () -> assertEquals(cardList.getBoardId().toString(), getValue(mvcResult, "$.boardId"))

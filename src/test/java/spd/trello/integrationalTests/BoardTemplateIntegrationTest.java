@@ -9,9 +9,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.domain.BoardTemplate;
 
 
-
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +27,7 @@ public class BoardTemplateIntegrationTest extends AbstractIntegrationTest<BoardT
         BoardTemplate boardTemplate = new BoardTemplate();
         boardTemplate.setName("BoardTemplate");
         boardTemplate.setDescription("test desk");
-        boardTemplate.setCreatedDate(Date.valueOf(LocalDate.now()));
+        boardTemplate.setCreatedDate(LocalDateTime.now());
         boardTemplate.setCreatedBy("ssss");
         MvcResult firstMvcResult = super.create(URL_TEMPLATE, boardTemplate);
 
@@ -109,7 +107,7 @@ public class BoardTemplateIntegrationTest extends AbstractIntegrationTest<BoardT
        BoardTemplate boardTemplate = helper.getNewBoardTemplate("FFFF" , "GGGGG");
         boardTemplate.setName("New name");
         boardTemplate.setDescription("new desct");
-        boardTemplate.setCreatedDate(Date.valueOf(LocalDate.now()));
+        boardTemplate.setCreatedDate(LocalDateTime.now());
         boardTemplate.setCreatedBy("ssss");
         boardTemplate.setUpdatedBy("sssss");
         MvcResult mvcResult = super.update(URL_TEMPLATE, boardTemplate.getId(), boardTemplate);

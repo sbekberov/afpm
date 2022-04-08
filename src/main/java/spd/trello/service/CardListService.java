@@ -9,6 +9,7 @@ import spd.trello.repository.CardListRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class CardListService extends AbstractService<CardList, CardListRepository> {
@@ -29,7 +30,7 @@ public class CardListService extends AbstractService<CardList, CardListRepositor
             throw new ResourceNotFoundException();
         }
 
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldCardList.getCreatedBy());
         entity.setCreatedDate(oldCardList.getCreatedDate());
         entity.setBoardId(oldCardList.getBoardId());

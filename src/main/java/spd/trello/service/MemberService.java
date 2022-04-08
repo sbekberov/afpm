@@ -9,6 +9,7 @@ import spd.trello.repository.MemberRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -21,7 +22,7 @@ public class MemberService extends AbstractService<Member, MemberRepository> {
     @Override
     public Member update(Member entity) {
         Member oldMember = findById(entity.getId());
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldMember.getCreatedBy());
         entity.setCreatedDate(oldMember.getCreatedDate());
         entity.setUserId(oldMember.getUserId());

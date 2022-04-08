@@ -9,6 +9,7 @@ import spd.trello.repository.CommentRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -22,7 +23,7 @@ public class CommentService extends AbstractService<Comment, CommentRepository>{
     public Comment update(Comment entity) {
         Comment oldCard = findById(entity.getId());
         entity.setCreatedDate(oldCard.getCreatedDate());
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCardId(oldCard.getCardId());
 
         if (entity.getUpdatedBy() == null) {

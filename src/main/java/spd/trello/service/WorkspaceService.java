@@ -9,6 +9,7 @@ import spd.trello.repository.WorkspaceRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class WorkspaceService extends AbstractService<Workspace, WorkspaceReposi
     @Override
     public Workspace update(Workspace entity) {
         Workspace oldWorkspace = findById(entity.getId());
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCreatedBy(oldWorkspace.getCreatedBy());
         entity.setCreatedDate(oldWorkspace.getCreatedDate());
 

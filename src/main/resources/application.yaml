@@ -31,7 +31,8 @@ server:
     include-message: always
     include-exception: true
 
-#app:
-#  storage-type:DB
+app:
+  saveToFile: true
+  saveFolder: /home/bekberov/IdeaProjects/java/attachment-file/
 
 

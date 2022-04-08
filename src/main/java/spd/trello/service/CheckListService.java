@@ -9,6 +9,7 @@ import spd.trello.repository.CheckListRepository;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class CheckListService extends AbstractService<CheckList, CheckListRepository> {
@@ -22,7 +23,7 @@ public class CheckListService extends AbstractService<CheckList, CheckListReposi
         CheckList oldChecklist = findById(entity.getId());
         entity.setCreatedBy(oldChecklist.getCreatedBy());
         entity.setCreatedDate(oldChecklist.getCreatedDate());
-        entity.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
         entity.setCardId(oldChecklist.getCardId());
 
 

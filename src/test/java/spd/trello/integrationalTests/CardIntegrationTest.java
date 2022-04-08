@@ -8,11 +8,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import spd.trello.domain.*;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.HashSet;
+
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,16 +30,16 @@ public class CardIntegrationTest extends AbstractIntegrationTest<Card> {
         card.setCardListId(cardList.getId());
         card.setName("name");
         Reminder reminder = new Reminder();
-        reminder.setRemindOn(Date.valueOf(LocalDate.now()));
-        reminder.setStart(Date.valueOf(LocalDate.now()));
-        reminder.setFinish(Date.valueOf(LocalDate.now()));
+        reminder.setRemindOn(LocalDateTime.now());
+        reminder.setStart(LocalDateTime.now());
+        reminder.setFinish(LocalDateTime.now());
         card.setReminder(reminder);
         MvcResult mvcResult = super.create(URL_TEMPLATE, card);
         assertAll(
                 () -> assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(card.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(card.getCreatedDate().toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(card.getName(), getValue(mvcResult, "$.name")),
@@ -83,7 +81,7 @@ public class CardIntegrationTest extends AbstractIntegrationTest<Card> {
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(card.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(card.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertNull(getValue(mvcResult, "$.updatedBy")),
                 () -> assertNull(getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(card.getName(), getValue(mvcResult, "$.name")),
@@ -125,24 +123,20 @@ public class CardIntegrationTest extends AbstractIntegrationTest<Card> {
     @Test
     public void update() throws Exception {
         Card card = helper.getNewCard("update@CIT");
-        Member secondMember = helper.getNewMember("2update@CIT");
         card.setUpdatedBy(card.getCreatedBy());
+        card.setUpdatedDate(LocalDateTime.now().withNano(0));
         card.setName("new Name");
         card.setArchived(true);
         card.setDescription("new description");
-
-
-
         MvcResult mvcResult = super.update(URL_TEMPLATE, card.getId(), card);
-
 
         assertAll(
                 () -> assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus()),
                 () -> assertNotNull(getValue(mvcResult, "$.id")),
                 () -> assertEquals(card.getCreatedBy(), getValue(mvcResult, "$.createdBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.createdDate")),
+                () -> assertEquals(card.getCreatedDate().withNano(0).toString(), getValue(mvcResult, "$.createdDate")),
                 () -> assertEquals(card.getUpdatedBy(), getValue(mvcResult, "$.updatedBy")),
-                () -> assertEquals(String.valueOf(LocalDate.now()), getValue(mvcResult, "$.updatedDate")),
+                () -> assertEquals(card.getUpdatedDate().withNano(0).toString(), getValue(mvcResult, "$.updatedDate")),
                 () -> assertEquals(card.getName(), getValue(mvcResult, "$.name")),
                 () -> assertTrue((Boolean) getValue(mvcResult, "$.archived")),
                 () -> assertEquals(card.getCardListId().toString(), getValue(mvcResult, "$.cardListId")),
