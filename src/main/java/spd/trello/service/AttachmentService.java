@@ -12,7 +12,7 @@ import spd.trello.repository.AttachmentRepository;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.Resource;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -108,9 +108,8 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
         }
+        return attachment;
     }
 
 }
