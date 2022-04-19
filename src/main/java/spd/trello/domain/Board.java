@@ -7,6 +7,8 @@ import spd.trello.domain.common.Resource;
 import spd.trello.domain.enums.BoardVisibility;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -17,8 +19,11 @@ import java.util.UUID;
 @Table
 public class Board extends Resource {
     @Column(name = "name")
+    @NotNull(message = "The name field must be filled.")
+    @Size(min = 2, max = 30, message = "The name field must be between 2 and 30 characters long.")
     private String name;
     @Column(name = "description")
+    @Size(min = 2, max = 255, message = "The description field must be between 2 and 255 characters long.")
     private String description;
     @Column(name = "archived")
     private Boolean archived = Boolean.FALSE;
