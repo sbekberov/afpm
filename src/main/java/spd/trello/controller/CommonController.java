@@ -2,7 +2,7 @@ package spd.trello.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import spd.trello.domain.Domain;
+import spd.trello.domain.common.Domain;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,16 +1,22 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import spd.trello.domain.common.Resource;
+import spd.trello.domain.enums.Role;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-@Data
-@RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Member extends Resource{
-    private UUID usersId;
+@Getter
+@Setter
+@Entity
+@Table(name = "member")
+public class Member extends Resource {
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role = Role.GUEST;
-
+    @Column(name = "user_id")
+    private UUID userId;
 }

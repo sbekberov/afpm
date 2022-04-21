@@ -1,13 +1,20 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import spd.trello.domain.common.Resource;
 
-@Data
-@RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Getter
+@Setter
+@Entity
+@Table
 public class BoardTemplate extends Resource {
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
+    private String description;
 }
 

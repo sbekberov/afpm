@@ -1,18 +1,28 @@
 package spd.trello.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import spd.trello.domain.common.Resource;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
-@Data
-@RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class CardList extends Resource{
+@Getter
+@Setter
+@Entity
+@Table
+public class CardList extends Resource {
+    @Column(name = "name")
     private String name;
+    @Column(name = "archived")
     private Boolean archived = Boolean.FALSE;
-    private UUID BoardId;
+    @Column(name = "board_id")
+    private UUID boardId;
+    @Column(name = "description")
+    private String description;
 
 }
 

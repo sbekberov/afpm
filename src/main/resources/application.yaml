@@ -3,18 +3,27 @@ spring:
     name: trello-app
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/trello_app
+    url: jdbc:postgresql://192.168.86.242:5432/trello_app
     username: postgres
     password: bekberov
-    hikari:
-      maximum-pool-size: 50
+  hikari:
+    maximum-pool-size: 50
   flyway:
-        enabled: true
-        validate-on-migrate: true
+    enabled: true
+    validate-on-migrate: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: true
+    properties:
+      hibernate.format_sql: true
 
 server:
   port: 8888
@@ -22,5 +31,8 @@ server:
     include-message: always
     include-exception: true
 
+app:
+  saveToFile: true
+  saveFolder: /home/bekberov/IdeaProjects/java/attachment-file/
 
 

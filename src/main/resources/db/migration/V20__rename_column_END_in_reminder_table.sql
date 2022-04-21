@@ -1,1 +1,0 @@
-ALTER TABLE reminder RENAME COLUMN "end" TO finish;
