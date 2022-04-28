@@ -16,7 +16,6 @@ import spd.trello.security.SpringSecurityAuditorAware;
 
 @Configuration
 @EnableWebSecurity
-@EnableJpaAuditing(auditorAwareRef = "auditProvider")
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -64,8 +63,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(12);
     }
 
-    @Bean
-    public AuditorAware<String> auditProvider() {
-        return new SpringSecurityAuditorAware();
-    }
+
+
+
 }

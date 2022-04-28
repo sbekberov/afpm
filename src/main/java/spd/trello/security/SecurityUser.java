@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import spd.trello.domain.User;
+import spd.trello.domain.enums.Role;
 import spd.trello.domain.enums.Status;
 
 
@@ -68,7 +69,7 @@ public class SecurityUser implements UserDetails {
                 user.getStatus().equals(Status.ACTIVE),
                 user.getStatus().equals(Status.ACTIVE),
                 user.getStatus().equals(Status.ACTIVE),
-                user.getRole().getAuthorities()
+                Role.GUEST.getAuthorities()
         );
     }
 }
