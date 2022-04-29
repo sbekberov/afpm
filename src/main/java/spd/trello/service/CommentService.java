@@ -10,10 +10,11 @@ import spd.trello.repository.CommentRepository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Service
-public class CommentService extends AbstractService<Comment, CommentRepository>{
+public class CommentService extends AbstractService<Comment, CommentRepository> {
     @Autowired
     public CommentService(CommentRepository repository) {
         super(repository);
@@ -39,5 +40,9 @@ public class CommentService extends AbstractService<Comment, CommentRepository>{
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    public void deleteCommentsForCard(UUID cardId) {
+        repository.findAllByCardId(cardId).forEach(comment -> delete(comment.getId()));
     }
 }

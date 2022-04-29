@@ -10,12 +10,17 @@ import spd.trello.repository.CardListRepository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class CardListService extends AbstractService<CardList, CardListRepository> {
+
+    private final CardService cardService;
+
     @Autowired
-    public CardListService(CardListRepository repository) {
+    public CardListService(CardListRepository repository, CardService cardService) {
         super(repository);
+        this.cardService = cardService;
     }
 
     @Override
@@ -42,5 +47,15 @@ public class CardListService extends AbstractService<CardList, CardListRepositor
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    @Override
+    public void delete(UUID id) {
+        cardService.deleteCardsForCardList(id);
+        super.delete(id);
+    }
+
+    public void deleteCardListsForBoard(UUID boardId) {
+        repository.findAllByBoardId(boardId).forEach(cardList -> delete(cardList.getId()));
     }
 }

@@ -69,5 +69,14 @@ public class Card extends Resource {
     )
     @Column(name = "id")
     private Set<UUID> comments = new HashSet<>();
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @CollectionTable(
+            name = "card_member",
+            joinColumns = @JoinColumn(name = "card_id")
+    )
+    @Column(name = "member_id")
+    private Set<UUID> membersIds = new HashSet<>();
 }
 

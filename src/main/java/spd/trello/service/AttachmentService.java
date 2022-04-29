@@ -112,6 +112,9 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         return attachment;
     }
 
+    public void deleteAttachmentsForCard(UUID cardId) {
+        repository.findAllByCardId(cardId).forEach(attachment -> delete(attachment.getId()));
+    }
 }
 
 

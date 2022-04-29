@@ -8,14 +8,27 @@ import spd.trello.exception.BadRequestException;
 import spd.trello.repository.CardRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class CardService extends AbstractService<Card, CardRepository> {
+
     public final ReminderScheduler reminderScheduler;
+    private final CheckListService checkListService;
+    private final LabelService labelService;
+    private final CommentService commentService;
+    private final AttachmentService attachmentService;
+
     @Autowired
-    public CardService(CardRepository repository, ReminderScheduler reminderScheduler) {
+    public CardService(CardRepository repository, ReminderScheduler reminderScheduler, CheckListService checkListService, AttachmentService attachmentService, CommentService commentService, LabelService labelService) {
         super(repository);
         this.reminderScheduler = reminderScheduler;
+        this.checkListService = checkListService;
+        this.commentService = commentService;
+        this.attachmentService = attachmentService;
+        this.labelService = labelService;
     }
 
     @Override
@@ -24,7 +37,7 @@ public class CardService extends AbstractService<Card, CardRepository> {
 
         try {
             Card card = repository.save(entity);
-            if(card.getReminder().getActive()){
+            if (card.getReminder().getActive()) {
                 reminderScheduler.addReminder(entity.getReminder());
             }
             return card;
@@ -49,19 +62,42 @@ public class CardService extends AbstractService<Card, CardRepository> {
             entity.setDescription(oldCard.getDescription());
         }
 
-        if(oldCard.getReminder().getActive() && !entity.getReminder().getActive()){
+        if (oldCard.getReminder().getActive() && !entity.getReminder().getActive()) {
             reminderScheduler.deleteReminder(oldCard.getReminder());
         }
         try {
             Card card = repository.save(entity);
-            if (card.getReminder().getActive() && !oldCard.getReminder().equals(card.getReminder()))
-            {
+            if (card.getReminder().getActive() && !oldCard.getReminder().equals(card.getReminder())) {
                 reminderScheduler.addReminder(card.getReminder());
             }
             return entity;
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    @Override
+    public void delete(UUID id) {
+        checkListService.deleteCheckListsForCard(id);
+        labelService.deleteLabelsForCard(id);
+        commentService.deleteCommentsForCard(id);
+        attachmentService.deleteAttachmentsForCard(id);
+        super.delete(id);
+    }
+
+    public void deleteMemberInCards(UUID memberId) {
+        List<Card> cards = repository.findAllByMembersIdsEquals(memberId);
+        for (Card card : cards) {
+            Set<UUID> membersId = card.getMembersIds();
+            membersId.remove(memberId);
+            if (card.getMembersIds().isEmpty()) {
+                delete(card.getId());
+            }
+        }
+    }
+
+    public void deleteCardsForCardList(UUID cardListId) {
+        repository.findAllByCardListId(cardListId).forEach(card -> delete(card.getId()));
     }
 
 }

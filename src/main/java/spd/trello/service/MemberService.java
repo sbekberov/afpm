@@ -10,13 +10,21 @@ import spd.trello.repository.MemberRepository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Service
 public class MemberService extends AbstractService<Member, MemberRepository> {
+    private final WorkspaceService workspaceService;
+    private final CardService cardService;
+    private final BoardService boardService;
+
     @Autowired
-    public MemberService(MemberRepository repository) {
+    public MemberService(MemberRepository repository, WorkspaceService workspaceService, BoardService boardService, CardService cardService) {
         super(repository);
+        this.workspaceService = workspaceService;
+        this.cardService = cardService;
+        this.boardService = boardService;
     }
 
     @Override
@@ -41,4 +49,13 @@ public class MemberService extends AbstractService<Member, MemberRepository> {
             throw new BadRequestException(e.getMessage());
         }
     }
+
+    @Override
+    public void delete(UUID id) {
+        workspaceService.deleteMemberInWorkspaces(id);
+        boardService.deleteMemberInBoards(id);
+        cardService.deleteMemberInCards(id);
+        super.delete(id);
+    }
+
 }

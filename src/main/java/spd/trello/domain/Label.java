@@ -21,7 +21,7 @@ public class Label extends Resource {
     @Size(min = 2, max = 30, message = "The name field must be between 2 and 30 characters long.")
     private String name;
     @Column(name = "card_id")
-    private UUID card_id;
+    private UUID cardId;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "color_id")
     private Color color;

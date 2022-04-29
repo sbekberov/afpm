@@ -10,12 +10,16 @@ import spd.trello.repository.CheckListRepository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class CheckListService extends AbstractService<CheckList, CheckListRepository> {
+    private final CheckableItemService checkableItemService;
+
     @Autowired
-    public CheckListService(CheckListRepository repository) {
+    public CheckListService(CheckListRepository repository, CheckableItemService checkableItemService) {
         super(repository);
+        this.checkableItemService = checkableItemService;
     }
 
     @Override
@@ -40,5 +44,15 @@ public class CheckListService extends AbstractService<CheckList, CheckListReposi
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    @Override
+    public void delete(UUID id) {
+        checkableItemService.deleteCheckableItemsForCheckList(id);
+        super.delete(id);
+    }
+
+    public void deleteCheckListsForCard(UUID cardId) {
+        repository.findAllByCardId(cardId).forEach(checklist -> delete(checklist.getId()));
     }
 }

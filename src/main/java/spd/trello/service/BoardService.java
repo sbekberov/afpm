@@ -10,13 +10,20 @@ import spd.trello.repository.BoardRepository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 
 @Service
 public class BoardService extends AbstractService<Board, BoardRepository> {
+
+    private final CardListService cardListService;
+
     @Autowired
-    public BoardService(BoardRepository repository) {
+    public BoardService(BoardRepository repository, CardListService cardListService) {
         super(repository);
+        this.cardListService = cardListService;
     }
 
     @Override
@@ -44,6 +51,27 @@ public class BoardService extends AbstractService<Board, BoardRepository> {
             return repository.save(entity);
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(UUID id) {
+        cardListService.deleteCardListsForBoard(id);
+        super.delete(id);
+    }
+
+    public void deleteBoardForWorkspace(UUID workspaceId) {
+        repository.findAllByWorkspaceId(workspaceId).forEach(board -> delete(board.getId()));
+    }
+
+    public void deleteMemberInBoards(UUID memberId) {
+        List<Board> boards = repository.findAllByMembersIdsEquals(memberId);
+        for (Board board : boards) {
+            Set<UUID> membersId = board.getMembersIds();
+            membersId.remove(memberId);
+            if (board.getMembersIds().isEmpty()) {
+                delete(board.getId());
+            }
         }
     }
 

@@ -16,9 +16,13 @@ import java.util.UUID;
 
 @Service
 public class WorkspaceService extends AbstractService<Workspace, WorkspaceRepository> {
+
+    private final BoardService boardService;
+
     @Autowired
-    public WorkspaceService(WorkspaceRepository repository) {
+    public WorkspaceService(WorkspaceRepository repository, BoardService boardService) {
         super(repository);
+        this.boardService = boardService;
     }
 
     @Override
@@ -49,6 +53,23 @@ public class WorkspaceService extends AbstractService<Workspace, WorkspaceReposi
             return repository.save(entity);
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(UUID id) {
+        boardService.deleteBoardForWorkspace(id);
+        super.delete(id);
+    }
+
+    public void deleteMemberInWorkspaces(UUID memberId) {
+        List<Workspace> workspaces = repository.findAllByMembersIdsEquals(memberId);
+        for (Workspace workspace : workspaces) {
+            Set<UUID> membersId = workspace.getMembersIds();
+            membersId.remove(memberId);
+            if (workspace.getMembersIds().isEmpty()) {
+                delete(workspace.getId());
+            }
         }
     }
 
