@@ -25,6 +25,11 @@ spring:
     properties:
       hibernate.format_sql: true
 
+  jwt:
+    header: Authorization
+    secret: proselyte
+    expiration: 604800
+    
 server:
   port: 8888
   error:

@@ -1,8 +1,9 @@
 package spd.trello.repository;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import spd.trello.domain.User;
 
-@Component
+@Repository
 public interface UserRepository extends AbstractRepository<User> {
+    User findByEmail(String email);
 }
