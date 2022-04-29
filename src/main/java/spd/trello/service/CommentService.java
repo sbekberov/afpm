@@ -6,6 +6,7 @@ import spd.trello.domain.Comment;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.CommentRepository;
+import spd.trello.validators.CommentValidator;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -14,10 +15,10 @@ import java.util.UUID;
 
 
 @Service
-public class CommentService extends AbstractService<Comment, CommentRepository> {
+public class CommentService extends AbstractService<Comment, CommentRepository, CommentValidator> {
     @Autowired
-    public CommentService(CommentRepository repository) {
-        super(repository);
+    public CommentService(CommentRepository repository,CommentValidator commentValidator) {
+        super(repository,commentValidator);
     }
 
     @Override

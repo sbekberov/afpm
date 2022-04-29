@@ -6,6 +6,7 @@ import spd.trello.reminder.ReminderScheduler;
 import spd.trello.domain.Card;
 import spd.trello.exception.BadRequestException;
 import spd.trello.repository.CardRepository;
+import spd.trello.validators.CardValidator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
-public class CardService extends AbstractService<Card, CardRepository> {
+public class CardService extends AbstractService<Card, CardRepository, CardValidator> {
 
     public final ReminderScheduler reminderScheduler;
     private final CheckListService checkListService;
@@ -22,8 +23,8 @@ public class CardService extends AbstractService<Card, CardRepository> {
     private final AttachmentService attachmentService;
 
     @Autowired
-    public CardService(CardRepository repository, ReminderScheduler reminderScheduler, CheckListService checkListService, AttachmentService attachmentService, CommentService commentService, LabelService labelService) {
-        super(repository);
+    public CardService(CardRepository repository, ReminderScheduler reminderScheduler, CheckListService checkListService, AttachmentService attachmentService, CommentService commentService, LabelService labelService,CardValidator cardValidator) {
+        super(repository,cardValidator);
         this.reminderScheduler = reminderScheduler;
         this.checkListService = checkListService;
         this.commentService = commentService;

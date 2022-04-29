@@ -6,6 +6,7 @@ import spd.trello.domain.Board;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.BoardRepository;
+import spd.trello.validators.BoardValidator;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -16,13 +17,13 @@ import java.util.UUID;
 
 
 @Service
-public class BoardService extends AbstractService<Board, BoardRepository> {
+public class BoardService extends AbstractService<Board, BoardRepository , BoardValidator> {
 
     private final CardListService cardListService;
 
     @Autowired
-    public BoardService(BoardRepository repository, CardListService cardListService) {
-        super(repository);
+    public BoardService(BoardRepository repository, CardListService cardListService,BoardValidator boardValidator) {
+        super(repository, boardValidator);
         this.cardListService = cardListService;
     }
 

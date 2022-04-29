@@ -6,6 +6,7 @@ import spd.trello.domain.CheckList;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.CheckListRepository;
+import spd.trello.validators.CheckListValidator;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -13,12 +14,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
-public class CheckListService extends AbstractService<CheckList, CheckListRepository> {
+public class CheckListService extends AbstractService<CheckList, CheckListRepository, CheckListValidator> {
     private final CheckableItemService checkableItemService;
 
     @Autowired
-    public CheckListService(CheckListRepository repository, CheckableItemService checkableItemService) {
-        super(repository);
+    public CheckListService(CheckListRepository repository, CheckableItemService checkableItemService, CheckListValidator checkListValidator) {
+        super(repository,checkListValidator);
         this.checkableItemService = checkableItemService;
     }
 

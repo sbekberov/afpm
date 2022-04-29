@@ -6,6 +6,7 @@ import spd.trello.domain.Workspace;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.WorkspaceRepository;
+import spd.trello.validators.WorkspaceValidator;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -15,13 +16,13 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
-public class WorkspaceService extends AbstractService<Workspace, WorkspaceRepository> {
+public class WorkspaceService extends AbstractService<Workspace, WorkspaceRepository, WorkspaceValidator> {
 
     private final BoardService boardService;
 
     @Autowired
-    public WorkspaceService(WorkspaceRepository repository, BoardService boardService) {
-        super(repository);
+    public WorkspaceService(WorkspaceRepository repository, BoardService boardService,WorkspaceValidator workspaceValidator) {
+        super(repository,workspaceValidator);
         this.boardService = boardService;
     }
 
