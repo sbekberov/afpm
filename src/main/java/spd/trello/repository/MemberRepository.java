@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface MemberRepository extends AbstractRepository<Member> {
+    List<Member> findByUserId(UUID userId);
 }

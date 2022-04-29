@@ -59,4 +59,8 @@ public class MemberService extends AbstractService<Member, MemberRepository, Mem
         super.delete(id);
     }
 
+    public void deleteMemberForUser(UUID userId) {
+        repository.findByUserId(userId).forEach(member -> delete(member.getId()));
+    }
+
 }
