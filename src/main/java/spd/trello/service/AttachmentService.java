@@ -11,6 +11,7 @@ import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.AttachmentRepository;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.Resource;
+import spd.trello.validators.AttachmentValidator;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,10 +23,10 @@ import java.util.UUID;
 
 
 @Service
-public class AttachmentService extends AbstractService<Attachment, AttachmentRepository> {
+public class AttachmentService extends AbstractService<Attachment, AttachmentRepository, AttachmentValidator> {
     @Autowired
-    public AttachmentService(AttachmentRepository repository) {
-        super(repository);
+    public AttachmentService(AttachmentRepository repository,AttachmentValidator attachmentValidator) {
+        super(repository,attachmentValidator);
     }
 
     @Value("${app.saveFolder}")
