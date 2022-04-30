@@ -7,6 +7,6 @@ import spd.trello.domain.User;
 public interface UserRepository extends AbstractRepository<User> {
     User findByEmail(String email);
 
-    boolean existingEmail(String email);
+    boolean existsByEmail(String email);
 
 }

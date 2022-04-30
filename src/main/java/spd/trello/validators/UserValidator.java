@@ -46,7 +46,7 @@ public class UserValidator extends AbstractValidator<User> {
     public void validateSaveEntity(User entity) {
         StringBuilder exceptions = new StringBuilder();
         validateNullFields(entity);
-        if (repository.existingEmail(entity.getEmail())) {
+        if (repository.existsByEmail(entity.getEmail())) {
             throw new BadRequestException("Email is already in use!");
         }
         Pattern email = Pattern.compile("^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
