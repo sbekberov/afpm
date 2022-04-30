@@ -22,9 +22,9 @@ public class UserService extends AbstractService<User, UserRepository, UserValid
         this.memberService = memberService;
     }
     public User register(User user)  {
-
         encodePassword(user);
-        return repository.save(user);
+        User result =super.create(user);
+        return result;
     }
 
     public User findByEmail(String email) {
