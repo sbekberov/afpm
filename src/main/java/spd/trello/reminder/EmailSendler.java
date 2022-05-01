@@ -9,8 +9,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Data
 public class EmailSendler implements Runnable {
     private String email;
-    private AtomicInteger sendEmails = new AtomicInteger();
-    private EmailSenderService emailSenderService;
+    private final AtomicInteger sendEmails = new AtomicInteger();
+    private final EmailSenderService emailSenderService;
+
+
 
     @Override
     public void run(){
