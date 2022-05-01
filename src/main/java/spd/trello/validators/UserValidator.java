@@ -55,13 +55,6 @@ public class UserValidator extends AbstractValidator<User> {
         if (!matcher.find()) {
             exceptions.append("The email field should look like email. For example : bekberov@gmail.com ");
         }
-
-        if (entity.getFirstName().length() < 2 || entity.getFirstName().length() > 30) {
-            exceptions.append("The firstname field must be between 2 and 30 characters long.");
-        }
-        if (entity.getLastName().length() < 2 || entity.getLastName().length() > 30) {
-            exceptions.append("The lastname field must be between 2 and 30 characters long.");
-        }
         validateUserFields(exceptions, entity);
     }
 

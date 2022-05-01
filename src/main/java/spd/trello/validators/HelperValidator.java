@@ -21,17 +21,9 @@ public class HelperValidator<T extends Resource> {
         this.memberRepository = memberRepository;
     }
 
-    private void validateResourceFields(StringBuilder exceptions, T entity) {
-        if (entity.getCreatedBy() == null || entity.getCreatedDate() == null) {
-            throw new BadRequestException("The createdBy, createdDate fields must be filled.");
-        }
-        if (entity.getCreatedBy().length() < 2 || entity.getCreatedBy().length() > 30) {
-            exceptions.append("CreatedBy should be between 2 and 30 characters! \n");
-        }
-    }
     public StringBuilder validateCreateEntity(T entity) {
         StringBuilder exceptions = new StringBuilder();
-        validateResourceFields(exceptions, entity);
+//        validateResourceFields(exceptions, entity);
         if (LocalDateTime.now().minusMinutes(1L).isAfter(entity.getCreatedDate()) ||
                 LocalDateTime.now().plusMinutes(1L).isBefore(entity.getCreatedDate())) {
             exceptions.append("The createdDate had not be past or future. \n");
@@ -41,7 +33,6 @@ public class HelperValidator<T extends Resource> {
 
     public StringBuilder validateEntityUpdate(T oldEntity, T newEntity) {
         StringBuilder exceptions = new StringBuilder();
-        validateResourceFields(exceptions, newEntity);
         if (newEntity.getUpdatedBy() == null) {
             throw new BadRequestException("The updatedBy field must be filled.");
         }
