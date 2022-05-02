@@ -3,11 +3,11 @@ package spd.trello.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import spd.trello.domain.common.Domain;
-import spd.trello.domain.common.Resource;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.UUID;
+
 
 @Getter
 @Setter

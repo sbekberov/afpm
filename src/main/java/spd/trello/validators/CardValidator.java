@@ -2,9 +2,14 @@ package spd.trello.validators;
 
 import org.springframework.stereotype.Component;
 import spd.trello.domain.Card;
+import spd.trello.domain.Reminder;
 import spd.trello.exception.BadRequestException;
 import spd.trello.repository.CardListRepository;
 import spd.trello.repository.CardRepository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Component
 public class CardValidator extends AbstractValidator<Card> {
@@ -42,6 +47,7 @@ public class CardValidator extends AbstractValidator<Card> {
         if (!cardListRepository.existsById(entity.getCardListId())) {
             exceptions.append("The cardListId field must belong to a CardList.");
         }
+        validateTime(exceptions,entity.getReminder());
         helper.validateMembersIds(exceptions, entity.getMembersIds());
         helper.throwException(exceptions);
     }
@@ -58,10 +64,18 @@ public class CardValidator extends AbstractValidator<Card> {
         StringBuilder exceptions = helper.validateEntityUpdate(oldCard.get(), entity);
         checkCardFields(exceptions, entity);
         if (!oldCard.get().getCardListId().equals(entity.getCardListId())) {
-            exceptions.append("Card cannot be transferred to another CardList. \n");
+            exceptions.append("Card can not be transferred to another CardList. \n");
         }
         helper.validateMembersIds(exceptions, entity.getMembersIds());
         helper.throwException(exceptions);
     }
 
+    public void validateTime(StringBuilder exceptions, Reminder entity) {
+        if (entity.getStart().isAfter(entity.getRemindOn()) || entity.getFinish().isBefore(entity.getRemindOn())) {
+            exceptions.append("The remindOn should be between start and finish. \n");
+        }
+        if (entity.getFinish().isBefore(entity.getStart())) {
+            exceptions.append("The finish had to be after start. \n");
+        }
+    }
 }

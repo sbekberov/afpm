@@ -23,7 +23,6 @@ public class HelperValidator<T extends Resource> {
 
     public StringBuilder validateCreateEntity(T entity) {
         StringBuilder exceptions = new StringBuilder();
-//        validateResourceFields(exceptions, entity);
         if (LocalDateTime.now().minusMinutes(1L).isAfter(entity.getCreatedDate()) ||
                 LocalDateTime.now().plusMinutes(1L).isBefore(entity.getCreatedDate())) {
             exceptions.append("The createdDate had not be past or future. \n");
