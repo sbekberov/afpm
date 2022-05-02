@@ -32,7 +32,8 @@ public class ReminderScheduler {
         this.cardRepository= cardRepository;
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+
+    @Scheduled(cron = "${cron.expression}")
     public void runReminder() {
             List<Reminder> reminders = repository.findAllByRemindOnBeforeAndActive(LocalDateTime.now().withNano(0),true);
             reminders.forEach(reminder -> {

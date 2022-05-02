@@ -39,5 +39,6 @@ server:
 app:
   saveToDb: true
   saveFolder: /home/bekberov/IdeaProjects/java/attachment-file/
-
+cron:
+  expression: "0 0/1 * * * ?"
 
