@@ -27,23 +27,14 @@ public class AttachmentController extends AbstractController<Attachment, Attachm
     @Autowired
     AttachmentService attachmentService;
 
-    @Value("${app.saveToFile}")
-    boolean saveToFile;
-
-
     @PostMapping("/upload")
     public ResponseEntity<Attachment> create(@RequestParam(value = "file") MultipartFile multipartFile,
                                              @RequestParam(required = false) UUID cardId,
                                              @RequestParam(value = "createdBy") String createdBy) {
-        if (saveToFile) {
-            log.debug("Uploading attachment in file system.");
-            return new ResponseEntity<>(attachmentService.saveToFile(multipartFile, cardId, createdBy), HttpStatus.OK);
-        } else {
-            log.debug("Uploading attachment in database.");
-            return new ResponseEntity<>(attachmentService.saveToDb(multipartFile, cardId, createdBy), HttpStatus.OK);
+            return new ResponseEntity<>(attachmentService.save(multipartFile, cardId, createdBy), HttpStatus.OK);
         }
 
-    }
+
 
     @GetMapping("/download/{id}")
     public ResponseEntity<ByteArrayResource> getFile(@PathVariable UUID id) {

@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
-import spd.trello.exception.BadRequestException;
 import spd.trello.exception.FileCanNotBeUpload;
-import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.AttachmentRepository;
 import spd.trello.validators.AttachmentValidator;
 
@@ -39,42 +37,18 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         attachment.setCardId(cardId);
         return repository.save(attachment);
     }
-
-    @Override
-    public Attachment update(Attachment entity) {
-        Attachment oldAttachment = findById(entity.getId());
-        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
-        entity.setCreatedBy(oldAttachment.getCreatedBy());
-        entity.setCreatedDate(oldAttachment.getCreatedDate());
-
-        if (entity.getUpdatedBy() == null) {
-            throw new BadRequestException("Not found updated by!");
+    @Value("${app.saveToDb}")
+    boolean saveToDb;
+    public Attachment save (MultipartFile multipartFile, UUID cardId, String createdBy){
+        if(saveToDb && multipartFile.getSize()<100000000){
+           return saveToDb(multipartFile, cardId, createdBy);
         }
-
-        if (entity.getLink() == null && entity.getName() == null) {
-            throw new ResourceNotFoundException();
-        }
-
-        if (oldAttachment.getCardId() != null) {
-            entity.setCardId(oldAttachment.getCardId());
-        }
-
-        if (entity.getName() == null) {
-            entity.setName(oldAttachment.getName());
-        }
-        if (entity.getLink() == null) {
-            entity.setLink(oldAttachment.getLink());
-        }
-        try {
-            return repository.save(entity);
-        } catch (RuntimeException e) {
-            throw new BadRequestException(e.getMessage());
+        else {
+            return saveToFile(multipartFile, cardId, createdBy);
         }
     }
-
     public Attachment saveToDb(MultipartFile multipartFile, UUID cardId, String createdBy) {
         Attachment attachment = new Attachment();
-
         try {
             attachment.setMultiPartBytes(multipartFile.getBytes());
             attachment.setName(multipartFile.getOriginalFilename());
