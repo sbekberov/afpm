@@ -38,7 +38,7 @@ public class ReminderScheduler {
             reminders.forEach(reminder -> {
             emailSendler.setEmail(cardRepository.findCardByReminder(reminder).getCreatedBy());
             executorService.submit(emailSendler);
-            log.debug("Email sent to ", cardRepository.findCardByReminder(reminder).getCreatedBy());
+            log.info("Email sent to {} ", cardRepository.findCardByReminder(reminder).getCreatedBy());
             reminder.setActive(false);
             repository.save(reminder);
             log.info("Time to finish!" + Objects.requireNonNull(reminder).getId());
