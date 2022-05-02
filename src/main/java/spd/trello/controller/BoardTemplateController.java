@@ -7,7 +7,7 @@ import spd.trello.service.BoardTemplateService;
 
 
 @RestController
-@RequestMapping("/boardsTemplates")
+@RequestMapping("/boards-templates")
 public class BoardTemplateController extends AbstractController<BoardTemplate, BoardTemplateService> {
     public BoardTemplateController (BoardTemplateService service) {
         super(service);

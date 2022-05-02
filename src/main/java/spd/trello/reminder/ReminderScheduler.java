@@ -1,6 +1,7 @@
 package spd.trello.reminder;
 
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import java.util.concurrent.Executors;
 
 @Component
 @EnableScheduling
+@Log4j2
 public class ReminderScheduler {
 
     private ReminderRepository repository;
@@ -36,9 +38,10 @@ public class ReminderScheduler {
             reminders.forEach(reminder -> {
             emailSendler.setEmail(cardRepository.findCardByReminder(reminder).getCreatedBy());
             executorService.submit(emailSendler);
+            log.debug("Email sent to ", cardRepository.findCardByReminder(reminder).getCreatedBy());
             reminder.setActive(false);
             repository.save(reminder);
-            System.out.println("Time to finish!" + Objects.requireNonNull(reminder).getId());
+            log.info("Time to finish!" + Objects.requireNonNull(reminder).getId());
         });
     }
 

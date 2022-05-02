@@ -1,5 +1,6 @@
 package spd.trello.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/attachments")
+@Log4j2
 public class AttachmentController extends AbstractController<Attachment, AttachmentService> {
     public AttachmentController(AttachmentService service) {
         super(service);
@@ -34,8 +36,10 @@ public class AttachmentController extends AbstractController<Attachment, Attachm
                                              @RequestParam(required = false) UUID cardId,
                                              @RequestParam(value = "createdBy") String createdBy) {
         if (saveToFile) {
+            log.debug("Uploading attachment in file system.");
             return new ResponseEntity<>(attachmentService.saveToFile(multipartFile, cardId, createdBy), HttpStatus.OK);
         } else {
+            log.debug("Uploading attachment in database.");
             return new ResponseEntity<>(attachmentService.saveToDb(multipartFile, cardId, createdBy), HttpStatus.OK);
         }
 
@@ -44,6 +48,7 @@ public class AttachmentController extends AbstractController<Attachment, Attachm
     @GetMapping("/download/{id}")
     public ResponseEntity<ByteArrayResource> getFile(@PathVariable UUID id) {
         Attachment attachment = attachmentService.load(id);
+        log.debug("Downloading attachment.");
         return ResponseEntity.ok()
                 .contentType(MediaType.MULTIPART_MIXED)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachment.getName() + "\"")

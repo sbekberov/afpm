@@ -1,5 +1,6 @@
 package spd.trello.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@Log4j2
 public class AuthenticationController {
 
     private final UserService service;
@@ -38,6 +40,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<User> registration(@Valid @RequestBody User resource) {
         User result = service.register(resource);
+        log.debug("Registration a new user.");
         return new ResponseEntity<>(result, HttpStatus.CREATED);
 
     }
@@ -51,8 +54,10 @@ public class AuthenticationController {
             Map<Object, Object> response = new HashMap<>();
             response.put("email", request.getEmail());
             response.put("token", token);
+            log.debug("Login user." , user);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
+            log.debug("Invalid email/password combination");
             return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
         }
     }
