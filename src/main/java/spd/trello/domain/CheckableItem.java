@@ -1,6 +1,6 @@
 package spd.trello.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.*;
 import spd.trello.domain.common.Domain;
 

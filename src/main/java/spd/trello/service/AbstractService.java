@@ -2,15 +2,12 @@ package spd.trello.service;
 
 
 import spd.trello.domain.common.Domain;
-import spd.trello.domain.common.Resource;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
-import spd.trello.exception.BadRequestException;
 import spd.trello.repository.AbstractRepository;
 import spd.trello.validators.AbstractValidator;
 
-import java.sql.Date;
-import java.time.LocalDate;
+
 import java.util.List;
 import java.util.UUID;
 

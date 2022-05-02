@@ -4,11 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spd.trello.reminder.ReminderScheduler;
 import spd.trello.domain.Card;
-import spd.trello.exception.BadRequestException;
 import spd.trello.repository.CardRepository;
 import spd.trello.validators.CardValidator;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;

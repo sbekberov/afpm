@@ -6,8 +6,7 @@ import spd.trello.exception.BadRequestException;
 import spd.trello.repository.AttachmentRepository;
 import spd.trello.repository.CardRepository;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @Component
 public class AttachmentValidator extends AbstractValidator<Attachment> {

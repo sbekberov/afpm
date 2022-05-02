@@ -1,9 +1,6 @@
 package spd.trello.domain;
 
 import lombok.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import spd.trello.domain.common.Domain;
 import spd.trello.domain.common.Resource;
 
 import javax.persistence.*;

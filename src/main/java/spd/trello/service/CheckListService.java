@@ -8,8 +8,7 @@ import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.CheckListRepository;
 import spd.trello.validators.CheckListValidator;
 
-import java.sql.Date;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 

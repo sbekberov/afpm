@@ -1,7 +1,6 @@
 package spd.trello.repository;
 
 import org.springframework.stereotype.Repository;
-import spd.trello.domain.CheckList;
 import spd.trello.domain.CheckableItem;
 
 import java.util.List;

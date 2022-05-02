@@ -8,8 +8,7 @@ import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.BoardRepository;
 import spd.trello.validators.BoardValidator;
 
-import java.sql.Date;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;

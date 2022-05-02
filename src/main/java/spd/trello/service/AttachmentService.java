@@ -9,8 +9,6 @@ import spd.trello.exception.BadRequestException;
 import spd.trello.exception.FileCanNotBeUpload;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.AttachmentRepository;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.Resource;
 import spd.trello.validators.AttachmentValidator;
 
 import java.io.IOException;
