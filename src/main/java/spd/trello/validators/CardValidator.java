@@ -77,5 +77,8 @@ public class CardValidator extends AbstractValidator<Card> {
         if (entity.getFinish().isBefore(entity.getStart())) {
             exceptions.append("The finish had to be after start. \n");
         }
+        if (entity.getFinish().isBefore(LocalDateTime.now().withNano(0))) {
+            exceptions.append("You cannot create an overdue task. \n");
+        }
     }
 }
