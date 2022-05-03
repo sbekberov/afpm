@@ -43,5 +43,10 @@ cron:
   expression: "0 0/1 * * * ?"
 file:
   maxSize: 100000000
+email:
+  sentFromEmail: s.bekberov@gmail.com
+  sentFromPassword: vmiqtezxjvoyyqhl
+  sentToEmail: bekberovselim@gmail.com
+
 
 

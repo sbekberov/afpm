@@ -1,6 +1,7 @@
 package spd.trello.service;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailSenderService {
     private final JavaMailSender emailSender;
+
+    @Value("${email.sentFromEmail}")
+    String sentEmailFrom;
+    @Value("${email.sentToEmail}")
+    String sentEmailTo;
 
     public EmailSenderService(JavaMailSender emailSender) {
         this.emailSender = emailSender;
@@ -17,8 +23,8 @@ public class EmailSenderService {
                           String subject,
                           String body){
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("s.bekberov@gmail.com");
-        message.setTo("bekberovselim@gmail.com");
+        message.setFrom(sentEmailFrom);
+        message.setTo(sentEmailTo);
         message.setText(body);
         message.setSubject(subject);
 
