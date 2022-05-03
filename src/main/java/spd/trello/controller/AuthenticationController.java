@@ -57,7 +57,7 @@ public class AuthenticationController {
             log.debug("Login user." , user);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            log.debug("Invalid email/password combination");
+            log.error("Invalid email/password combination");
             return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
         }
     }

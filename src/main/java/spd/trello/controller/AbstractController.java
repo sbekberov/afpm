@@ -61,7 +61,6 @@ public class AbstractController< E extends Domain, S extends CommonService<E>>
     @Override
     public List<E> getAll() {
         List<E> result = service.getAll();
-        log.debug("Getting all entity", result);
         return result;
 
     }

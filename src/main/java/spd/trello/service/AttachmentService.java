@@ -1,5 +1,6 @@
 package spd.trello.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 
 @Service
+@Log4j2
 public class AttachmentService extends AbstractService<Attachment, AttachmentRepository, AttachmentValidator> {
     @Autowired
     public AttachmentService(AttachmentRepository repository,AttachmentValidator attachmentValidator) {
@@ -39,8 +41,10 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
     }
     @Value("${app.saveToDb}")
     boolean saveToDb;
+    @Value("${file.maxSize}")
+    double maxSize;
     public Attachment save (MultipartFile multipartFile, UUID cardId, String createdBy){
-        if(saveToDb && multipartFile.getSize()<100000000){
+        if(saveToDb && multipartFile.getSize()<maxSize){
            return saveToDb(multipartFile, cardId, createdBy);
         }
         else {
@@ -68,6 +72,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             Files.copy(file.getInputStream(), root.resolve(Objects.requireNonNull(file.getOriginalFilename())));
             return createAttachment(file.getOriginalFilename(), cardId, createdBy);
         } catch (Exception e) {
+            log.error("File can not be upload ");
             throw new FileCanNotBeUpload();
         }
     }
@@ -79,6 +84,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             try {
                 attachment.setMultiPartBytes(Files.readAllBytes(Paths.get(attachment.getLink() + attachment.getName())));
             } catch (IOException e) {
+                log.error("File can not be download");
                 e.printStackTrace();
             }
         }

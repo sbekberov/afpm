@@ -41,4 +41,7 @@ app:
   saveFolder: /home/bekberov/IdeaProjects/java/attachment-file/
 cron:
   expression: "0 0/1 * * * ?"
+file:
+  maxSize: 100000000
+
 
