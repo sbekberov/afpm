@@ -1,13 +1,12 @@
 package spd.trello.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import spd.trello.domain.Attachment;
-import spd.trello.exception.BadRequestException;
 import spd.trello.exception.FileCanNotBeUpload;
-import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.AttachmentRepository;
 import spd.trello.validators.AttachmentValidator;
 
@@ -21,6 +20,7 @@ import java.util.UUID;
 
 
 @Service
+@Log4j2
 public class AttachmentService extends AbstractService<Attachment, AttachmentRepository, AttachmentValidator> {
     @Autowired
     public AttachmentService(AttachmentRepository repository,AttachmentValidator attachmentValidator) {
@@ -39,42 +39,20 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
         attachment.setCardId(cardId);
         return repository.save(attachment);
     }
-
-    @Override
-    public Attachment update(Attachment entity) {
-        Attachment oldAttachment = findById(entity.getId());
-        entity.setUpdatedDate(LocalDateTime.now().withNano(0));
-        entity.setCreatedBy(oldAttachment.getCreatedBy());
-        entity.setCreatedDate(oldAttachment.getCreatedDate());
-
-        if (entity.getUpdatedBy() == null) {
-            throw new BadRequestException("Not found updated by!");
+    @Value("${app.saveToDb}")
+    boolean saveToDb;
+    @Value("${file.maxSize}")
+    double maxSize;
+    public Attachment save (MultipartFile multipartFile, UUID cardId, String createdBy){
+        if(saveToDb && multipartFile.getSize()<maxSize){
+           return saveToDb(multipartFile, cardId, createdBy);
         }
-
-        if (entity.getLink() == null && entity.getName() == null) {
-            throw new ResourceNotFoundException();
-        }
-
-        if (oldAttachment.getCardId() != null) {
-            entity.setCardId(oldAttachment.getCardId());
-        }
-
-        if (entity.getName() == null) {
-            entity.setName(oldAttachment.getName());
-        }
-        if (entity.getLink() == null) {
-            entity.setLink(oldAttachment.getLink());
-        }
-        try {
-            return repository.save(entity);
-        } catch (RuntimeException e) {
-            throw new BadRequestException(e.getMessage());
+        else {
+            return saveToFile(multipartFile, cardId, createdBy);
         }
     }
-
     public Attachment saveToDb(MultipartFile multipartFile, UUID cardId, String createdBy) {
         Attachment attachment = new Attachment();
-
         try {
             attachment.setMultiPartBytes(multipartFile.getBytes());
             attachment.setName(multipartFile.getOriginalFilename());
@@ -94,6 +72,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             Files.copy(file.getInputStream(), root.resolve(Objects.requireNonNull(file.getOriginalFilename())));
             return createAttachment(file.getOriginalFilename(), cardId, createdBy);
         } catch (Exception e) {
+            log.error("File can not be upload ");
             throw new FileCanNotBeUpload();
         }
     }
@@ -105,6 +84,7 @@ public class AttachmentService extends AbstractService<Attachment, AttachmentRep
             try {
                 attachment.setMultiPartBytes(Files.readAllBytes(Paths.get(attachment.getLink() + attachment.getName())));
             } catch (IOException e) {
+                log.error("File can not be download");
                 e.printStackTrace();
             }
         }
