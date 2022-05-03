@@ -6,16 +6,21 @@ import spd.trello.domain.CardList;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.CardListRepository;
+import spd.trello.validators.CardListValidator;
 
-import java.sql.Date;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
-public class CardListService extends AbstractService<CardList, CardListRepository> {
+public class CardListService extends AbstractService<CardList, CardListRepository, CardListValidator> {
+
+    private final CardService cardService;
+
     @Autowired
-    public CardListService(CardListRepository repository) {
-        super(repository);
+    public CardListService(CardListRepository repository, CardService cardService, CardListValidator cardListValidator) {
+        super(repository,cardListValidator);
+        this.cardService = cardService;
     }
 
     @Override
@@ -42,5 +47,15 @@ public class CardListService extends AbstractService<CardList, CardListRepositor
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    @Override
+    public void delete(UUID id) {
+        cardService.deleteCardsForCardList(id);
+        super.delete(id);
+    }
+
+    public void deleteCardListsForBoard(UUID boardId) {
+        repository.findAllByBoardId(boardId).forEach(cardList -> delete(cardList.getId()));
     }
 }

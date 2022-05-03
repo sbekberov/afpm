@@ -1,13 +1,11 @@
 package spd.trello.domain;
 
 import lombok.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import spd.trello.domain.common.Resource;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Getter
@@ -16,6 +14,8 @@ import java.util.UUID;
 @Table
 public class Comment extends Resource {
     @Column(name = "text")
+    @NotNull(message = "The text field must be filled.")
+    @Size(min = 1, max = 999, message = "The text field must be between 1 and 999 characters long.")
     private String text;
     @Column(name = "card_id")
     private UUID cardId;

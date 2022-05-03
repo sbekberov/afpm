@@ -6,19 +6,23 @@ import spd.trello.domain.Workspace;
 import spd.trello.exception.BadRequestException;
 import spd.trello.exception.ResourceNotFoundException;
 import spd.trello.repository.WorkspaceRepository;
+import spd.trello.validators.WorkspaceValidator;
 
-import java.sql.Date;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Service
-public class WorkspaceService extends AbstractService<Workspace, WorkspaceRepository> {
+public class WorkspaceService extends AbstractService<Workspace, WorkspaceRepository, WorkspaceValidator> {
+
+    private final BoardService boardService;
+
     @Autowired
-    public WorkspaceService(WorkspaceRepository repository) {
-        super(repository);
+    public WorkspaceService(WorkspaceRepository repository, BoardService boardService,WorkspaceValidator workspaceValidator) {
+        super(repository,workspaceValidator);
+        this.boardService = boardService;
     }
 
     @Override
@@ -49,6 +53,23 @@ public class WorkspaceService extends AbstractService<Workspace, WorkspaceReposi
             return repository.save(entity);
         } catch (RuntimeException e) {
             throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(UUID id) {
+        boardService.deleteBoardForWorkspace(id);
+        super.delete(id);
+    }
+
+    public void deleteMemberInWorkspaces(UUID memberId) {
+        List<Workspace> workspaces = repository.findAllByMembersIdsEquals(memberId);
+        for (Workspace workspace : workspaces) {
+            Set<UUID> membersId = workspace.getMembersIds();
+            membersId.remove(memberId);
+            if (workspace.getMembersIds().isEmpty()) {
+                delete(workspace.getId());
+            }
         }
     }
 

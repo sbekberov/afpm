@@ -5,8 +5,7 @@ import spd.trello.domain.common.Resource;
 import spd.trello.domain.enums.Role;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
@@ -18,5 +17,6 @@ public class Member extends Resource {
     @Enumerated(EnumType.STRING)
     private Role role = Role.GUEST;
     @Column(name = "user_id")
+    @NotNull(message = "The userId field must be filled.")
     private UUID userId;
 }

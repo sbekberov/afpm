@@ -9,8 +9,8 @@ import lombok.*;
 import spd.trello.domain.common.Domain;
 
 
+
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 
@@ -23,14 +23,17 @@ public class Reminder extends Domain implements Comparable<Reminder> {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime start;
+
     @Column(name = "finish")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime finish;
+
     @Column(name = "remind_on")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime remindOn;
+
     @Column(name = "active")
     private Boolean active = Boolean.FALSE;
     @OneToOne (mappedBy = "reminder", cascade = CascadeType.ALL)

@@ -7,7 +7,7 @@ import spd.trello.service.CardTemplateService;
 
 
 @RestController
-@RequestMapping("/cardsTemplates")
+@RequestMapping("/cards-templates")
 public class CardTemplateController extends AbstractController<CardTemplate, CardTemplateService> {
     public CardTemplateController (CardTemplateService service) {
         super(service);

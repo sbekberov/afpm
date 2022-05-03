@@ -1,47 +1,49 @@
 package spd.trello.reminder;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import spd.trello.domain.Reminder;
+import spd.trello.repository.CardRepository;
 import spd.trello.repository.ReminderRepository;
 
-import javax.annotation.PostConstruct;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-import java.util.TreeSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Component
 @EnableScheduling
+@Log4j2
 public class ReminderScheduler {
-    @Autowired
+
     private ReminderRepository repository;
+    private final EmailSendler emailSendler;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(5);
+    private final CardRepository cardRepository;
 
-    private TreeSet<Reminder> reminders = new TreeSet<>();
-
-    public void addReminder(Reminder reminder) {
-        reminders.add(reminder);
+    public ReminderScheduler(ReminderRepository repository, EmailSendler emailSendler, CardRepository cardRepository) {
+        this.repository = repository;
+        this.emailSendler = emailSendler;
+        this.cardRepository= cardRepository;
     }
 
-    public void deleteReminder(Reminder reminder) {
-        reminders.remove(reminder);
-    }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "${cron.expression}")
     public void runReminder() {
-        while (reminders.size() != 0 &&
-                (reminders.first().getRemindOn().isEqual(LocalDateTime.now().withNano(0)) ||
-                        reminders.first().getRemindOn().isBefore(LocalDateTime.now().withNano(0)))) {
-            Reminder reminder = reminders.pollFirst();
-            Objects.requireNonNull(reminder).setActive(true);
+            List<Reminder> reminders = repository.findAllByRemindOnBeforeAndActive(LocalDateTime.now().withNano(0),true);
+            reminders.forEach(reminder -> {
+            emailSendler.setEmail(cardRepository.findCardByReminder(reminder).getCreatedBy());
+            executorService.submit(emailSendler);
+            log.info("Email sent to {} ", cardRepository.findCardByReminder(reminder).getCreatedBy());
+            reminder.setActive(false);
             repository.save(reminder);
-            System.out.println("Time to finish!" + Objects.requireNonNull(reminder).getId());
-        }
+            log.info("Time to finish!" + Objects.requireNonNull(reminder).getId());
+        });
     }
 
-    @PostConstruct
-    private void initListReminders() {
-        reminders = repository.findAllByActive(true);
-    }
 }
