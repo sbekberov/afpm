@@ -1,9 +1,9 @@
 package spd.trello.domain.enums;
 
 public enum Permission {
-    DEVELOPERS_READ("developers:read"),
-    DEVELOPERS_UPDATE("developers:update"),
-    DEVELOPERS_WRITE("developers:write");
+    READ("read"),
+    UPDATE("update"),
+    WRITE("write");
 
 
     private final String permission;
